@@ -1,0 +1,17 @@
+[all:vars]
+vc_hostname=pda20vapvcn02.ca.bestbuy.com
+vc_datacenter=VIDC
+
+[jamil]
+DTL24VUVREL01
+DTL24VUVREL02
+DTL24VUVREL03
+
+[jamil:vars]
+vc_folder=/VIDC/vm/VDI/Platform/Jamil/
+
+[novonil]
+DTL24VUVINF15
+
+[novonil:vars]
+vc_folder=/VIDC/vm/VDI/Platform/Novonil/

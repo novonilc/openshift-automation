@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: esp-foundation-jenkins
+spec:
+  capacity:
+    storage: 30Gi
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /ocp_esp_foundation_build_jenkins
+    server: 172.21.235.254
+  persistentVolumeReclaimPolicy: Recycle

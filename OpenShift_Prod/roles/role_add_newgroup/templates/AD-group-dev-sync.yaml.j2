@@ -1,0 +1,24 @@
+kind: LDAPSyncConfig
+apiVersion: v1
+bindDN: cn=bca-s-oshift-prod-ad,ou=Service Accounts,ou=Users,ou=Best Buy Canada,dc=ca,dc=bestbuy,dc=com
+bindPassword: {{ ad_sync_pass }}
+url: ldap://ad-ca.ca.bestbuy.com
+insecure: true
+ca: ''
+augmentedActiveDirectory:
+    groupsQuery:
+        baseDN: "OU=Domain Security,OU=Groups,OU=Best Buy Canada,DC=ca,DC=bestbuy,DC=com"
+        scope: sub
+        derefAliases: always
+        pageSize: 0
+        timeout: 0
+    groupUIDAttribute: dn
+    groupNameAttributes: [ cn ]
+    usersQuery:
+        baseDN: "ou=Users,ou=Best Buy Canada,dc=ca,dc=bestbuy,dc=com"
+        scope: sub
+        derefAliases: never
+        pageSize: 0
+        filter: (objectclass=*)
+    userNameAttributes: [ sAMAccountName ]
+    groupMembershipAttributes: [ "memberof:1.2.840.113556.1.4.1941:" ]

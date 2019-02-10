@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: egress-svc-plocdb20-1
+spec:
+  ports:
+  - name: egress-svc-plocdb20-1
+    port: 50000
+    protocol: TCP
+    targetPort: 50000
+  selector:
+    name: egress-multi-1
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

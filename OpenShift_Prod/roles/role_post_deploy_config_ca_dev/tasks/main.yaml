@@ -1,0 +1,237 @@
+---
+
+- include: set_facts.yaml
+  tags:
+  - master
+
+- name: deploy master-configuration API
+  template:
+    src: atomic-openshift-master-api.j2
+    dest: /etc/sysconfig/atomic-openshift-master-api
+    owner: root
+    group: root
+    backup: yes
+  register: mst
+  tags:
+  - master
+
+- name: deploy sysconfig master-configuration
+  template:
+    src: atomic-openshift-master-api.j2
+    dest: /etc/sysconfig/atomic-openshift-master
+    owner: root
+    group: root
+    backup: yes
+  register: mst1
+  tags:
+  - master
+
+- name: deploy master-configuration controllers
+  copy:
+    src: atomic-openshift-master-controllers
+    dest: /etc/sysconfig/atomic-openshift-master-controllers
+    owner: root
+    group: root
+    backup: yes
+  register: mst2
+  tags:
+  - master
+
+- name: deploy master-configuration
+  template:
+    src: master-config.yaml.j2
+    dest: /etc/origin/master/master-config.yaml
+    owner: root
+    group: root
+    backup: yes
+  register: mst3
+  tags:
+  - master
+
+- name: restart master services - API
+  service:
+    name: atomic-openshift-master-api.service
+    state: restarted
+  when: (mst|changed) or
+        (mst1|changed) or
+        (mst2|changed) or
+        (mst3|changed)
+  tags:
+  - master
+
+- name: restart master services - controller
+  service:
+    name: atomic-openshift-master-controllers.service
+    state: restarted
+  when: (mst|changed) or
+        (mst1|changed) or
+        (mst2|changed) or
+        (mst3|changed)
+  tags:
+  - master
+
+- name: deploy sysconfig node-configuration on master infra nodes
+  copy:
+    src: atomic-openshift-node
+    dest: /etc/sysconfig/atomic-openshift-node
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  tags:
+  - master-infra
+
+- name: deploy master-node-configuration
+  template:
+    src: node-master-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart atomic-node
+  when:
+  - "'dtl20ocpcma0' in inventory_hostname"
+  tags:
+  - master-node
+
+
+- name: deploy infra node configuration
+  template:
+    src: node-infra-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart atomic-node
+  when:
+  - "'dtl20ocpcin0' in inventory_hostname"
+  tags:
+  - infra
+
+- name: deploy app node configuration - VM
+  template:
+    src: node-app-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart atomic-node
+  when:
+  - "'dtl20ocpcch' in inventory_hostname"
+  tags:
+  - app
+
+- name: deploy app node configuration - Physical
+  template:
+    src: node-app-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart atomic-node
+  when:
+  - "'dth20ocpcch' in inventory_hostname"
+  tags:
+  - app
+
+- name: clean cert dirs - registry
+  file:
+    path: "/etc/docker/certs.d/{{ item }}"
+    state: absent
+  with_items:
+    - 'registry.dev-ocp.ca.bestbuy.com'
+    - 'registry.dev-ocp.ca.bestbuy.com'
+    - '172.32.109.204:5000 '
+    - 'docker-registry.default.svc.cluster.local:5000'
+  tags:
+  - registry
+
+- name: create cert dirs - registry
+  file:
+    path: "/etc/docker/certs.d/{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - 'registry.dev-ocp.ca.bestbuy.com'
+    - '172.32.109.204:5000 '
+    - 'docker-registry.default.svc.cluster.local:5000'
+  tags:
+  - registry
+
+- name: copy registry PROD certificates
+  copy:
+    src: registry.crt
+    dest: "/etc/docker/certs.d/{{ item }}/ca.crt"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - 'registry.dev-ocp.ca.bestbuy.com'
+    - '172.32.109.204:5000 '
+    - 'docker-registry.default.svc.cluster.local:5000'
+  tags:
+  - registry
+
+- name: copy registry PROD certificates to OS Certs Dir
+  copy:
+    src: registry.crt
+    dest: "/etc/pki/ca-trust/source/anchors/{{ item }}.crt"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - 'registry.dev-ocp.ca.bestbuy.com'
+    - 'docker-registry.default.svc.cluster.local:5000'
+    - '172.32.109.204:5000 '
+  tags:
+  - registry
+
+- name: Update Cert on OS
+  command: update-ca-trust enable
+  tags:
+  - registry
+
+- name: set docker configuration in masters
+  copy:
+    src: docker
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'dtl20ocpcma0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: set docker configuration in master infra
+  copy:
+    src: docker
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'dtl20ocpcin0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: set docker configuration in app nodes
+  copy:
+    src: docker_appnode
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'dtl20ocpcch' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: sleep
+  pause:
+    seconds: 20
+  tags:
+  - dock

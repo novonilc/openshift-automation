@@ -1,0 +1,23 @@
+---
+# playbook add groups and sync in OpenShift
+# How to use PB
+# environment options => lab || dev || prod || prod02 || pci || azure
+# Usage example:
+# ansible-playbook -i "localhost" -v pb_add_groups.yaml --ask-vault-pass -e dev=true -k -T 120
+
+- hosts: all
+  gather_facts: True
+  force_handlers: True
+
+  vars_prompt:
+
+  - name: user
+    prompt: "Enter user's OCP login"
+    private: no
+
+  - name: pass
+    prompt: "Enter user's OCP password"
+    private: yes
+
+  roles:
+  - { role: ../role_add_newgroup }

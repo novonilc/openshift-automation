@@ -1,0 +1,13 @@
+---
+- hosts: nodes
+  tasks:
+  - name: Apply Proxy
+    shell: echo "export http_proxy=http://168.94.67.214:8080" > /etc/profile.d/http_proxy.sh
+    args:
+      executable: /bin/bash
+
+  - file:
+      path: /etc/profile.d/http_proxy.sh
+      owner: root
+      group: root
+      mode: 0755

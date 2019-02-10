@@ -1,0 +1,154 @@
+type,affected_cis,backout_plan,category,change_owner,change_owner_group,description,short_description,implementation_coordinator,implementation_plan,implementation_group,planned_start_date,planned_duration,is_outage_communicated,is_outage_required,is_project_cer_related,is_test_plan_attached,is_testing_passed,tester_name,test_results,is_validation_passed,is_validation_plan_attached,outage_business_impact,outage_duration,outage_starts,outage_systems_impacted,outage_type,project_cer_number,release_record,risk,subcategory,test_date,test_plan,validation_plan,validation_results,validator_name,validation_date,insert_state,insert_partial,return_conflicts,ctasks
+Normal,"pdl01arcdb025,pdl01arcdb027,pdl01arcdb029,pdl01arcdb031,pdl01arcdb033,pdl01arcdb035","Roll back the server from VM snap shot 
+ Need to co-ordinate with VMware team to roll back the server from snapshot",Server,A1106905,L3-PLT-LINUX-IT-US,"FY19 R1 patching on Archimedes (ARC) servers Total  06 
+ These severs are pending from last patching event.
+pdl01arcdb025
+pdl01arcdb027
+pdl01arcdb029
+pdl01arcdb031
+pdl01arcdb033
+pdl01arcdb035
+Archimedes (ARC)",FY19 R1 patching on Archimedes (ARC) servers --Total 06,A1106905,Test,L2-PLT-UNIX-IT-US,4/6/2018 0:00,1 1:00:00,Yes,Yes,0,TRUE,Passed,A1106905,pass,Passed,TRUE,"What is the user/business impact?
+We will be doing it rolling manner so no impact ",1 1:00:001,4/6/2018 0:10,Archimedes (ARC),Degraded,12345,RLSE0012623,4,Patching,3/27/2018 0:00,"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments.
+ We have completed successfully in lower environment. Example: LEMR00051011. 
+ Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook.
+2. Validate the result by using below command.
+$ sudo yum update","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:",A1106905,4/6/2018 0:30,DRAFT,yes,no,"[{""assignment_group""=>""L1-MEM-IT-GLB"", ""description""=>""Enable/Disable Monitoring"", ""order""=>""100"", ""short_description""=>""Enable/Disable Monitoring""}, {""assignment_group""=>""L2-ASM-OMS-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DATACENTER-OPS-IT-GLB"", ""description""=>""Release/hold jobs"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-CASSANDRA-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DB-ORACLE-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-MW-APP-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-MW-MSG-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-PLT-UNIX-IT-US"", ""description""=>""Assist OMP Team"", ""order""=>""100"", ""short_description""=>""Assist OMP Team""}, {""assignment_group""=>""L2-PLT-WINTEL-IT-US"", ""description""=>""To take snapshot of virtual server"", ""order""=>""100"", ""short_description""=>""To take snapshot of virtual server""}, {""assignment_group""=>""L2-STORAGE-IT-US"", ""description""=>""To check if backup is available"", ""order""=>""100"", ""short_description""=>""To check if backup is available""}]"
+Normal,"pdl01arcdb025,pdl01arcdb027,pdl01arcdb029,pdl01arcdb031,pdl01arcdb033,pdl01arcdb035","Roll back the server from VM snap shot 
+ Need to co-ordinate with VMware team to roll back the server from snapshot",Server,A1106905,L3-PLT-LINUX-IT-US,"FY19 R1 patching on Archimedes (ARC) servers Total  06 
+ These severs are pending from last patching event.
+pdl01arcdb025
+pdl01arcdb027
+pdl01arcdb029
+pdl01arcdb031
+pdl01arcdb033
+pdl01arcdb035
+Archimedes (ARC)",FY19 R1 patching on Archimedes (ARC) servers --Total 06,A1106905,Test,L2-PLT-UNIX-IT-US,4/6/2018 0:00,1 1:00:00,Yes,Yes,0,TRUE,Passed,A1106905,pass,Passed,TRUE,"What is the user/business impact?
+We will be doing it rolling manner so no impact ",1 1:00:001,4/6/2018 0:10,Archimedes (ARC),Degraded,12345,RLSE0012623,4,Patching,3/27/2018 0:00,"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments.
+ We have completed successfully in lower environment. Example: LEMR00051011. 
+ Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook.
+2. Validate the result by using below command.
+$ sudo yum update","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:",A1106905,4/6/2018 0:30,DRAFT,yes,no,"[{""assignment_group""=>""L1-MEM-IT-GLB"", ""description""=>""Enable/Disable Monitoring"", ""order""=>""100"", ""short_description""=>""Enable/Disable Monitoring""}, {""assignment_group""=>""L2-ASM-OMS-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DATACENTER-OPS-IT-GLB"", ""description""=>""Release/hold jobs"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-CASSANDRA-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DB-ORACLE-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-MW-APP-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-MW-MSG-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-PLT-UNIX-IT-US"", ""description""=>""Assist OMP Team"", ""order""=>""100"", ""short_description""=>""Assist OMP Team""}, {""assignment_group""=>""L2-PLT-WINTEL-IT-US"", ""description""=>""To take snapshot of virtual server"", ""order""=>""100"", ""short_description""=>""To take snapshot of virtual server""}, {""assignment_group""=>""L2-STORAGE-IT-US"", ""description""=>""To check if backup is available"", ""order""=>""100"", ""short_description""=>""To check if backup is available""}]"
+Normal,"pdl01arcdb025,pdl01arcdb027,pdl01arcdb029,pdl01arcdb031,pdl01arcdb033,pdl01arcdb035","Roll back the server from VM snap shot 
+ Need to co-ordinate with VMware teamto roll back the server from snapshot",Server,A1106905,L3-PLT-LINUX-IT-US,"FY19 R1 patching on Archimedes (ARC) servers Total  06 
+ These severs are pending from last patching event.
+pdl01arcdb025
+pdl01arcdb027
+pdl01arcdb029
+pdl01arcdb031
+pdl01arcdb033
+pdl01arcdb035
+Archimedes (ARC)",FY19 R1 patching on Archimedes (ARC) servers --Total 06,A1106905,Test,L2-PLT-UNIX-IT-US,4/6/2018 0:00,1 1:00:00,Yes,Yes,0,TRUE,Passed,A1106905,pass,Passed,TRUE,"What is the user/business impact?
+We will be doing it rolling manner so no impact ",1 1:00:001,4/6/2018 0:10,Archimedes (ARC),Degraded,12345,RLSE0012623,4,Patching,3/27/2018 0:00,"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments.
+ We have completed successfully in lower environment. Example: LEMR00051011. 
+ Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook.
+2. Validate the result by using below command.
+$ sudo yum update","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:",A1106905,4/6/2018 0:30,DRAFT,yes,no,"[{""assignment_group""=>""L1-MEM-IT-GLB"", ""description""=>""Enable/Disable Monitoring"", ""order""=>""100"", ""short_description""=>""Enable/Disable Monitoring""}, {""assignment_group""=>""L2-ASM-OMS-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DATACENTER-OPS-IT-GLB"", ""description""=>""Release/hold jobs"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-CASSANDRA-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DB-ORACLE-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-MW-APP-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-MW-MSG-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-PLT-UNIX-IT-US"", ""description""=>""Assist OMP Team"", ""order""=>""100"", ""short_description""=>""Assist OMP Team""}, {""assignment_group""=>""L2-PLT-WINTEL-IT-US"", ""description""=>""To take snapshot of virtual server"", ""order""=>""100"", ""short_description""=>""To take snapshot of virtual server""}, {""assignment_group""=>""L2-STORAGE-IT-US"", ""description""=>""To check if backup is available"", ""order""=>""100"", ""short_description""=>""To check if backup is available""}]"
+Normal,"pdl01arcdb025,pdl01arcdb027,pdl01arcdb029,pdl01arcdb031,pdl01arcdb033,pdl01arcdb035","Roll back the server from VM snap shot 
+ Need to co-ordinate with VMware teamto roll back the server from snapshot",Server,A1106905,L3-PLT-LINUX-IT-US,"FY19 R1 patching on Archimedes (ARC) servers Total  06 
+ These severs are pending from last patching event.
+pdl01arcdb025
+pdl01arcdb027
+pdl01arcdb029
+pdl01arcdb031
+pdl01arcdb033
+pdl01arcdb035
+Archimedes (ARC)",FY19 R1 patching on Archimedes (ARC) servers --Total 06,A1106905,Test,L2-PLT-UNIX-IT-US,4/6/2018 0:00,1 1:00:00,Yes,Yes,0,TRUE,Passed,A1106905,pass,Passed,TRUE,"What is the user/business impact?
+We will be doing it rolling manner so no impact ",1 1:00:001,4/6/2018 0:10,Archimedes (ARC),Degraded,12345,RLSE0012623,4,Patching,3/27/2018 0:00,"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments.
+ We have completed successfully in lower environment. Example: LEMR00051011. 
+ Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook.
+2. Validate the result by using below command.
+$ sudo yum update","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:",A1106905,4/6/2018 0:30,DRAFT,yes,no,"[{""assignment_group""=>""L1-MEM-IT-GLB"", ""description""=>""Enable/Disable Monitoring"", ""order""=>""100"", ""short_description""=>""Enable/Disable Monitoring""}, {""assignment_group""=>""L2-ASM-OMS-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DATACENTER-OPS-IT-GLB"", ""description""=>""Release/hold jobs"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-CASSANDRA-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DB-ORACLE-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-MW-APP-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-MW-MSG-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-PLT-UNIX-IT-US"", ""description""=>""Assist OMP Team"", ""order""=>""100"", ""short_description""=>""Assist OMP Team""}, {""assignment_group""=>""L2-PLT-WINTEL-IT-US"", ""description""=>""To take snapshot of virtual server"", ""order""=>""100"", ""short_description""=>""To take snapshot of virtual server""}, {""assignment_group""=>""L2-STORAGE-IT-US"", ""description""=>""To check if backup is available"", ""order""=>""100"", ""short_description""=>""To check if backup is available""}]"
+Normal,"pdl01arcdb025,pdl01arcdb027,pdl01arcdb029,pdl01arcdb031,pdl01arcdb033,pdl01arcdb035","Roll back the server from VM snap shot 
+ Need to co-ordinate with VMware teamto roll back the server from snapshot",Server,A1106905,L3-PLT-LINUX-IT-US,"FY19 R1 patching on Archimedes (ARC) servers Total  06 
+ These severs are pending from last patching event.
+pdl01arcdb025
+pdl01arcdb027
+pdl01arcdb029
+pdl01arcdb031
+pdl01arcdb033
+pdl01arcdb035
+Archimedes (ARC)",FY19 R1 patching on Archimedes (ARC) servers --Total 06,A1106905,Test,L2-PLT-UNIX-IT-US,4/6/2018 0:00,1 1:00:00,Yes,Yes,0,TRUE,Passed,A1106905,pass,Passed,TRUE,"What is the user/business impact?
+We will be doing it rolling manner so no impact ",1 1:00:001,4/6/2018 0:10,Archimedes (ARC),Degraded,12345,RLSE0012623,4,Patching,3/27/2018 0:00,"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments.
+ We have completed successfully in lower environment. Example: LEMR00051011. 
+ Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook.
+2. Validate the result by using below command.
+$ sudo yum update","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:",A1106905,4/6/2018 0:30,DRAFT,yes,no,"[{""assignment_group""=>""L1-MEM-IT-GLB"", ""description""=>""Enable/Disable Monitoring"", ""order""=>""100"", ""short_description""=>""Enable/Disable Monitoring""}, {""assignment_group""=>""L2-ASM-OMS-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DATACENTER-OPS-IT-GLB"", ""description""=>""Release/hold jobs"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-CASSANDRA-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DB-ORACLE-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-MW-APP-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-MW-MSG-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-PLT-UNIX-IT-US"", ""description""=>""Assist OMP Team"", ""order""=>""100"", ""short_description""=>""Assist OMP Team""}, {""assignment_group""=>""L2-PLT-WINTEL-IT-US"", ""description""=>""To take snapshot of virtual server"", ""order""=>""100"", ""short_description""=>""To take snapshot of virtual server""}, {""assignment_group""=>""L2-STORAGE-IT-US"", ""description""=>""To check if backup is available"", ""order""=>""100"", ""short_description""=>""To check if backup is available""}]"
+Normal,"pdl01arcdb025,pdl01arcdb027,pdl01arcdb029,pdl01arcdb031,pdl01arcdb033,pdl01arcdb035","Roll back the server from VM snap shot 
+ Need to co-ordinate with VMware teamto roll back the server from snapshot",Server,A1106905,L3-PLT-LINUX-IT-US,"FY19 R1 patching on Archimedes (ARC) servers Total  06 
+ These severs are pending from last patching event.
+pdl01arcdb025
+pdl01arcdb027
+pdl01arcdb029
+pdl01arcdb031
+pdl01arcdb033
+pdl01arcdb035
+Archimedes (ARC)",FY19 R1 patching on Archimedes (ARC) servers --Total 06,A1106905,Test,L2-PLT-UNIX-IT-US,4/6/2018 0:00,1 1:00:00,Yes,Yes,0,TRUE,Passed,A1106905,pass,Passed,TRUE,"What is the user/business impact?
+We will be doing it rolling manner so no impact ",1 1:00:001,4/6/2018 0:10,Archimedes (ARC),Degraded,12345,RLSE0012623,4,Patching,3/27/2018 0:00,"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments.
+ We have completed successfully in lower environment. Example: LEMR00051011. 
+ Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook.
+2. Validate the result by using below command.
+$ sudo yum update","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:",A1106905,4/6/2018 0:30,DRAFT,yes,no,"[{""assignment_group""=>""L1-MEM-IT-GLB"", ""description""=>""Enable/Disable Monitoring"", ""order""=>""100"", ""short_description""=>""Enable/Disable Monitoring""}, {""assignment_group""=>""L2-ASM-OMS-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DATACENTER-OPS-IT-GLB"", ""description""=>""Release/hold jobs"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-CASSANDRA-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DB-ORACLE-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-MW-APP-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-MW-MSG-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-PLT-UNIX-IT-US"", ""description""=>""Assist OMP Team"", ""order""=>""100"", ""short_description""=>""Assist OMP Team""}, {""assignment_group""=>""L2-PLT-WINTEL-IT-US"", ""description""=>""To take snapshot of virtual server"", ""order""=>""100"", ""short_description""=>""To take snapshot of virtual server""}, {""assignment_group""=>""L2-STORAGE-IT-US"", ""description""=>""To check if backup is available"", ""order""=>""100"", ""short_description""=>""To check if backup is available""}]"
+Normal,"pdl01arcdb025,pdl01arcdb027,pdl01arcdb029,pdl01arcdb031,pdl01arcdb033,pdl01arcdb035","Roll back the server from VM snap shot 
+ Need to co-ordinate with VMware teamto roll back the server from snapshot",Server,A1106905,L3-PLT-LINUX-IT-US,"FY19 R1 patching on Archimedes (ARC) servers Total  06 
+ These severs are pending from last patching event.
+pdl01arcdb025
+pdl01arcdb027
+pdl01arcdb029
+pdl01arcdb031
+pdl01arcdb033
+pdl01arcdb035
+Archimedes (ARC)",FY19 R1 patching on Archimedes (ARC) servers --Total 06,A1106905,Test,L2-PLT-UNIX-IT-US,4/6/2018 0:00,1 1:00:00,Yes,Yes,0,TRUE,Passed,A1106905,pass,Passed,TRUE,"What is the user/business impact?
+We will be doing it rolling manner so no impact ",1 1:00:001,4/6/2018 0:10,Archimedes (ARC),Degraded,12345,RLSE0012623,4,Patching,3/27/2018 0:00,"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments.
+ We have completed successfully in lower environment. Example: LEMR00051011. 
+ Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook.
+2. Validate the result by using below command.
+$ sudo yum update","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:",A1106905,4/6/2018 0:30,DRAFT,yes,no,"[{""assignment_group""=>""L1-MEM-IT-GLB"", ""description""=>""Enable/Disable Monitoring"", ""order""=>""100"", ""short_description""=>""Enable/Disable Monitoring""}, {""assignment_group""=>""L2-ASM-OMS-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DATACENTER-OPS-IT-GLB"", ""description""=>""Release/hold jobs"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-CASSANDRA-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DB-ORACLE-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-MW-APP-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-MW-MSG-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-PLT-UNIX-IT-US"", ""description""=>""Assist OMP Team"", ""order""=>""100"", ""short_description""=>""Assist OMP Team""}, {""assignment_group""=>""L2-PLT-WINTEL-IT-US"", ""description""=>""To take snapshot of virtual server"", ""order""=>""100"", ""short_description""=>""To take snapshot of virtual server""}, {""assignment_group""=>""L2-STORAGE-IT-US"", ""description""=>""To check if backup is available"", ""order""=>""100"", ""short_description""=>""To check if backup is available""}]"
+Normal,"pdl01arcdb025,pdl01arcdb027,pdl01arcdb029,pdl01arcdb031,pdl01arcdb033,pdl01arcdb035","Roll back the server from VM snap shot 
+ Need to co-ordinate with VMware teamto roll back the server from snapshot",Server,A1106905,L3-PLT-LINUX-IT-US,"FY19 R1 patching on Archimedes (ARC) servers Total  06 
+ These severs are pending from last patching event.
+pdl01arcdb025
+pdl01arcdb027
+pdl01arcdb029
+pdl01arcdb031
+pdl01arcdb033
+pdl01arcdb035
+Archimedes (ARC)",FY19 R1 patching on Archimedes (ARC) servers --Total 06,A1106905,Test,L2-PLT-UNIX-IT-US,4/6/2018 0:00,1 1:00:00,Yes,Yes,0,TRUE,Passed,A1106905,pass,Passed,TRUE,"What is the user/business impact?
+We will be doing it rolling manner so no impact ",1 1:00:001,4/6/2018 0:10,Archimedes (ARC),Degraded,12345,RLSE0012623,4,Patching,3/27/2018 0:00,"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments.
+ We have completed successfully in lower environment. Example: LEMR00051011. 
+ Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook.
+2. Validate the result by using below command.
+$ sudo yum update","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:",A1106905,4/6/2018 0:30,DRAFT,yes,no,"[{""assignment_group""=>""L1-MEM-IT-GLB"", ""description""=>""Enable/Disable Monitoring"", ""order""=>""100"", ""short_description""=>""Enable/Disable Monitoring""}, {""assignment_group""=>""L2-ASM-OMS-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DATACENTER-OPS-IT-GLB"", ""description""=>""Release/hold jobs"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-CASSANDRA-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DB-ORACLE-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-MW-APP-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-MW-MSG-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-PLT-UNIX-IT-US"", ""description""=>""Assist OMP Team"", ""order""=>""100"", ""short_description""=>""Assist OMP Team""}, {""assignment_group""=>""L2-PLT-WINTEL-IT-US"", ""description""=>""To take snapshot of virtual server"", ""order""=>""100"", ""short_description""=>""To take snapshot of virtual server""}, {""assignment_group""=>""L2-STORAGE-IT-US"", ""description""=>""To check if backup is available"", ""order""=>""100"", ""short_description""=>""To check if backup is available""}]"
+Normal,"pdl01arcdb025,pdl01arcdb027,pdl01arcdb029,pdl01arcdb031,pdl01arcdb033,pdl01arcdb035","Roll back the server from VM snap shot 
+ Need to co-ordinate with VMware teamto roll back the server from snapshot",Server,A1106905,L3-PLT-LINUX-IT-US,"FY19 R1 patching on Archimedes (ARC) servers Total  06 
+ These severs are pending from last patching event.
+pdl01arcdb025
+pdl01arcdb027
+pdl01arcdb029
+pdl01arcdb031
+pdl01arcdb033
+pdl01arcdb035
+Archimedes (ARC)",FY19 R1 patching on Archimedes (ARC) servers --Total 06,A1106905,Test,L2-PLT-UNIX-IT-US,4/6/2018 0:00,1 1:00:00,Yes,Yes,0,TRUE,Passed,A1106905,pass,Passed,TRUE,"What is the user/business impact?
+We will be doing it rolling manner so no impact ",1 1:00:001,4/6/2018 0:10,Archimedes (ARC),Degraded,12345,RLSE0012623,4,Patching,3/27/2018 0:00,"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments.
+ We have completed successfully in lower environment. Example: LEMR00051011. 
+ Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook.
+2. Validate the result by using below command.
+$ sudo yum update","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:","RHEL 5.X/6.x/7.x servers:
+Verifying if all available security patches are upgraded:",A1106905,4/6/2018 0:30,DRAFT,yes,no,"[{""assignment_group""=>""L1-MEM-IT-GLB"", ""description""=>""Enable/Disable Monitoring"", ""order""=>""100"", ""short_description""=>""Enable/Disable Monitoring""}, {""assignment_group""=>""L2-ASM-OMS-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DATACENTER-OPS-IT-GLB"", ""description""=>""Release/hold jobs"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-CASSANDRA-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-DB-ORACLE-IT-US"", ""description""=>""Start/stop/validate application"", ""order""=>""100"", ""short_description""=>""Start/stop/validate application""}, {""assignment_group""=>""L2-MW-APP-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-MW-MSG-IT-GLB"", ""description""=>""If applicable start/stop/validate application services"", ""order""=>""100"", ""short_description""=>""If applicable start/stop/validate application services""}, {""assignment_group""=>""L2-PLT-UNIX-IT-US"", ""description""=>""Assist OMP Team"", ""order""=>""100"", ""short_description""=>""Assist OMP Team""}, {""assignment_group""=>""L2-PLT-WINTEL-IT-US"", ""description""=>""To take snapshot of virtual server"", ""order""=>""100"", ""short_description""=>""To take snapshot of virtual server""}, {""assignment_group""=>""L2-STORAGE-IT-US"", ""description""=>""To check if backup is available"", ""order""=>""100"", ""short_description""=>""To check if backup is available""}]"

@@ -1,0 +1,21 @@
+---
+tmp_dir: /var/tmp
+memComputation: "{{ (pod_mem | int * 0.5) }}"
+cpuComputation: "{{ (pod_cpu | int * 0.5) }}"
+reqRatioComputation: "{{ (((cpu | int * 0.5) * 1000) / 200 | int) }}"
+ca_dev: false
+ca_prod: false
+us_prod: false
+us_dr: false
+
+vars_prompt:
+  - name: "user"
+    prompt: "Enter user_name"
+    private: no
+
+  - name: "pass"
+    prompt: "Enter password"
+    private: yes
+    encrypt: "sha512_crypt"
+    confirm: yes
+    salt_size: 7

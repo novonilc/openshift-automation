@@ -1,0 +1,12 @@
+---
+
+- hosts: all
+  serial: 1
+
+  tasks:
+    - name: Setting authorized keys
+      authorized_key:
+        user={{ ansible_user_id }}
+        key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+        state=present
+        manage_dir=yes

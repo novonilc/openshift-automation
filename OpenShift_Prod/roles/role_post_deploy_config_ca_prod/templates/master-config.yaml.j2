@@ -1,0 +1,234 @@
+admissionConfig:
+  pluginConfig:
+    BuildDefaults:
+      configuration:
+        apiVersion: v1
+        env: []
+        kind: BuildDefaultsConfig
+        resources:
+          limits:
+            cpu: 250m
+            memory: 512m
+          requests:
+            cpu: 100m
+            memory: 256m
+    BuildOverrides:
+      configuration:
+        apiVersion: v1
+        kind: BuildOverridesConfig
+#    openshift.io/ImagePolicy:
+#      configuration:
+#        apiVersion: v1
+#        executionRules:
+#        - matchImageAnnotations:
+#          - key: images.openshift.io/deny-execution
+#            value: 'false'
+#          name: execution-denied
+#          onResources:
+#          - resource: pods
+#          - resource: builds
+#          reject: true
+#          skipOnResolutionFailure: true
+#        kind: ImagePolicyConfig
+#  pluginOrderOverride: null
+apiLevels:
+- v1
+apiVersion: v1
+assetConfig:
+  loggingPublicURL: https://kibana.prod-ocp.ca.bestbuy.com
+  logoutURL: ''
+  masterPublicURL: https://master-vidc.prod-ocp.ca.bestbuy.com:8443
+  metricsPublicURL: https://metrics.prod-ocp.ca.bestbuy.com/hawkular/metrics
+  publicURL: https://master-vidc.prod-ocp.ca.bestbuy.com:8443/console/
+  servingInfo:
+    bindAddress: 0.0.0.0:8443
+    bindNetwork: tcp4
+    certFile: master.server.crt
+    clientCA: ''
+    keyFile: master.server.key
+    maxRequestsInFlight: 0
+    namedCertificates:
+    - certFile: prod-ocp.ca.bestbuy.com.crt
+      keyFile: prod-ocp.ca.bestbuy.com.key
+      names:
+      - master-vidc.prod-ocp.ca.bestbuy.com
+      - metrics.prod-ocp.ca.bestbuy.com
+      - kibana.prod-ocp.ca.bestbuy.com
+      - registry-console-default.prod-ocp.ca.bestbuy.com
+    requestTimeoutSeconds: 0
+controllerConfig:
+  serviceServingCert:
+    signer:
+      certFile: service-signer.crt
+      keyFile: service-signer.key
+controllerLeaseTTL: 30
+controllers: '*'
+corsAllowedOrigins:
+- 127.0.0.1
+- localhost
+- 172.21.76.11
+- kubernetes.default
+- kubernetes.default.svc.cluster.local
+- kubernetes
+- master.prod-ocp.ca.bestbuy.com
+- openshift.default
+- pdl20ocpmma01.ca.bestbuy.com
+- openshift.default.svc
+- kubernetes.default.svc
+- openshift.default.svc.cluster.local
+- 172.32.0.1
+- master.prod-ocp.ca.bestbuy.com
+- openshift
+dnsConfig:
+  bindAddress: 0.0.0.0:8053
+  bindNetwork: tcp4
+etcdClientInfo:
+  ca: master.etcd-ca.crt
+  certFile: master.etcd-client.crt
+  keyFile: master.etcd-client.key
+  urls:
+  - https://{{ inventory_hostname }}:2379
+  - https://{{ master0 }}:2379
+  - https://{{ master1 }}:2379
+etcdStorageConfig:
+  kubernetesStoragePrefix: kubernetes.io
+  kubernetesStorageVersion: v1
+  openShiftStoragePrefix: openshift.io
+  openShiftStorageVersion: v1
+imageConfig:
+  format: openshift3/ose-${component}:${version}
+  latest: false
+kind: MasterConfig
+kubeletClientInfo:
+  ca: ca-bundle.crt
+  certFile: master.kubelet-client.crt
+  keyFile: master.kubelet-client.key
+  port: 10250
+kubernetesMasterConfig:
+  admissionConfig: null
+  apiServerArguments:
+    storage-backend:
+    - etcd3
+    storage-media-type:
+    - application/vnd.kubernetes.protobuf
+    experimental-encryption-provider-config:
+    - /etc/origin/master/encryption-config.yaml
+  controllerArguments: null
+  masterCount: 3
+  masterIP: 172.21.76.11
+  podEvictionTimeout: null
+  proxyClientInfo:
+    certFile: master.proxy-client.crt
+    keyFile: master.proxy-client.key
+  schedulerArguments: null
+  schedulerConfigFile: /etc/origin/master/scheduler.json
+  servicesNodePortRange: ''
+  servicesSubnet: 172.32.0.0/16
+  staticNodeNames: []
+masterClients:
+  externalKubernetesClientConnectionOverrides:
+    acceptContentTypes: application/vnd.kubernetes.protobuf,application/json
+    burst: 400
+    contentType: application/vnd.kubernetes.protobuf
+    qps: 200
+  externalKubernetesKubeConfig: ''
+  openshiftLoopbackClientConnectionOverrides:
+    acceptContentTypes: application/vnd.kubernetes.protobuf,application/json
+    burst: 600
+    contentType: application/vnd.kubernetes.protobuf
+    qps: 300
+  openshiftLoopbackKubeConfig: openshift-master.kubeconfig
+masterPublicURL: https://master-vidc.prod-ocp.ca.bestbuy.com:8443
+networkConfig:
+  clusterNetworkCIDR: 10.2.0.0/16
+  externalIPNetworkCIDRs:
+  - 0.0.0.0/0
+  hostSubnetLength: 9
+  networkPluginName: redhat/openshift-ovs-multitenant
+  serviceNetworkCIDR: 172.32.0.0/16
+oauthConfig:
+  assetPublicURL: https://master-vidc.prod-ocp.ca.bestbuy.com:8443/console/
+  grantConfig:
+    method: auto
+  identityProviders:
+  - challenge: true
+    login: true
+    mappingMethod: add
+    name: CA
+    provider:
+      apiVersion: v1
+      attributes:
+        email:
+        - mail
+        id:
+        - sAMAccountName
+        name:
+        - sAMAccountName
+        preferredUsername:
+        - uid
+      bindDN: cn=bca-s-oshift-prod-ad,ou=Service Accounts,ou=Users,ou=Best Buy Canada,dc=ca,dc=bestbuy,dc=com
+      bindPassword: GE95pxeHRQTJDbqWguQ6DfJC4WqhB8
+      ca: ''
+      insecure: true
+      kind: LDAPPasswordIdentityProvider
+      url: ldap://ad-ca.ca.bestbuy.com/ou=Users,ou=Best Buy Canada,dc=ca,dc=bestbuy,dc=com?sAMAccountName?sub?(memberOf:1.2.840.113556.1.4.1941:=cn=BCA-U-OPENSHIFT-PROD-USERS,OU=Domain Security,OU=Groups,OU=Best Buy Canada,DC=ca,DC=bestbuy,DC=com)
+  - challenge: true
+    login: true
+    mappingMethod: claim
+    name: Local
+    provider:
+      apiVersion: v1
+      file: /etc/origin/master/htpasswd
+      kind: HTPasswdPasswordIdentityProvider
+  masterCA: ca-bundle.crt
+  masterPublicURL: https://master-vidc.prod-ocp.ca.bestbuy.com:8443
+  masterURL: https://master.prod-ocp.ca.bestbuy.com:8443
+  sessionConfig:
+    sessionMaxAgeSeconds: 3600
+    sessionName: ssn
+    sessionSecretsFile: /etc/origin/master/session-secrets.yaml
+  tokenConfig:
+    accessTokenMaxAgeSeconds: 86400
+    authorizeTokenMaxAgeSeconds: 500
+pauseControllers: false
+policyConfig:
+  bootstrapPolicyFile: /etc/origin/master/policy.json
+  openshiftInfrastructureNamespace: openshift-infra
+  openshiftSharedResourcesNamespace: openshift
+projectConfig:
+  projectRequestMessage: Request a Project in ServiceNow https://bestbuy.service-now.com, Refer Template https://tinyurl.com/y9r2t6bv
+  projectRequestTemplate: ''
+  securityAllocator:
+    mcsAllocatorRange: s0:/2
+    mcsLabelsPerProject: 5
+    uidAllocatorRange: 1000000000-1999999999/10000
+routingConfig:
+  subdomain: prod-ocp.ca.bestbuy.com
+serviceAccountConfig:
+  limitSecretReferences: false
+  managedNames:
+  - default
+  - builder
+  - deployer
+  masterCA: ca-bundle.crt
+  privateKeyFile: serviceaccounts.private.key
+  publicKeyFiles:
+  - serviceaccounts.public.key
+servingInfo:
+  bindAddress: 0.0.0.0:8443
+  bindNetwork: tcp4
+  certFile: master.server.crt
+  clientCA: ca-bundle.crt
+  keyFile: master.server.key
+  maxRequestsInFlight: 500
+  namedCertificates:
+  - certFile: prod-ocp.ca.bestbuy.com.crt
+    keyFile: prod-ocp.ca.bestbuy.com.key
+    names:
+    - master-vidc.prod-ocp.ca.bestbuy.com
+    - metrics.prod-ocp.ca.bestbuy.com
+    - kibana.prod-ocp.ca.bestbuy.com
+    - registry-console-default.prod-ocp.ca.bestbuy.com
+  requestTimeoutSeconds: 3600
+volumeConfig:
+  dynamicProvisioningEnabled: true

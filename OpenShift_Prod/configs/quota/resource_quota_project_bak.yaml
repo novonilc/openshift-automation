@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-resources-quota
+spec:
+  hard:
+    pods: "50"
+    limits.cpu: "100"
+    limits.memory: 50Gi

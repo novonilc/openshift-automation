@@ -1,0 +1,17 @@
+---
+- name: "{{ vc_hostname }} > {{ vc_datacenter }} > {{ inventory_hostname }} :: snapshot {{ snapshot_name }} {{ snapshot_state }}"
+  local_action:
+    module: vmware_guest_snapshot
+    hostname: "{{ vc_hostname }}"
+    username: "{{ vc_username }}"
+    password: "{{ vc_password }}"
+    datacenter: "{{ vc_datacenter }}"
+    validate_certs: False
+    folder: "{{ vc_folder }}"
+    name: "{{ inventory_hostname }}"
+    snapshot_name: "{{ snapshot_name }}"
+    description: "{{ snapshot_description }}"
+    state: "{{ snapshot_state  }}"
+#  register: vm
+#- name: Verbose Take snapshot task
+#  debug: var=vm

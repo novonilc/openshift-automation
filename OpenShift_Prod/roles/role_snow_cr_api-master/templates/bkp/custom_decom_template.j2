@@ -1,0 +1,61 @@
+[
+{% for custom_decom in custom_decom %}
+{
+   "type":"Decommision and Retire Infra CIs",
+   "affected_cis":"{{custom_decom.affected_cis}}",
+   "category":"Server",
+   "change_owner":"A1232027",
+   "change_owner_group":"L2-PLT-LINUX-IT-US",
+   "description":"Decommision And Retire old CI's",
+   "short_description":"{{custom_decom.short_description}}",
+   "implementation_coordinator":"A1232027",
+   "implementation_group":"L2-PLT-UNIX-IT-US",
+   "planned_start_date":"{{custom_decom.planned_start_date}}",
+   "planned_duration":"{{custom_decom.planned_duration}}",
+   "is_outage_communicated":"",
+   "is_outage_required":"No",
+   "is_project_cer_related":"0",
+   "is_test_plan_attached":"true",
+   "is_testing_passed":"Passed",
+   "tester_name":"A1232027",
+   {% if 'phase 1' in custom_decom.short_description or 'phase I' in custom_decom.short_description or 'Phase 1' in custom_decom.short_description or 'Phase I' in custom_decom.short_description %}
+   "implementation_plan":"List the implementation steps by hour (or by day, if multiple days). \n Day-1. MEM Team will disable the alert monitoring \n Day-2. Backup team will take the backup \n Day-3. UNIX team will power off the server \n Day-4 and 5.  UNIX team will monitor. If UNIX team receives notice from the Application Team that their applications are running on the server, UNIX Team will bring up the server ",
+   "test_results":"List your actual test results in relation to the Expected results in the Test plan. \n We have performed the same activity on Prod, Test & Dev Servers by following the same steps as mentioned above. Each time the change has been successful",
+   "backout_plan":"What are the steps to the plan? \n Server needs to be decommissioned, which was approved by CI owner.  As there is no production outage, no back out plan is needed. \n However, if any issues arise, we will roll back the change by using below steps: \n 1) UNIX team will power on servers \n 2) Monitoring team will add the servers in monitoring tool \n 3) Backup team enable the backup \n 4) Application team will start their application \n \n During the change window, what is the time to initiate the back out? \n When the Application Team or Owner requests that it be powered back on. \n What are the resources required for back out? \n They are a part of the decommission \n Has the back out plan been tested? What environment and when? \n Yes, all environments. \n How long will it take to back out? \n Less than 1 hour",
+   "test_plan":"Prior to implementing the Change, what tests were performed to ensure the Change is successful? \n 1) Monitoring team will disable the monitoring for mention server. \n 2) Storage team will perform full backup of the server with retention/Disable the servers from Backup policy. \n 3) Application team will stop there application services \n 4) Maestro Team will stop the Maestro jobs running. If any. \n 5) UNIX team will power down the server. \n 6) Unix team will deactivate puppet and clean up puppet cert \n What were the expected results of each test performed? \n The server will be powered down with no access to the rest of the system.",
+   "validation_plan":"After implementing the Change, what are steps will be taken to validate to ensure the Change was successful? \n Unix Team to validate and confirm that the servers are not accessible through ssh \n What are the expected results? \n The team will be unable to access the servers \n When will validation begin? Immediately attached Affected CIs being powered off",
+   {% else %}
+   "implementation_plan":"1. Remove server from monitoring L1-MEM-IT-GLB \n 2. Mark CI as Retired in CMDB. L2-CONFIGURATION-MGMT-IT-GLB \n  3. remove the respective tuberous account from PUAM L2-CYBERARK-IT-GLB \n 4. Reclaim IP and DNS entries for server and RIB L2-NETWORK-IT-US \n 5. UNIX team will update inventory L2-PLT-UNIX-IT-US \n 6. Start decommission on server L2-PLT-UNIX-IT-US \n 7. Remove Server from Backup L2-STORAGE-IT-US \n 8. Reclaim assigned Luns L2-STORAGE-IT-US \n  9. Remove the servers from maestro environment if required L2-TWS-IT-US",
+   "test_results":"List your actual test results in relation to the Expected results in the Test plan. \n We have performed the same activity on Prod, Test & Dev Servers by following the same steps mention below. Each time the change has been successful so on the same basis we are following this change. \n 1) Network team had deleted the DNS entry & reclaimed the IP (L2-NETWORK-IT-US) \n 2) Storage team had reclaimed the storage (L2-STORAGE-IT-US) \n 3) Backup team had removed the servers from Backup console (L2-STORAGE-IT-US) \n 4) Data Center Team had unracked the servers from DC (L2-DATACENTER-FAC-US-GBL)",
+   "backout_plan":"What are the steps to the plan? \n As these servers have already been through a powered off stage (phase 1) there should be no reason to back out. \n But, if needed the steps are: \n 1. We will Power on servers. \n 2. Revert all DNS record. \n 3. Revert monitoring/backup tool changes. \n During the change window, what is the time to initiate the back out? \n When the CI owner/app team advises that the process needs to be stopped. \n What are the resources required for back out? \n They are participating in the decommission. \n Has the back out plan been tested? What environment and when? \n Yes, - all environments on multiple occasions \n How long will it take to back out? Less than 2 hours.",
+   "test_plan":"Prior to implementing the Change, what were the steps taken to test the activity to ensure the Change is successful? \n The CI owner has notified us that these servers are not in use so we have the RIM  approval from the CI owner for decommission of the servers. \nA phase 1 CR was raised and completed successfully.   There is a 5 day waiting period between CR's wherein the CI owner or application team that need the server can speak up and we will not move forward with the phase 2. \n What were the expected results?  \n The server is retired and archived",
+   "validation_plan":"After implementing the Change, what are steps will be taken to validate to ensure the Change was successful? \n 1. Validate servers are in Power off state before start of this activity. \n 2. check the ci's status in service its should be in retired state",   
+   {% endif %}
+   "is_validation_passed":"Passed",
+   "is_validation_plan_attached":"true",
+   "outage_business_impact":"",
+   "outage_duration":"",
+   "outage_starts":"",
+   "outage_systems_impacted":"",
+   "outage_type":"",
+   "project_cer_number":"12345",
+   "release_record":"RLSE0012013",
+   "risk":"1",
+   "subcategory":"Decommision",
+   "test_date":"2018-03-27 00:00:01",
+   "validation_results":"",
+   "validator_name":"",
+   "validation_date":"",
+   "insert_state":"SUBMITTED",
+   "insert_partial":"yes",
+   "return_conflicts":"no",
+   "ctasks": [
+    {% for c_ctasks in custom_decom.ctasks %}{
+    "assignment_group":"{{c_ctasks.assignment_group}}",
+    "description":"Perform SOP required duties to complete Decommission activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete Decomission activities."
+    }{% if loop.last %}{% else %},{% endif %}{% endfor %}]
+}{% if loop.last %}{% else %},{% endif %}
+{% endfor %}
+]

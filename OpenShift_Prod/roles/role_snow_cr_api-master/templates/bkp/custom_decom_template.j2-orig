@@ -1,0 +1,53 @@
+[
+{% for custom_decom in custom_decom %}
+{
+   "type":"Decommision and Retire Infra CIs",
+   "affected_cis":"{{custom_decom.affected_cis}}",
+   "backout_plan":"What are the steps to the plan?   As these servers have already been through a powered off stage (phase 1) there should be no reason to back out.   But, if needed the steps are: \n 1) Wintel team rebuilds the servers, configure and will complete post configuration as per requirements. \n 2) Backup team will restore server backup. \n During the change window, what is the time to initiate the back out? \n When the CI owner/app team advises that the process needs to be stopped. \n What are the resources required for back out? \n They are participating in the decommission. \n Has the back out plan been tested? What environment and when? \n Yes, - all environments on multiple occasions \n How long will it take to back out? \n Less than 2 hours.",
+   "category":"Server",
+   "change_owner":"A1232027",
+   "change_owner_group":"L2-PLT-LINUX-IT-US",
+   "description":"Decommision And Retire old CI's",
+   "short_description":"{{custom_decom.short_description}}",
+   "implementation_coordinator":"A1232027",
+   "implementation_plan":"Prior to implementing the Change, \n what were the steps taken to test the activity to ensure the Change is successful? \n The CI owner has notified us that these servers are not in use so we have the approval from the CI owner for decommission of the servers. \n A phase 1 CR  and phase-2 was raised and completed successfully. \n servers are still is in actvit state in servicve now so mark this CI's retired in service now. we have raised this change. \n What were the expected results? \n The server is retired and archived ",
+   "implementation_group":"L2-PLT-UNIX-IT-US",
+   "planned_start_date":"{{custom_decom.planned_start_date}}",
+   "planned_duration":"{{custom_decom.planned_duration}}",
+   "is_outage_communicated":"",
+   "is_outage_required":"No",
+   "is_project_cer_related":"0",
+   "is_test_plan_attached":"true",
+   "is_testing_passed":"Passed",
+   "tester_name":"A1232027",
+   "test_results":"List your actual test results in relation to the Expected results in the Test plan. \n We have performed the same activity on Prod, Test & Dev Servers by following the same steps as mentioned above. Each time the change has been successful",
+   "is_validation_passed":"Passed",
+   "is_validation_plan_attached":"true",
+   "outage_business_impact":"",
+   "outage_duration":"",
+   "outage_starts":"",
+   "outage_systems_impacted":"",
+   "outage_type":"",
+   "project_cer_number":"12345",
+   "release_record":"RLSE0012013",
+   "risk":"1",
+   "subcategory":"Decommision",
+   "test_date":"2018-03-27 00:00:01",
+   "test_plan":"Prior to implementing the Change, what tests were performed to ensure the Change is successful? \n 1) Monitoring team will disable the monitoring for mention server. \n 2) Storage team will perform full backup of the server with retention/Disable the servers from Backup policy. \n 3) Application team will stop there application services \n 4) Maestro Team will stop the Maestro jobs running. If any. \n 5) UNIX team will power down the server. \n 6) Unix team will deactivate puppet and clean up puppet cert \n What were the expected results of each test performed? \n The server will be powered down with no access to the rest of the system.",
+ "validation_plan":"After implementing the Change, what are steps will be taken to validate to ensure the Change was successful? \n 1. Validate servers are in Power off state before start of this activity. \n 2. check the ci's status in service its should be in retired state",
+   "validation_results":"",
+   "validator_name":"",
+   "validation_date":"",
+   "insert_state":"SUBMITTED",
+   "insert_partial":"yes",
+   "return_conflicts":"no",
+   "ctasks": [
+    {% for c_ctasks in custom_decom.ctasks %}{
+    "assignment_group":"{{c_ctasks.assignment_group}}",
+    "description":"Perform SOP required duties to complete Decommission activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete Decomission activities."
+    }{% if loop.last %}{% else %},{% endif %}{% endfor %}]
+}{% if loop.last %}{% else %},{% endif %}
+{% endfor %}
+]

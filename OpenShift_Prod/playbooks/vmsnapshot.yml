@@ -1,0 +1,47 @@
+---
+- hosts: all
+  gather_facts: False
+  connection: local
+  serial: 1
+
+  vars:
+    snapshot_name: "snap0"
+    snapshot_description: "snapshot"
+    snapshot_state: "present"
+    #snapshot_state: "absent"
+
+  vars_prompt:
+   # - name: "vc_hostname"
+   #   prompt: "vCenter Server FQDN"
+   #   private: no
+
+   # - name: "vc_datacenter"
+   #   prompt: "vCenter Datacenter"
+   #   private: no
+
+    - name: "vc_username"
+      prompt: "vCenter Username"
+      private: no
+
+    - name: "vc_password"
+      prompt: "vCenter Password"
+      private: yes
+
+  tasks:
+  - name: "{{ vc_hostname }} > {{ vc_datacenter }} > {{ inventory_hostname }} :: snapshot {{ snapshot_name }} {{ snapshot_state }}"
+    local_action:
+      module: vmware_guest_snapshot
+      hostname: "{{ vc_hostname }}"
+      username: "{{ vc_username }}"
+      password: "{{ vc_password }}"
+      datacenter: "{{ vc_datacenter }}"
+      validate_certs: False
+      folder: "{{ vc_folder }}"
+      name: "{{ inventory_hostname }}"
+      snapshot_name: "{{ snapshot_name }}"
+      description: "{{ snapshot_description }}"
+      state: "{{ snapshot_state  }}"
+  #  register: vm
+
+  #- name: Verbose Take snapshot task
+  #  debug: var=vm

@@ -1,0 +1,82 @@
+---
+  # facts file to set master public URL
+- include: set_facts.yaml
+
+- name: login to CA-Dev OCP
+  command: oc login {{ login_url }} -u {{ user }} -p {{ pass }}
+  when: ca_dev | bool
+
+- name: login to CA-Prod OCP
+  command: oc login {{ login_url }} -u {{ user }} -p {{ pass }}
+  when: ca_prod | bool
+
+- name: login to US-Prod OCP
+  command: oc login {{ login_url }} -u {{ user }} -p {{ pass }}
+  when: us_prod | bool
+
+- name: login to US-DR OCP
+  command: oc login {{ login_url }} -u {{ user }} -p {{ pass }}
+  when: us_dr | bool
+
+- name: create new project
+  command: oc new-project {{ project_name }} --display-name="{{ project_name }}"
+
+#- name: Create a project
+#  k8s:
+#   name: {{ project_name }}
+#   api_version: v1
+#   kind: Namespace
+#   state: present
+
+- name: pause for project creation
+  pause:
+    seconds: 10
+
+- name: Attach node-selector
+  command: oc patch namespace {{ project_name }} -p '{"metadata":{"annotations":{"openshift.io/node-selector":"{{ nodeselector }}"}}}'
+
+- name: label project
+  command: oc label namespace {{ project_name }} {{ router_label }}
+  when: ( us_prod | bool ) or
+        ( us_dr | bool ) or
+        ( ca_prod | bool )
+        
+- name: add user to admin role in project
+  command: oc adm policy add-role-to-user admin {{ username }} -n {{ project_name }}
+
+- name: add AD group to admin role in project
+  command: oc adm policy add-role-to-group admin {{ group }} -n {{ project_name }}
+
+- name: deploy project quota
+  template:
+    src: resourceQuota.yaml.j2
+    dest: "{{ tmp_dir }}/ocp-project-quota.yaml"
+  tags:
+  - limits
+
+- name: deploy project limits
+  template:
+    src: resourceLimits.yaml.j2
+    dest: "{{ tmp_dir }}/ocp-project-limits.yaml"
+  tags:
+  - limits
+
+- name: enable project quota
+  command: oc create -f {{ tmp_dir }}/ocp-project-quota.yaml
+  notify:
+  - "clean up"
+
+- name: enable project limits
+  command: oc create -f {{ tmp_dir }}/ocp-project-limits.yaml
+  notify:
+  - "clean up"
+
+- name: validate project quota
+  command: oc get quota -n {{ project_name }}
+  notify:
+  - "clean up"
+
+- name: validate project limits
+  command: oc get limits -n {{ project_name }}
+  notify:
+  - "clean up"

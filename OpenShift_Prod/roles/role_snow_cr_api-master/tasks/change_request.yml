@@ -1,0 +1,143 @@
+---
+### Tasks to create Patch/Decom/General ServiceNow Change Request
+
+- name: Custom {{operation|upper}} Template
+  template:
+    src: "{{operation}}_template.j2"
+    dest: "{{input_file_path}}/{{operation}}.json"
+  tags:
+    - main_json_file
+
+- name: Replace backslash with double backslash for json
+  shell: sed -i 's/\\/\\\\/g' {{input_file_path}}/{{operation}}.json
+  tags:
+    - replace_backslash
+
+- name: Replace \\n with \n for json
+  shell: sed -i 's/\\\\n/\\n/g' {{input_file_path}}/{{operation}}.json
+  tags:
+    - replace_backslash
+
+- name: Python {{operation|upper}} Split script Template
+  template:
+    src: split.j2
+    dest: "{{split_json_path}}/split.py"
+  tags:
+    - python_split_script
+
+- name: split json file to multiple {{operation|upper}}_change json files
+  shell: python {{split_json_path}}/split.py
+  register: split_json
+  tags:
+    - split_json 
+
+- name: File Count for creating {{operation|upper}} change request
+#  shell: ls -ld {{input_file_path}}/{{operation}}_change*.json | awk '{print $9}'
+  find:
+    paths: "{{input_file_path}}"
+    file_type: file
+    patterns: "{{operation}}_change*.json"
+  register: cr_count
+  tags: count
+
+- name: Create {{operation|upper}} CR in ServiceNow
+  uri:
+    url: https://{{ serviceinst }}/api/bebup/change/create
+    method: POST
+    user: "{{login_user}}"
+    password: "{{login_pass}}"
+    headers:
+      Content-Type: application/json
+      accept: application/json
+    body_format: json
+    body: "{{ lookup('file',item.path) }}"
+    force_basic_auth: yes
+    timeout: 900
+    status_code: 200
+#  with_items: "{{cr_count.stdout_lines}}"
+  with_items: "{{cr_count.files|sort}}"
+  register: create_change
+  environment:
+    http_proxy: '{{proxy}}'
+    https_proxy: '{{proxy}}'
+  tags:
+    - create_change 
+
+- name: Attachment to {{operation|upper}} Change Request
+#  shell: 'curl "https://{{ serviceinst }}/api/bebup/change/attachment?fileName={{attachment}}&number={{item.json.result.number}}&contentType=vnd.openxmlformats-officedocument.spreadsheetml.sheet" --request POST -H "Accept:application/json" --user "{{login_user}}:{{login_pass}}" -H "Content-Type: vnd.openxmlformats-officedocument.spreadsheetml.sheet" --data-binary "@{{attachment_path}}/{{attachment}}"'
+  shell: 'curl "https://{{ serviceinst }}/api/bebup/change/attachment?fileName={% if cr_attachment is defined %}{{attachment_loop_cr[0]}}{% else %}{{attachment_loop_cr[0].cr_attachment}}{% endif %}&number={{attachment_loop_cr[1].json.result.number}}&contentType=vnd.openxmlformats-officedocument.spreadsheetml.sheet" --request POST -H "Accept:application/json" --user "{{login_user}}:{{login_pass}}" -H "Content-Type: vnd.openxmlformats-officedocument.spreadsheetml.sheet" --data-binary "@{% if cr_attachment is defined %}{% if operation == "patch" %}{{patch_attachment_path}}{% elif operation == "decom" %}{{decom_attachment_path}}{% elif operation == "general" %}{{general_attachment_path}}{% endif %}/{{attachment_loop_cr[0]}}{% elif operation == "patch" %}{{patch_attachment_path}}/{{attachment_loop_cr[0].cr_attachment}}{% elif operation == "decom" %}{{decom_attachment_path}}/{{attachment_loop_cr[0].cr_attachment}}{% elif operation == "general" %}{{general_attachment_path}}/{{attachment_loop_cr[0].cr_attachment}}{% endif %}"'
+  when: "attachment_loop_cr[0].cr_attachment is defined or cr_attachment is defined"
+#  with_items:
+  with_nested:
+    - "{% if cr_attachment is defined %}{{cr_attachment}}{% elif operation == 'patch' %}{{ custom_patch }}{% elif operation == 'decom' %}{{ custom_decom }}{% elif operation == 'general' %}{{ custom_general }}{% endif %}"
+    - "{{create_change.results}}"
+  loop_control:
+    loop_var: attachment_loop_cr
+  register: attachment_cr
+  environment:
+    http_proxy: '{{proxy}}'
+    https_proxy: '{{proxy}}'
+  tags:
+    - attachmentcr
+
+
+- name: Query for {{operation|upper}} Change Request from ServiceNow
+  uri:
+    url: https://{{ serviceinst }}/api/bebup/change/query?number={{item.json.result.number}}
+    method: GET
+    user: "{{login_user}}"
+    password: "{{login_pass}}"
+    force_basic_auth: yes
+    status_code: 200
+    validate_certs: no
+  with_items: "{{ create_change.results }}"
+  register: query_change
+  environment:
+    http_proxy: '{{proxy}}'
+    https_proxy: '{{proxy}}'
+  tags:
+    - query_change
+
+- name: Mail Report for {{operation|upper}} Template
+  template:
+    src: "ChangeReport.j2"
+    dest: "{{report_path}}/{{operation}}changereport.html"
+  tags:
+    - mail_template
+
+- name: Email {{operation|upper}} Change Notification
+  mail:
+    to: "{{email}}"
+    cc: "a1176771@bestbuy.com"
+    subject: "Ansible Report Overview of {{operation|upper}} Change Report"
+    subtype: html
+    attach: "{{report_path}}/{{operation}}changereport.html"
+    body: "{{ lookup('file', '{{report_path}}/{{operation}}changereport.html') }}"
+  tags:
+    - mail_report
+
+- name: Remove OLD {{operation|upper}} Change Input json files
+  file:
+    path: "{{item}}"
+    state: absent
+  with_items:
+    - "{{input_file_path}}/{{operation}}.json}}"
+  tags:
+    - remove_main_json_file
+
+- name: Remove Multiple Splited {{operation|upper}} old CR's
+  file:
+    path: "{{item.path}}"
+    state: absent
+#  with_items: "{{cr_count.stdout_lines}}"
+  with_items: "{{cr_count.files|sort}}"
+  tags:
+    - remove_splited_json_files
+
+- name: Remove {{operation|upper}} Mail template reports
+  file:
+    path: "{{report_path}}/{{operation}}changereport.html"
+    state: absent
+  tags:
+    - remove_mail_template
+   

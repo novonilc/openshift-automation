@@ -1,0 +1,119 @@
+---
+- include_vars: custom_decom.yml
+  when: "{{customdecom|d(false) == 'true'}}"
+  tags: customdecomvars
+
+- name: Custom Decom Template
+  template:
+    src: custom_decom_template.j2
+    dest: "{{file_path}}/custom_decom.json"
+  when: "{{customdecom|d(false) == 'true'}}"
+  tags: customdecom
+
+- name: Replace backslash with double backslash for json
+  shell: sed -i 's/\\/\\\\/g' {{file_path}}/custom_decom.json
+  when: "{{customdecom|d(false) == 'true'}}"
+
+- name: Replace \\n with \n for json
+  shell: sed -i 's/\\\\n/\\n/g' {{file_path}}/custom_decom.json
+  when: "{{customdecom|d(false) == 'true'}}"
+
+
+- name: Decom Split template
+  template:
+    src: decom_split.j2
+    dest: "{{file_path}}/decom_split.py"
+  when: "{{customdecom|d(false) == 'true'}}"
+  tags: customsplit
+
+- name: split json file to multiple json files
+  shell: python {{file_path}}/decom_split.py
+  register: decom_split_json
+  tags:
+    - decomchangecr
+
+- name: Change file count
+  shell: ls -ld {{file_path}}/decom_change*.json | awk '{print $9}'
+  register: decom_cr_count
+  tags: decomcount
+
+- name: Decom Create CR ServiceNow
+  uri:
+    url: https://{{ serviceinst }}/api/bebup/change/create
+    method: POST
+    user: "{{login_user}}"
+    password: "{{login_pass}}"
+    headers:
+      Content-Type: application/json
+      accept: application/json
+    body_format: json
+    body: "{{ lookup('file',item) }}"
+    force_basic_auth: yes
+    timeout: 900
+    status_code: 200
+  with_items: "{{decom_cr_count.stdout_lines}}"
+  register: decom_create_cr
+  environment:
+    http_proxy: http://usproxy.na.bestbuy.com:8080
+    https_proxy: http://usproxy.na.bestbuy.com:8080
+  tags:
+    - decomchangecr
+
+- name: Decom Query CR ServiceNow
+  uri:
+    url: https://{{ serviceinst }}/api/bebup/change/query?number={{item.json.result.number}}
+    method: GET
+    user: "{{login_user}}"
+    password: "{{login_pass}}"
+    force_basic_auth: yes
+    status_code: 200
+    validate_certs: no
+  with_items: "{{ decom_create_cr.results }}"
+  register: decom_query_cr
+  environment:
+    http_proxy: http://usproxy.na.bestbuy.com:8080
+    https_proxy: http://usproxy.na.bestbuy.com:8080
+  tags:
+    - decomchangecr
+#    - querycr
+
+- name: Decom Query Template
+  template:
+    src: DecomChangeReport.j2
+    dest: roles/role_snow_cr_api/templates/DecomChangeReport.html
+  tags:
+    - decomchangecr
+#    - querycr
+
+- name: Email Decom CR report
+  mail:
+    to: "{{email}}"
+    subject: Ansible Report Overview of Decom Change Report
+    subtype: html
+    attach: roles/role_snow_cr_api/templates/DecomChangeReport.html
+    body: "{{ lookup('file', 'roles/role_snow_cr_api/templates/DecomChangeReport.html') }}"
+  tags:
+    - decomchangecr
+#    - querycr
+    - report
+
+- name: Remove OLD decom change json files
+  file:
+    path: "{{item}}"
+    state: absent
+  with_items:
+    - "{{file_path}}/custom_decom.json}}"
+  tags:
+    - decomchangecr
+    - remove
+
+
+- name: Remove old CR's
+  file:
+    path: "{{item}}"
+    state: absent
+  with_items: "{{decom_cr_count.stdout_lines}}"
+  tags:
+    - decomchangecr
+    - remove
+

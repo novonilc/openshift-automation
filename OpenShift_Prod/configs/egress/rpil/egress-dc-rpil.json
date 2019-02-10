@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: egress-rpil-controller
+spec:
+  replicas: 1
+  selector:
+    name: egress-retail-pil
+  template:
+    metadata:
+      name: egress-retail-pil
+      labels:
+        name: egress-retail-pil
+      annotations:
+        pod.network.openshift.io/assign-macvlan: "true"
+    spec:
+      initContainers:
+      - name: egress-retail-pil
+        image: registry.access.redhat.com/openshift3/ose-egress-router
+        env:
+        - name: EGRESS_SOURCE
+          value: 172.21.75.32
+        - name: EGRESS_GATEWAY
+          value: 172.21.75.1
+        - name: EGRESS_DESTINATION
+          value: 172.21.22.23
+        - name: EGRESS_ROUTER_MODE
+          value: init
+        securityContext:
+          privileged: true
+      containers:
+      - name: egress-demo-wait
+        image: registry.access.redhat.com/openshift3/ose-pod
+      nodeSelector:
+        site: egress-retail-pil

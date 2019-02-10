@@ -1,0 +1,7 @@
+---
+- hosts: nodes
+  tasks:
+  - name: install the latest version Kernel-devel
+    yum: pkg={{item}} state=latest
+    with_items:
+     - kernel-devel

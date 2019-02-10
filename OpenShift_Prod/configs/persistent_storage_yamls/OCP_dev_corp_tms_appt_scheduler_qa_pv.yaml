@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ocp-dev-corp-tms-appt-scheduler-qa-new
+spec:
+  capacity:
+    storage: 9Gi
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /corp_mcl_delivery_engine_test
+    server: 172.21.235.253
+  persistentVolumeReclaimPolicy: Retain

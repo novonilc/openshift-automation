@@ -1,0 +1,65 @@
+---
+
+- hosts: 127.0.0.1
+  gather_facts: true
+  connection: local
+
+  vars:
+    etcd_data_dir: /var/lib/etcd
+    etcd_backup_dir: /opt/reshifter
+    date: "{{ ansible_date_time.time }}"
+
+  tasks:
+  - name: backup cluster certificates
+    archive:
+      path:
+        - /etc/origin/master/*.key
+        - /etc/origin/master/*.crt
+      dest: "{{ etcd_backup_dir }}/certificates-backup-{{ ansible_hostname }}.zip"
+      format: zip
+
+  - name: backup etcd via etcdctl
+    command: /bin/etcdctl backup --data-dir {{ etcd_data_dir }} --backup-dir {{ etcd_backup_dir }}/etcd-{{ ansible_hostname }}-{{ date }}.bak
+    register: etcdbk 
+    tags:
+    - etcd 
+
+  - name: backup etcd DB file
+    copy:
+      src: "{{ etcd_data_dir }}/member/snap/db"
+      dest: "{{ etcd_backup_dir }}/etcd-{{ ansible_hostname }}-{{ date }}.bak/member/snap/"
+    when: etcdbk|changed
+    tags:
+    - etcd
+
+  - name: zip latest backup
+    archive:
+      path: "{{ etcd_backup_dir }}/etcd-{{ ansible_hostname }}-{{ date }}.bak"
+      dest: "{{ etcd_backup_dir }}/etcd-{{ ansible_hostname }}-{{ date }}.bak.zip"
+      format: zip
+    tags:
+    - etcd
+
+  - name: remove latest backup dir
+    file:
+      dest: "{{ etcd_backup_dir }}/etcd-{{ ansible_hostname }}-{{ date }}.bak"
+      state: absent
+    tags:
+    - etcd
+
+  - name: delete snapshots older than 7 days
+    find:
+      paths: "{{ etcd_backup_dir }}"
+      age: 1w
+    register: files_to_delete
+    tags:
+    - prune
+
+  - name: Delete old snapshots
+    file:
+      path: "{{ item.path }}"
+      state: absent
+    with_items: "{{ files_to_delete.files }}"
+    tags:
+    - prune
+

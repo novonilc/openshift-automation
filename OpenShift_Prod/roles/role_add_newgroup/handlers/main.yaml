@@ -1,0 +1,10 @@
+---
+- name: logout
+  command: oc logout
+  listen: "exit add groups"
+
+- name: clean sync template
+  file:
+    path: "{{ dir_path }}/AD-group-sync.yaml" 
+    state: absent
+  listen: "exit add groups"

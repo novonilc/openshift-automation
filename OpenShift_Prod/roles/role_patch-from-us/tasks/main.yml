@@ -1,0 +1,68 @@
+---
+####CYBERARC Version Check
+
+- name: checking cyberarc packages
+  command: rpm --queryformat "%{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}" -q CARKaim
+  register: carkpkg
+  ignore_errors: true
+  tags:
+    - cark_check
+    - cark_status
+
+- debug: 
+    msg: "The CARKaim version is {{carkpkg.stdout}} before patching"
+  when: carkpkg.rc == 0 
+  tags:
+    - cark_check
+    - cark_status
+
+
+
+#- yum: name="{{item}}" exclude="numatop* CARKaim* TaniumClient* rubrik-agent* kernel*" state=latest update_cache=yes
+#- yum: name="{{item}}" exclude="rubrik-agent*" state=latest update_cache=yes
+- yum: name="{{item}}" state=latest update_cache=yes
+  with_items:
+    - "{{ custom_rpms }}"
+  when: '(exclude is not defined)'
+  tags:
+    - cust_rpms
+    - custom_yum_install
+
+- yum: name="{{list_item[0]}}" exclude="{{list_item[1]}}" state=latest update_cache=yes
+  with_nested:
+    - "{{custom_rpms}}"
+    - "{{exclude}}"
+  loop_control:
+    loop_var: list_item
+  when: '(exclude is defined)'
+  tags:
+    - cust_rpms
+    - custom_yum_install
+    - exclude_rpms
+
+
+###Checking CARKaim is not updated post patches
+
+- name: checking cyberarc packages post patches
+  command: rpm --queryformat "%{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}" -q CARKaim
+  register: carkpkgpost
+  ignore_errors: true
+  tags:
+    - cark_check_post
+    - cark_status_post
+
+- debug: 
+    msg:  "The CARKaim version is {{carkpkgpost.stdout}} after patching"
+  when: carkpkgpost.rc == 0
+  tags:
+    - cark_check_post
+    - cark_status_post
+
+
+- debug: msg="CARKaim is not updated"
+  when: '(carkpkg.rc == 0 and carkpkgpost.rc == 0  and carkpkg.stdout == carkpkgpost.stdout)'
+  tags:
+    - cark_check_post
+    - cark_status_post
+
+  

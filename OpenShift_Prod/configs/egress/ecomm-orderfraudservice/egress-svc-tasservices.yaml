@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: egress-svc-tasservices
+spec:
+  ports:
+  - name: egress-svc-tasservices
+    port: 443
+    protocol: TCP
+    targetPort: 443
+  selector:
+    name: egress-multi-1
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

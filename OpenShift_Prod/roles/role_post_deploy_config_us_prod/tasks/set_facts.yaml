@@ -1,0 +1,22 @@
+---
+
+- name: set fact master-config.yaml [0]
+  set_fact:
+    master0: "pdl10ocpcma02.na.bestbuy.com"
+    master1: "pdl10ocpcma03.na.bestbuy.com"
+  when:
+    "inventory_hostname == 'pdl10ocpcma01.na.bestbuy.com'"
+
+- name: set fact master-config.yaml [1]
+  set_fact:
+    master0: "pdl10ocpcma01.na.bestbuy.com"
+    master1: "pdl10ocpcma03.na.bestbuy.com"
+  when:
+    "inventory_hostname == 'pdl10ocpcma02.na.bestbuy.com'"
+
+- name: set fact master-config.yaml [2]
+  set_fact:
+    master0: "pdl10ocpcma01.na.bestbuy.com"
+    master1: "pdl10ocpcma02.na.bestbuy.com"
+  when:
+    "inventory_hostname == 'pdl10ocpcma03.na.bestbuy.com'"

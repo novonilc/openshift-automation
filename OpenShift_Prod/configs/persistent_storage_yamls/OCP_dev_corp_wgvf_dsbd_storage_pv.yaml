@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ocp-dev-corp-wgvf-dsbd-storage
+  annotations:
+    volume.beta.kubernetes.io/mount-options: rw,nfsvers=3,noexec
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /oshift_ocpdashdev
+    server: 172.21.135.251
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    name: ocp-dev-corp-wgvf-dsbd-storage
+    namespace: dashboard-dev

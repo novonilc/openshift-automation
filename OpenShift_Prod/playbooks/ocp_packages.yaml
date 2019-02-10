@@ -1,0 +1,28 @@
+---
+- hosts: nodes
+
+  tasks:
+  - name: install basic packages
+    yum: pkg={{item}} state=present update_cache=yes
+    with_items:
+     - bash-completion
+     - bby-certs
+     - bind-utils
+     - bridge-utils
+     - curl
+     - docker-1.12.6
+     - git
+     - htop
+     - iptables-services
+     - kexec-tools
+     - mc
+     - ncdu
+     - net-tools
+     - nmap-ncat
+     - NetworkManager
+     - psacct
+     - sos
+     - telnet
+     - tmux
+     - wget
+     - yum-utils

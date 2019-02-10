@@ -1,0 +1,4 @@
+How to run the playbook :
+========================
+
+ ansible-playbook -i ~/openshift_platform_automation/OpenShift_Prod/inventory/<cluster>/<inventory_file> ~/openshift_platform_automation/OpenShift_Prod/roles/role_patch_management/pb_patch_management.yaml -v

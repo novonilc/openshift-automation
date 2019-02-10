@@ -1,0 +1,26 @@
+---
+
+- name: remove var_log_messages from /etc/logrotate.d/syslog
+  lineinfile:
+    path: /etc/logrotate.d/syslog
+    regexp: '\/var\/log\/cron \/var\/log\/maillog \/var\/log\/messages \/var\/log\/secure \/var\/log\/spooler'
+    line: '/var/log/cron /var/log/maillog /var/log/secure /var/log/spooler {'
+    state: present
+    backrefs: true
+    #backup: true
+
+- name: set var_log_messages logrotate configuration
+  copy:
+    src: messages
+    dest: /etc/logrotate.d/messages
+    owner: root
+    group: root
+    mode: 0444
+  notify:
+  - test_logrotate
+
+- name: Set sar history retention
+  lineinfile:
+    dest: /etc/sysconfig/sysstat
+    regexp: '^HISTORY='
+    line: 'HISTORY=14'

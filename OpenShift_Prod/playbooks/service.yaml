@@ -1,0 +1,7 @@
+---
+- hosts: nodes
+  tasks:
+
+  - service:
+      name: network
+      state: restartd

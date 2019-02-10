@@ -1,0 +1,104 @@
+{
+  "is_outage_required": "Yes", 
+  "implementation_coordinator": "A1106905", 
+  "subcategory": "Patching", 
+  "outage_starts": "2018-04-26 00:10:01", 
+  "outage_type": "Degraded", 
+  "test_results": "pass", 
+  "validation_plan": "RHEL 5.X/6.x/7.x servers:\nVerifying if all available security patches are upgraded:", 
+  "insert_partial": "yes", 
+  "validation_results": "RHEL 5.X/6.x/7.x servers:\nVerifying if all available security patches are upgraded:", 
+  "risk": "4", 
+  "category": "Server", 
+  "affected_cis": "pdl01arcdb025,pdl01arcdb027,pdl01arcdb029,pdl01arcdb031,pdl01arcdb033,pdl01arcdb035", 
+  "is_validation_passed": "Passed", 
+  "validator_name": "A1106905", 
+  "is_project_cer_related": "0", 
+  "change_owner_group": "L3-PLT-LINUX-IT-US", 
+  "test_plan": "RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments.\n We have completed successfully in lower environment. Example: LEMR00051011. \n Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook.\n2. Validate the result by using below command.\n$ sudo yum update", 
+  "outage_duration": "1 1:00:001", 
+  "short_description": "FY19 R1 patching on Archimedes (ARC) servers Total 06", 
+  "type": "Normal", 
+  "ctasks": [
+    {
+      "short_description": "Enable/Disable Monitoring", 
+      "order": "100", 
+      "description": "Enable/Disable Monitoring", 
+      "assignment_group": "L1-MEM-IT-GLB"
+    }, 
+    {
+      "short_description": "Start/stop/validate application", 
+      "order": "100", 
+      "description": "Start/stop/validate application", 
+      "assignment_group": "L2-ASM-OMS-IT-US"
+    }, 
+    {
+      "short_description": "Release/hold jobs", 
+      "order": "100", 
+      "description": "Release/hold jobs", 
+      "assignment_group": "L2-DATACENTER-OPS-IT-GLB"
+    }, 
+    {
+      "short_description": "Start/stop/validate application", 
+      "order": "100", 
+      "description": "Start/stop/validate application", 
+      "assignment_group": "L2-CASSANDRA-IT-US"
+    }, 
+    {
+      "short_description": "Start/stop/validate Database/Cluster", 
+      "order": "100", 
+      "description": "Start/stop/validate Database/Cluster", 
+      "assignment_group": "L2-DB-ORACLE-IT-US"
+    }, 
+    {
+      "short_description": "If applicable start/stop/validate application services", 
+      "order": "100", 
+      "description": "If applicable start/stop/validate application services", 
+      "assignment_group": "L2-MW-APP-IT-GLB"
+    }, 
+    {
+      "short_description": "If applicable start/stop/validate application services", 
+      "order": "100", 
+      "description": "If applicable start/stop/validate application services", 
+      "assignment_group": "L2-MW-MSG-IT-GLB"
+    }, 
+    {
+      "short_description": "Assist Application/Database Teams", 
+      "order": "100", 
+      "description": "Assist Application/Database Teams", 
+      "assignment_group": "L2-PLT-UNIX-IT-US"
+    }, 
+    {
+      "short_description": "To take snapshot of virtual server", 
+      "order": "100", 
+      "description": "To take snapshot of virtual server", 
+      "assignment_group": "L2-PLT-WINTEL-IT-US"
+    }, 
+    {
+      "short_description": "Check if backup is available", 
+      "order": "100", 
+      "description": "Check if backup is available", 
+      "assignment_group": "L2-STORAGE-IT-US"
+    }
+  ], 
+  "project_cer_number": "12345", 
+  "description": "FY19 R1 patching on Archimedes (ARC) servers Total  06 These severs are pending from last patching event.pdl01arcdb025 pdl01arcdb027 pdl01arcdb029 pdl01arcdb031 pdl01arcdb033 pdl01arcdb035. Archimedes (ARC)", 
+  "planned_start_date": "2018-04-26 00:00:01", 
+  "implementation_plan": "Test", 
+  "outage_systems_impacted": "Archimedes (ARC)", 
+  "is_outage_communicated": "Yes", 
+  "release_record": "RLSE0012623", 
+  "is_validation_plan_attached": "true", 
+  "insert_state": "DRAFT", 
+  "implementation_group": "L2-PLT-UNIX-IT-US", 
+  "change_owner": "A1106905", 
+  "is_testing_passed": "Passed", 
+  "is_test_plan_attached": "true", 
+  "return_conflicts": "no", 
+  "tester_name": "A1106905", 
+  "validation_date": "2018-04-06 00:30:01", 
+  "backout_plan": "Roll back the server from VM snap shot \n Need to co-ordinate with VMware team to roll back the server from snapshot", 
+  "planned_duration": "1 1:00:00", 
+  "test_date": "2018-03-27 00:00:01", 
+  "outage_business_impact": "What is the user/business impact?\nWe will be doing it rolling manner so no impact "
+}

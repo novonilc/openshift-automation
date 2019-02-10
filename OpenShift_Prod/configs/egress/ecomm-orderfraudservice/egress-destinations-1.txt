@@ -1,0 +1,6 @@
+# Egress routes for Project "ecomm-orderfraudservice", version 3
+
+19012 tcp 168.94.212.149 19012
+5671  tcp 172.21.16.122  15672
+443   tcp 192.168.98.21  443
+31110 tcp 172.21.16.125  31110

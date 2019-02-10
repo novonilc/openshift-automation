@@ -1,0 +1,44 @@
+allowDisabledDocker: false
+apiVersion: v1
+dnsBindAddress: 127.0.0.1:53
+dnsDomain: cluster.local
+dnsIP: {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+dnsRecursiveResolvConf: /etc/origin/node/resolv.conf
+dockerConfig:
+  execHandlerName: ''
+imageConfig:
+  format: openshift3/ose-${component}:${version}
+  latest: false
+iptablesSyncPeriod: 30s
+kind: NodeConfig
+kubeletArguments:
+  node-labels:
+  - datacenter=vidc
+  - region=west
+  - router=pci
+  - zone=infra
+  - network_zone=ca
+masterClientConnectionOverrides:
+  acceptContentTypes: application/vnd.kubernetes.protobuf,application/json
+  burst: 200
+  contentType: application/vnd.kubernetes.protobuf
+  qps: 100
+masterKubeConfig: system:node:{{ inventory_hostname }}.kubeconfig
+networkConfig:
+  mtu: 1450
+  networkPluginName: redhat/openshift-ovs-multitenant
+networkPluginName: redhat/openshift-ovs-multitenant
+nodeName: {{ inventory_hostname }}
+podManifestConfig: null
+proxyArguments:
+  proxy-mode:
+  - iptables
+servingInfo:
+  bindAddress: 0.0.0.0:10250
+  certFile: server.crt
+  clientCA: ca.crt
+  keyFile: server.key
+volumeConfig:
+  localQuota:
+    perFSGroup: null
+volumeDirectory: /var/lib/origin/openshift.local.volumes

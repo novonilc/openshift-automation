@@ -1,0 +1,12 @@
+---
+- hosts: all
+  tasks:
+
+  - name: Tag and push to local registry
+     docker_image:
+       name: openshift3/logging-kibana
+       repository: 172.32.178.106:5000/openshift3/logging-kibana
+       tag: 3.5
+       push: yes
+       when:
+       - "'drl09ocpcma01.na.bestbuy.com' in inventory_hostname"

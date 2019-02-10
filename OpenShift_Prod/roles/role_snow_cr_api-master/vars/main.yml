@@ -1,0 +1,36 @@
+---
+# vars file for role_snow_cr_api
+
+# Variable for Attachment in CR
+patch_attachment_path: roles/role_snow_cr_api/files/attachment/patch
+decom_attachment_path: roles/role_snow_cr_api/files/attachment/decom
+general_attachment_path: roles/role_snow_cr_api/files/attachment/general
+
+#Proxy
+proxy: 'http://usproxy.na.bestbuy.com:8080'
+
+# Variable for ServiceNow url
+# UAT
+#serviceinst: bestbuyuat.service-now.com
+# Prod
+serviceinst: bestbuy.service-now.com
+
+# Variable for Email to
+email: 'TCSIS-UNIX-Patching-team@bestbuy.com'
+
+#file_path: 'roles/role_snow_cr_api/files/change'
+
+# Variable for Patch CR Attachment
+attachment: 'StandardPatchingPlaybook.xlsx'
+
+# Variable for patch/decom/general Json input files
+input_file_path: roles/role_snow_cr_api/files/json
+
+# Variable to Split patch/decom/general Json into multiple json
+split_json_path: roles/role_snow_cr_api/files/python
+
+# Variable for patch/decom/general Email templates
+#template_path: roles/role_snow_cr_api/templates
+
+# Variable for  patch/decom/general Email html report
+report_path: roles/role_snow_cr_api/files/report

@@ -1,0 +1,105 @@
+---
+### Convert csv to json file
+
+#- include_vars: custom_general.yml
+#  when: "{{customgeneral|d(false) == 'true'}}"
+#  tags: customgeneral
+
+- name: Replace backslash with double backslash for json
+  shell: sed -i 's/\\/\\\\/g' {{file_path}}/general_change.json
+  when: "{{customgeneral|d(false) == 'true'}}"
+
+- name: Replace \\n with \n for json
+  shell: sed -i 's/\\\\n/\\n/g' {{file_path}}/general_change.json
+  when: "{{customgeneral|d(false) == 'true'}}"
+
+
+# Worked
+- name: split json file to multiple json files
+  shell: python {{file_path}}/general_split.py
+  register: splitjson
+  tags:
+    - changecr
+
+- name: Change file count
+  shell: ls -ld roles/role_snow_cr_api/files/change/general_change*.json | awk '{print $9}'
+  register: general_count
+  tags: count
+
+- name: Create CR ServiceNow
+  uri:
+    url: https://{{ serviceinst }}/api/bebup/change/create
+    method: POST
+    user: "{{login_user}}"
+    password: "{{login_pass}}"
+    headers:
+      Content-Type: application/json
+      accept: application/json
+    body_format: json
+    body: "{{ lookup('file',item) }}"
+    force_basic_auth: yes
+    timeout: 900
+    status_code: 200
+  with_items: "{{general_count.stdout_lines}}"
+  register: general_create_cr
+  environment:
+    http_proxy: http://usproxy.na.bestbuy.com:8080
+    https_proxy: http://usproxy.na.bestbuy.com:8080
+  tags:
+    - changecr
+
+- name: Query CR ServiceNow
+  uri:
+    url: https://{{ serviceinst }}/api/bebup/change/query?number={{item.json.result.number}}
+    method: GET
+    user: "{{login_user}}"
+    password: "{{login_pass}}"
+    force_basic_auth: yes
+    status_code: 200
+    validate_certs: no
+  with_items: "{{ general_create_cr.results }}"
+  register: general_query_cr
+  environment:
+    http_proxy: http://usproxy.na.bestbuy.com:8080
+    https_proxy: http://usproxy.na.bestbuy.com:8080
+  tags:
+    - changecr
+
+- name: Query Template
+  template:
+    src: GeneralChangeReport.j2
+    dest: roles/role_snow_cr_api/templates/GeneralChangeReport.html
+  tags:
+    - changecr
+
+- name: Email CR report
+  mail:
+    to: "{{email}}"
+    subject: Ansible Report Overview of Change Report
+    subtype: html
+    attach: roles/role_snow_cr_api/templates/GeneralChangeReport.html
+    body: "{{ lookup('file', 'roles/role_snow_cr_api/templates/GeneralChangeReport.html') }}"
+  tags:
+    - changecr
+#    - querycr
+    - report
+
+- name: Remove OLD change json files
+  file:
+    path: "{{item}}"
+    state: absent
+  with_items:
+    - "{{file_path}}/custom_general.json}}"
+  tags:
+    - changecr
+    - remove
+
+- name: Remove old CR's
+  file:
+    path: "{{item}}"
+    state: absent
+  with_items: "{{general_count.stdout_lines}}"
+  tags:
+    - changecr
+    - remove
+

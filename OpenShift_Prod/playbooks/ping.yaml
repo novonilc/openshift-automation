@@ -1,0 +1,9 @@
+---
+- hosts: all
+  serial: 1
+  tasks:
+    - ping:
+
+    - name: Checking distribution details
+      debug:
+        msg: "Running: {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }}"

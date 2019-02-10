@@ -1,0 +1,11 @@
+---
+
+- name: install kernel headers
+  #raw: yum -y install kernel-devel-$(uname -r)
+  yum:
+    name: kernel-devel-$(uname -r)
+    state: latest
+    update_cache: yes
+
+- name: deploy sysdig configmap file
+

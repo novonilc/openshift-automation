@@ -1,0 +1,395 @@
+---
+# Example:
+# ansible-playbook -i hosts -l devnodes1 -v playbooks/node_prep_3.5.yaml -e "volume_group=docker_vg disk=/dev/mapper/docker size=50G vol=docker interface=team0"
+
+- hosts: all
+  become: true
+  become_method: sudo
+  gather_facts: false
+  
+  vars:
+    bdcpool: 2c90dda25c59edb0015c7ec6bf8a235e
+    nadcpool: 28de693f5c888e7d015d1dd35e9333d5
+
+    ssh_users:
+      - name: u1176494
+        key: "{{ lookup('file', '../files/u1176494.pub') }}"
+      - name: u1202294
+        key: "{{ lookup('file', '../files/u1202294.pub') }}"
+
+  tasks:
+
+  - name: make sure SELinux allows the use of NFS home dirs
+    command: setsebool -P use_nfs_home_dirs 1
+    tags:
+    - install
+    - selinux
+
+  - name: make sure SELinux is enabled
+    selinux:
+      policy: targeted
+      state: enforcing
+    tags:
+    - install
+    - selinux
+
+  - name: enable openshift pool app-nodes - bdc
+    command: subscription-manager attach --pool={{ bdcpool }}
+    when: '("pdl02" not in inventory_hostname) or ("drl02" not in inventory_hostname)'
+    tags:
+    - sub
+
+  - name: enable openshift pool app-nodes - nadc
+    command: subscription-manager attach --pool={{ nadcpool }}
+    when: '("pdl02" in inventory_hostname) or ("drl02" in inventory_hostname)'
+    tags:
+    - sub
+
+  - name: enable subscription-manager repos
+    command: subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-ose-3.5-rpms --enable=rhel-7-fast-datapath-rpms
+    tags:
+    - install
+
+  - name: install prereq packages
+    yum:
+      pkg: "{{ item }}"
+      state: installed
+    with_items:
+      - wget
+      - git
+      - net-tools
+      - bind-utils
+      - iptables-services
+      - bridge-utils
+      - bash-completion
+      - atomic-openshift-utils
+      - atomic-openshift-excluder
+      - atomic-openshift-docker-excluder
+    tags:
+    - install
+
+  - name: unexclude packages for installation
+    command: atomic-openshift-excluder unexclude
+    tags:
+    - install
+
+  - name: create volume group
+    lvg:
+      vg: "{{ volume_group }}"
+      pvs: "{{ disk }}"
+      state: present
+    tags:
+    - storage
+
+  - name: create logical volume - /var/lib/docker
+    lvol:
+      vg: "{{ volume_group }}"
+      lv: "{{ vol }}"
+      size: "{{ size }}"
+    tags:
+    - storage
+ 
+  - name: create /var/lib/docker
+    file:
+      owner: root
+      group: root
+      path: /var/lib/docker
+      state: directory
+      setype: docker_var_lib_t
+    tags:
+    - storage
+
+  - name: format disk for var_lib_docker
+    filesystem:
+      fstype: xfs
+      dev: /dev/{{ volume_group }}/{{ vol }}
+    tags:
+    - storage
+
+  - name: mount /var/lib/docker
+    mount:
+      name: /var/lib/docker
+      src: /dev/mapper/{{ volume_group }}-{{ vol }}
+      opts: defaults,norelatime,logbufs=8,logbsize=256k,largeio,inode64,swalloc,allocsize=2M
+      fstype: xfs
+      state: mounted
+    tags:
+    - storage
+
+  - name: install docker
+    yum:
+      name: docker
+      state: latest
+      update_cache: yes
+    register: install
+    tags:
+    - docker
+
+  - name: update docker-storage-setup configuration
+    blockinfile:
+      state: present
+      dest: /etc/sysconfig/docker-storage-setup
+      content: |
+          VG="{{ volume_group }}"
+          MIN_DATA_SIZE=100G
+    tags:
+    - docker
+
+  - name: run docker-storage-setup
+    command: docker-storage-setup
+    tags:
+    - docker
+
+  - name: set up docker config
+    copy:
+      src: ../files/docker_appnode
+      dest: /etc/sysconfig/docker
+      backup: yes
+      owner: root
+      group: root
+      mode: 0644
+    register: dconf
+    tags:
+    - docker
+
+  - name: enable & start docker
+    service:
+      name: docker
+      state: started
+      enabled: yes
+    tags:
+    - docker
+
+  - name: disable puppet
+    yum:
+      name: puppet
+      state: absent
+    tags:
+    - puppet
+    - mon
+
+  - name: configure team0 nmcli with DNS
+    command: nmcli con mod {{ interface }} ipv4.dns "168.94.0.1 168.94.0.2 168.94.0.3"
+    tags:
+    - dns
+
+  - name: restart NM to pick up DNS
+    service:
+      name: NetworkManager
+      state: restarted
+    tags:
+    - dns
+
+  - name: create /opt/home
+    file:
+      path: /opt/home
+      mode: 0755
+      state: directory
+    tags:
+    - login
+    - mon
+ 
+  - name: exclude service accounts from sss filter
+    lineinfile:
+      dest: /etc/sssd/sssd.conf
+      backup: yes
+      regexp: "^filter_users = root,bin,daemon,adm,named,ldap,lp,sync,shutdown,halt,mail,news,uucp,operator,ftp,nobody,rpm,avahi,haldaemon,dbus,radvd,tomcat,radiusd,news,mailman,netdump,nscd,sshd,rpc,tuberous,twssda,twsjda,maestro"
+      line: "filter_users = root,bin,daemon,adm,named,ldap,lp,sync,shutdown,halt,mail,news,uucp,operator,ftp,nobody,rpm,avahi,haldaemon,dbus,radvd,tomcat,radiusd,news,mailman,netdump,nscd,sshd,rpc,tuberous,twssda,twsjda,maestro,unixmon,cloud-user,cloud-oper"
+      state: present
+      backrefs: yes
+    register: sss
+    tags:
+    - login
+    - mon
+
+  - name: restart sssd to pick up changes
+    service:
+      name: sssd
+      state: restarted
+    when: sss|changed
+    tags:
+    - login
+    - mon
+
+  - name: clear sssd cache for unixmon
+    command: sss_cache -E
+    ignore_errors: true
+    tags:
+    - login
+    - mon
+
+  - name: add LCP groups
+    group:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - unixmon
+      - cloud-user
+      - cloud-oper
+      - adm
+    tags:
+    - login
+    - mon
+
+  - name: add UNIXMON account
+    user:
+      name: unixmon
+      home: /opt/home/unixmon
+      state: present
+      group: unixmon
+      password: $6$rp6ptsdA$gwU.NAekbcbWO8NCANWFchLwoRUb0Kdx/rgBXp.kVL42EwCSY6Kl6kb9q9yJQ4iOScPspwHxchdIqBgzK7tfN.
+    tags:
+    - login
+    - mon
+
+  - name: add LCP service accounts
+    user:
+      name: "{{ item }}"
+      home: /opt/home/{{ item }}
+      state: present
+      group: "{{ item }}"
+      password: $6$5Tm9iOyb$gHAriSROrwmBnEceiG2Cu1wR.DYcaP1mQ3I4fV4yuud0LyiaixlF3BlT6FQjRB/23uHMeVaYXSpGHZWlHZmEq.
+    with_items:
+      - cloud-user
+      - cloud-oper
+    tags:
+    - login
+
+  - name: exclude admin accounts from sss filter
+    lineinfile:
+      dest: /etc/sssd/sssd.conf
+      backup: yes
+      regexp: "^filter_users = root,bin,daemon,adm,named,ldap,lp,sync,shutdown,halt,mail,news,uucp,operator,ftp,nobody,rpm,avahi,haldaemon,dbus,radvd,tomcat,radiusd,news,mailman,netdump,nscd,sshd,rpc,tuberous,twssda,twsjda,maestro"
+      line: "filter_users = root,bin,daemon,adm,named,ldap,lp,sync,shutdown,halt,mail,news,uucp,operator,ftp,nobody,rpm,avahi,haldaemon,dbus,radvd,tomcat,radiusd,news,mailman,netdump,nscd,sshd,rpc,tuberous,twssda,twsjda,maestro,unixmon,cloud-user,cloud-oper,u1176494,u1202294"
+      state: present
+      backrefs: yes
+    register: sss
+    tags:
+    - admin
+
+  - name: restart sssd to pick up changes
+    service:
+      name: sssd
+      state: restarted
+    when: sss|changed
+    tags:
+    - admin
+
+  - name: clear sssd cache for admin accounts
+    command: sss_cache -E
+    ignore_errors: true
+    tags:
+    - admin
+
+  - name: add LCP admin accounts
+    user:
+      name: "{{ item }}"
+      home: /opt/home/{{ item }}
+      state: present
+      group: adm
+      password: $6$JG7c9BTy$S2TGNXCAfvJneu5JmUZ0FlfpGKnzKtQzWkgvfdEpe6KDC8xm4u7jPMMna0006nZCVYNnvNNg/PwPzWT4sqkoB/
+    with_items:
+      - u1176494
+      - u1202294
+    tags:
+    - admin
+
+  - name: Add ssh u1176494 keys
+    authorized_key:
+      user: u1176494
+      key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCgfgkhV70xHlz3gsZNjEn1k0iNQB2D3BTU/y2n8yxWIU1y8gU8e3AHjN/CPHAYlbAAvEZwAMtQTa5qrZAHK3ub716YWJX+wrGygdL7sKk0hlgSEqhFrdm2ISBTC4zPq3xvpx6hHXKcMzpQZmeJYSfiHMh7U2OsvbJpDgvwscH/8uG/c5ixrMBRXWStCApPM+DkdRC6W9dpRhB+iMASlRMT6qnOmCZxh5Rw2NyQQGo2eb1VO0BSIHEtsnj/H54S+Q2C/dEWgCohWYAl8Aw/Rw6pWpVuWJewrXh57rmlhX9UlMtINKS85BoPwhfij6yB2+HynwE5nq0xNVfiy3CAO2lh /home/a1176494/.ssh/id_rsa
+    tags:
+    - admin
+
+  - name: Add ssh u1202294 keys
+    authorized_key:
+      user: u1176494
+      key: ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQBRHUHbnBPKe1wy3Q9tT9NPq1HfkMGlf19/3OHgcyKVwwWfaOWruKWbsa/nV0C1xARfoH9vhvR/uEzkoOQnrerzvnSD+AouSWFltdrwwCxY4ZeDR0aoi+p0zm4xGIus6uki20Cg8z4RyW6ceKzgPFfr4nDOAiHtq3dtzQfa9O5jTSr8UKqSzgmEYtM20uHTKKHZNkurkyI6rQj0oKJ9hlXNRxpXAlyH4tmoqafA6/R3/uX5HP+rIIAu4PDVfLjXpbDg39/4nmgnnuhZeqyKO49comi+B65eeeB9MFtjJRUE1OxoJk7Gh3ORrl2sUw/FB5QIbMfvpXq3M1pLd7tRacXT rsa-key-20150924
+    tags:
+    - admin
+
+  - name: create cloud-user's .ssh
+    file:
+      path: /opt/home/cloud-user/.ssh
+      state: directory
+      owner: cloud-user
+      group: cloud-user
+      mode: 0700
+    tags:
+    - login
+
+  - name: add pub keys to cloud-user
+    blockinfile:
+      state: present
+      dest: /opt/home/cloud-user/.ssh/authorized_keys
+      owner: cloud-user
+      group: cloud-user
+      mode: 0600
+      create: yes
+      block: |
+       ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCgfgkhV70xHlz3gsZNjEn1k0iNQB2D3BTU/y2n8yxWIU1y8gU8e3AHjN/CPHAYlbAAvEZwAMtQTa5qrZAHK3ub716YWJX+wrGygdL7sKk0hlgSEqhFrdm2ISBTC4zPq3xvpx6hHXKcMzpQZmeJYSfiHMh7U2OsvbJpDgvwscH/8uG/c5ixrMBRXWStCApPM+DkdRC6W9dpRhB+iMASlRMT6qnOmCZxh5Rw2NyQQGo2eb1VO0BSIHEtsnj/H54S+Q2C/dEWgCohWYAl8Aw/Rw6pWpVuWJewrXh57rmlhX9UlMtINKS85BoPwhfij6yB2+HynwE5nq0xNVfiy3CAO2lh /home/a1176494/.ssh/id_rsa
+       ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQBRHUHbnBPKe1wy3Q9tT9NPq1HfkMGlf19/3OHgcyKVwwWfaOWruKWbsa/nV0C1xARfoH9vhvR/uEzkoOQnrerzvnSD+AouSWFltdrwwCxY4ZeDR0aoi+p0zm4xGIus6uki20Cg8z4RyW6ceKzgPFfr4nDOAiHtq3dtzQfa9O5jTSr8UKqSzgmEYtM20uHTKKHZNkurkyI6rQj0oKJ9hlXNRxpXAlyH4tmoqafA6/R3/uX5HP+rIIAu4PDVfLjXpbDg39/4nmgnnuhZeqyKO49comi+B65eeeB9MFtjJRUE1OxoJk7Gh3ORrl2sUw/FB5QIbMfvpXq3M1pLd7tRacXT rsa-key-20150924
+    tags:
+    - login
+
+  - name: set cloud-user sudo
+    lineinfile:
+      create: yes
+      dest: /etc/sudoers.d/cloud-user
+      state: present
+      line: cloud-user ALL = NOPASSWD:ALL
+      validate: 'visudo -cf %s'
+      mode: 0400
+    tags:
+    - login
+    - sudo
+
+  - name: Set access.conf for LCP systems
+    copy:
+      src: ../files/lcp_access.conf
+      mode: 0644
+      owner: root
+      group: root
+      dest: /etc/security/access.conf
+      backup: yes
+    tags:
+    - login
+    - mon
+
+  - name: Set root's prompt to show user@hostname
+    lineinfile:
+      create: yes
+      dest: /root/.bash_profile
+      line: 'PS1="[\u@\h]"'
+    tags:
+    - root
+
+  - name: temporarily allow ssh root
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      backup: yes
+      state: present
+      regexp: 'PermitRootLogin no'
+      line: '#PermitRootLogin no'
+    register: sshroot
+    tags:
+    - root
+
+  - name: restart sshd
+    service:
+      name: sshd
+      state: restarted
+    when: sshroot|changed
+    tags:
+    - root
+
+  - name: create root's .ssh
+    file:
+      path: /root/.ssh
+      state: directory
+      owner: root
+      group: root
+      mode: 0700
+    tags:
+    - root
+

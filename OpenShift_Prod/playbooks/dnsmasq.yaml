@@ -1,0 +1,21 @@
+---
+- hosts: nodes
+
+  tasks:
+  - name: Apply min-port config in dnsmasq
+    lineinfile:
+      path: /etc/dnsmasq.d/lowport.conf
+      line: 'min-port=1024'
+      state: present
+      create: yes
+      owner: root
+      group: root
+      mode: 0644
+    notify:
+      - Restart dnsmasq
+
+  handlers:
+  - name: Restart dnsmasq
+    service:
+      name: dnsmasq
+      state: restarted

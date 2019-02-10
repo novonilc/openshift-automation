@@ -1,0 +1,7 @@
+---
+- hosts: nodes
+  tasks:
+  - name: start docker sysdig
+    shell: docker start sysdig-agent
+    args:
+      executable: /bin/bash

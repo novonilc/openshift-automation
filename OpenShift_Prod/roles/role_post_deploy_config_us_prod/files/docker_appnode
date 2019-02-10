@@ -1,0 +1,49 @@
+# /etc/sysconfig/docker
+
+# Modify these options if you want to change the way the docker daemon runs
+OPTIONS='--selinux-enabled --log-driver=json-file --log-opt max-size=50m --log-opt max-file=4 --ipv6=false'
+if [ -z "${DOCKER_CERT_PATH}" ]; then
+    DOCKER_CERT_PATH=/etc/docker
+fi
+
+# If you want to add your own registry to be used for docker search and docker
+# pull use the ADD_REGISTRY option to list a set of registries, each prepended
+# with --add-registry flag. The first registry added will be the first registry
+# searched.
+ADD_REGISTRY='--add-registry docker-registry.default.svc.cluster.local:5000 --add-registry registry.prod-ocp.na.bestbuy.com'
+
+# If you want to block registries from being used, uncomment the BLOCK_REGISTRY
+# option and give it a set of registries, each prepended with --block-registry
+# flag. For example adding docker.io will stop users from downloading images
+# from docker.io
+# BLOCK_REGISTRY='--block-registry'
+# BLOCK_REGISTRY='--block-registry=all'
+BLOCK_REGISTRY='--block-registry docker.io'
+
+# If you have a registry secured with https but do not have proper certs
+# distributed, you can tell docker to not look for full authorization by
+# adding the registry to the INSECURE_REGISTRY line and uncommenting it.
+# INSECURE_REGISTRY='--insecure-registry'
+
+# On an SELinux system, if you remove the --selinux-enabled option, you
+# also need to turn on the docker_transition_unconfined boolean.
+# setsebool -P docker_transition_unconfined 1
+
+# Location used for temporary files, such as those created by
+# docker load and build operations. Default is /var/lib/docker/tmp
+# Can be overriden by setting the following environment variable.
+# DOCKER_TMPDIR=/var/tmp
+
+# Controls the /etc/cron.daily/docker-logrotate cron job status.
+# To disable, uncomment the line below.
+# LOGROTATE=false
+#
+
+# docker-latest daemon can be used by starting the docker-latest unitfile.
+# To use docker-latest client, uncomment below lines
+#DOCKERBINARY=/usr/bin/docker-latest
+#DOCKERDBINARY=/usr/bin/dockerd-latest
+#DOCKER_CONTAINERD_BINARY=/usr/bin/docker-containerd-latest
+#DOCKER_CONTAINERD_SHIM_BINARY=/usr/bin/docker-containerd-shim-latest
+HTTP_PROXY='http://usproxy.na.bestbuy.com:8080'
+NO_PROXY='.bbydmz.com,.cluster.local,.na.bestbuy.com,.svc,10.2.0.0/16,168.94.217.158,168.94.217.159,168.94.217.173,172.32.0.0/16,168.94.217.158,168.94.217.159,168.94.217.173,master-hdc.prod-ocp.na.bestbuy.com,docker-registry.default.svc.cluster.local,registry.prod-ocp.na.bestbuy.com,pdl10ocpcma01.na.bestbuy.com,pdl10ocpcma02.na.bestbuy.com,pdl10ocpcma03.na.bestbuy.com,pdh10ocppch01.bbydmz.com,pdh10ocppch02.bbydmz.com,pdh10ocppch03.bbydmz.com,pdl10ocpcin01.na.bestbuy.com,pdl10ocpcin02.na.bestbuy.com,pdl10ocpcin03.na.bestbuy.com,pdl10ocpcma01.na.bestbuy.com,pdl10ocpcma02.na.bestbuy.com,pdl10ocppin01.bbydmz.com,pdl10ocppin02.bbydmz.com,pdl10ocppin03.bbydmz.com,pdh10ocpdch01.bbydmz.com,pdh10ocpdch02.bbydmz.com,pdh10ocpdch03.bbydmz.com,pdl10ocpdin01.bbydmz.com,pdl10ocpdin02.bbydmz.com,pdl10ocpdin03.bbydmz.com'

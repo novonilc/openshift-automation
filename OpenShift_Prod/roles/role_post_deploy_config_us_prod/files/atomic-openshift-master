@@ -1,0 +1,9 @@
+OPTIONS=--loglevel=2 --listen=https://0.0.0.0:8443 --master=https://{{inventory_hostname}}:8443
+CONFIG_FILE=/etc/origin/master/master-config.yaml
+
+
+# Proxy configuration
+# See https://docs.openshift.com/enterprise/latest/install_config/install/advanced_install.html#configuring-global-proxy
+HTTP_PROXY=http://usproxy.na.bestbuy.com:8080
+HTTPS_PROXY=https://usproxy.na.bestbuy.com:8080
+NO_PROXY='.bbydmz.com,.cluster.local,.na.bestbuy.com,.svc,10.2.0.0/16,168.94.217.158,168.94.217.159,168.94.217.173,172.32.0.0/16,168.94.217.158,168.94.217.159,168.94.217.173,master-hdc.prod-ocp.na.bestbuy.com,docker-registry.default.svc.cluster.local,registry.prod-ocp.na.bestbuy.com,pdh10ocppch01.bbydmz.com,pdh10ocppch02.bbydmz.com,pdh10ocppch03.bbydmz.com,pdl10ocpcin01.na.bestbuy.com,pdl10ocpcin02.na.bestbuy.com,pdl10ocpcin03.na.bestbuy.com,pdl10ocpcma01.na.bestbuy.com,pdl10ocpcma02.na.bestbuy.com,pdl10ocppin01.bbydmz.com,pdl10ocppin02.bbydmz.com,pdl10ocppin03.bbydmz.com,pdh10ocpdch01.bbydmz.com,pdh10ocpdch02.bbydmz.com,pdh10ocpdch03.bbydmz.com,pdl10ocpdin01.bbydmz.com,pdl10ocpdin02.bbydmz.com,pdl10ocpdin03.bbydmz.com'

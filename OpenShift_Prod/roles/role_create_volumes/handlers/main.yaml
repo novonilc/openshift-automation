@@ -1,0 +1,10 @@
+---
+- name: logout
+  command: oc logout
+  listen: "exit add groups"
+
+- name: clean sync template
+  file:
+    path: "{{ dir_path }}/volume-template.yaml"
+    state: absent
+  listen: "clean temp dir"

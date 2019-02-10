@@ -1,0 +1,10 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: ocp-prod-corp-tms-appt-scheduler
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 9Gi

@@ -1,0 +1,96 @@
+---
+# facts file to set master public URL
+- include: set_facts.yaml
+
+- name: login to ca_dev OCP
+  command: oc login {{ login_url }} -u {{ user }} -p {{ pass }}
+  when: ca_dev | bool
+
+- name: login to ca_prod OCP
+  command: oc login {{ login_url }} -u {{ user }} -p {{ pass }}
+  when: ca_prod | bool
+
+- name: login to us_prod OCP
+  command: oc login {{ login_url }} -u {{ user }} -p {{ pass }}
+  when: us_prod | bool
+
+- name: login to us_dr OCP
+  command: oc login {{ login_url }} -u {{ user }} -p {{ pass }}
+  when: us_dr | bool
+
+- name: create ocp/groups dir
+  file:
+    path: "{{ dir_path }}"
+    state: directory
+  tags:
+  - test
+
+- name: copy updated whitelist - dev
+  copy:
+    src: dev/AD-group-whitelist-dev.txt
+    dest: "{{ dir_path }}/AD-group-whitelist.txt"
+  when: ca_dev | bool
+  tags:
+  - test
+
+- name: copy updated whitelist - ca_prod
+  copy:
+    src: prod/AD-group-whitelist-prod.txt
+    dest: "{{ dir_path }}/AD-group-whitelist.txt"
+  when: ca_prod | bool
+  tags:
+  - test
+
+- name: copy updated whitelist - us_prod
+  copy:
+    src: prod/AD-group-whitelist-prod.txt
+    dest: "{{ dir_path }}/AD-group-whitelist.txt"
+  when: us_prod | bool
+  tags:
+  - test
+
+- name: copy updated whitelist - us_dr
+  copy:
+    src: prod/AD-group-whitelist-prod.txt
+    dest: "{{ dir_path }}/AD-group-whitelist.txt"
+  when: us_dr | bool
+  tags:
+  - test
+
+- name: set sync Prod template
+  template:
+    src: AD-group-prod-sync.yaml.j2
+    dest: "{{ dir_path }}/AD-group-sync.yaml"
+  when: ( us_prod | bool ) or
+        ( us_dr | bool ) or
+        ( ca_prod | bool )
+  tags:
+  - test
+
+- name: set sync Dev template
+  template:
+    src: AD-group-dev-sync.yaml.j2
+    dest: "{{ dir_path }}/AD-group-sync.yaml"
+  when: ca_dev | bool
+  tags:
+  - test
+
+#- name: copy BBY cert
+#  copy:
+#    src: bby.crt
+#    dest: "{{ dir_path }}/bby.crt"
+#  tags:
+#  - test
+
+#- name: login to OCP
+#  command: oc login -u {{ user }} -p {{ pass }} {{ login_url }}
+#  no_log: true
+#  tags:
+#  - test1
+
+- name: sync whitelist
+  command: oc adm groups sync --sync-config={{ dir_path }}/AD-group-sync.yaml --whitelist={{ dir_path }}/AD-group-whitelist.txt --confirm
+  notify:
+  - "exit add groups"
+  tags:
+  - test1

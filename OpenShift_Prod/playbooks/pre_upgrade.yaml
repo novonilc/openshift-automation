@@ -1,0 +1,42 @@
+---
+- hosts: nodes
+  tasks:
+   - name: Disable 3.6 subscription and enable 3.7
+     shell: subscription-manager repos --disable="rhel-7-server-ose-3.6-rpms" --enable="rhel-7-server-ose-3.7-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-fast-datapath-rpms"
+     args:
+       executable: /bin/bash
+     tags:
+       - subscribe
+
+   - name: Run  Yum clean
+     shell: yum clean all
+     args:
+       executable: /bin/bash
+     tags:
+       - yum clean
+
+   - name: Upgrade the Packages
+     yum: pkg={{item}} state=latest
+     with_items:
+       - atomic-openshift-utils
+       - atomic-openshift-excluder
+     tags:
+       - Upgrade
+
+
+   - file:
+     path: /usr/share/openshift/examples
+     state: directory
+     mode: 0755
+     tags:
+       - mkdir
+
+   - copy:
+       src: /usr/share/ansible/openshift-ansible/roles/openshift_examples/files/examples/v3.6/
+       dest: /usr/share/openshift/examples/
+       owner: root
+       group: root
+       mode: 0755
+       remote_src: yes
+     tags:
+       - copy

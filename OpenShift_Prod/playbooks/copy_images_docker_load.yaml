@@ -1,0 +1,62 @@
+---
+- hosts: nodes
+
+  tasks:
+
+  - file:
+      path: /var/images/
+      state: directory
+      owner: nochoudh
+      group: root
+      mode: 0755
+    tags:
+      - dir
+
+#  - copy:
+#      src: /opt/images/ose3-builder-images.tar
+#      dest: /var/images/ose3-builder-images.tar
+#      owner: root
+#      group: root
+#      mode: 0755
+#    tags:
+#      - copy
+
+  - copy:
+      src: /opt/images/ose3-images.tar
+      dest: /var/images/ose3-images.tar
+      owner: root
+      group: root
+      mode: 0755
+    tags:
+      - copy
+
+  - copy:
+      src: /opt/images/ose3-logging-metrics-images.tar
+      dest: /var/images/ose3-logging-metrics-images.tar
+      owner: root
+      group: root
+      mode: 0755
+    tags:
+      - copy
+
+  - name: Docker load ose3-images.tar
+    shell: docker load -i {{ item }}
+    args:
+      executable: /bin/bash
+    with_items:
+      - /var/images/ose3-images.tar
+      - /var/images/ose3-logging-metrics-images.tar
+    tags:
+      - docker
+
+#  - name: Docker load ose3-builder-images.tar
+#    shell: docker load -i /var/images/ose3-builder-images.tar
+#      executable: /bin/bash
+#    when: {'pci-appnodes' in "group_names"}
+
+  - name: Delete the dir
+    file:
+      path: /var/images
+      state: absent
+    tags:
+      - delete

@@ -1,0 +1,95 @@
+---
+
+  - ping:
+  - name: Checking distribution details
+    debug:
+      msg: "Running: {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }}"
+
+  - name: Enable selinux
+    selinux:
+      conf:   /etc/selinux/config
+      policy: targeted
+      state:  enforcing
+    notify:
+      - Reboot server
+      - Reboot server wait
+
+  - name: hardened openshift - disable swap
+    command: swapoff -a
+    tags:
+      - swap
+      
+  - name: install the latest version of OS PreReq packages
+    yum: pkg={{item}} state=present update_cache=yes
+    with_items:
+     - wget
+     - git
+     - net-tools
+     - bind-utils
+     - iptables-services
+     - bridge-utils
+     - bash-completion
+     - kexec-tools
+     - sos
+     - psacct
+     - NetworkManager
+     - docker
+     - atomic-openshift-excluder
+     - atomic-openshift-docker-excluder
+     - kernel-devel
+    tags:
+      - packages
+
+
+  - name: Extending Logical Volume in masters
+    lvol:
+      vg: VolGroup00
+      lv: LogVol02
+      size: 40g
+    tags:
+      - lvm
+
+  - name: Extending Filesystem
+    filesystem:
+      fstype: xfs
+      dev: /dev/VolGroup00/LogVol02
+      resizefs: yes
+    tags:
+      - lvm
+
+  - name: Remove atomic-openshift packages from the exclude list '/etc/yum.conf'
+    command: atomic-openshift-excluder unexclude
+
+#  - name: Upgrade all packages
+#    yum: name='*' state=latest
+
+  - name: Updating docker file '/etc/sysconfig/docker'
+    lineinfile:
+      path: /etc/sysconfig/docker
+      regexp: '^OPTIONS='
+      line: 'OPTIONS="--selinux-enabled --insecure-registry 172.32.0.0/16"'
+
+  - name: Enable Docker Storage if not configured
+    shell: grep -q ^DOCKER_STORAGE_OPTIONS.*thinpooldev /etc/sysconfig/docker-storage || docker-storage-setup
+    args:
+      executable: /bin/bash
+
+  - name: Start and enable NetworkManager service
+    service:
+      name: NetworkManager
+      state: started
+      enabled: yes
+
+  - name: Start and enable Docker service
+    service:
+      name: docker
+      state: started
+      enabled: yes
+
+  - lineinfile:
+      path: /etc/hosts
+      line: '{{ item }}'
+    with_items:
+      - '{{ master_host1 }}'
+      - '{{ master_node2 }}'
+      - '{{ master_node3 }}'

@@ -1,0 +1,8 @@
+---
+- hosts: nodes
+#  serial: 1
+
+  tasks:
+    - name: Print Memory and CPU Cores
+      debug:
+        msg: "Host {{ ansible_nodename }} - CPU: {{ ansible_processor_vcpus }}, Memory: {{ (ansible_memtotal_mb/1000)|round|int }} GB"

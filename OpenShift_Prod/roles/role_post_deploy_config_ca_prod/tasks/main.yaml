@@ -1,0 +1,523 @@
+---
+
+# ====================================
+#  Configuration - Master Nodes
+# ====================================
+
+- include: set_facts.yaml
+  when:
+  - "'pdl20ocpmma0' in inventory_hostname"
+  tags:
+  - master
+
+- name: deploy master-configuration API
+  template:
+    src: atomic-openshift-master-api.j2
+    dest: /etc/sysconfig/atomic-openshift-master-api
+    owner: root
+    group: root
+    backup: yes
+  register: mst
+  when:
+  - "'pdl20ocpmma0' in inventory_hostname"
+  tags:
+  - master
+
+- name: deploy sysconfig master-configuration
+  copy:
+    src: atomic-openshift-master
+    dest: /etc/sysconfig/atomic-openshift-master
+    owner: root
+    group: root
+    backup: yes
+  register: mst1
+  when:
+  - "'pdl20ocpmma0' in inventory_hostname"
+  tags:
+  - master
+
+- name: deploy master-configuration controllers
+  copy:
+    src: atomic-openshift-master-controllers
+    dest: /etc/sysconfig/atomic-openshift-master-controllers
+    owner: root
+    group: root
+    backup: yes
+  register: mst2
+  when:
+  - "'pdl20ocpmma0' in inventory_hostname"
+  tags:
+  - master
+
+- name: deploy master-configuration
+  template:
+    src: master-config.yaml.j2
+    dest: /etc/origin/master/master-config.yaml
+    owner: root
+    group: root
+    backup: yes
+  register: mst3
+  when:
+  - "'pdl20ocpmma0' in inventory_hostname"
+  tags:
+  - master
+
+- name: restart master services - API
+  service:
+    name: atomic-openshift-master-api.service
+    state: restarted
+  when: (mst|changed) or
+        (mst1|changed) or
+        (mst2|changed) or
+        (mst3|changed)
+  tags:
+  - master
+
+- name: restart master services - controller
+  service:
+    name: atomic-openshift-master-controllers.service
+    state: restarted
+  when: (mst|changed) or
+        (mst1|changed) or
+        (mst2|changed) or
+        (mst3|changed)
+  tags:
+  - master
+
+- name: deploy sysconfig atomic-openshift-node - master
+  copy:
+    src: atomic-openshift-node
+    dest: /etc/sysconfig/atomic-openshift-node
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdl20ocpmma0' in inventory_hostname"
+  tags:
+  - master
+
+- name: deploy origin node-config.yaml - master
+  template:
+    src: node-master-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdl20ocpmma0' in inventory_hostname"
+  tags:
+  - master
+
+# ====================================
+#  Configuration - Infrastructure Nodes
+# ====================================
+
+- name: deploy sysconfig atomic-openshift-node - infra-master
+  copy:
+    src: atomic-openshift-node
+    dest: /etc/sysconfig/atomic-openshift-node
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdl20ocpmin0' in inventory_hostname"
+  tags:
+  - infra-master
+
+- name: deploy origin node-config.yaml - infra-master
+  template:
+    src: node-infra-master-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdl20ocpmin0' in inventory_hostname"
+  tags:
+  - infra-master
+
+- name: deploy sysconfig atomic-openshift-node - infra-pci
+  copy:
+    src: atomic-openshift-node
+    dest: /etc/sysconfig/atomic-openshift-node
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdl20ocppin0' in inventory_hostname"
+  tags:
+  - infra-pci
+
+- name: deploy origin node-config.yaml - infra-pci
+  template:
+    src: node-infra-pci-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdl20ocppin0' in inventory_hostname"
+  tags:
+  - infra-pci
+
+- name: deploy sysconfig atomic-openshift-node - infra-dmz
+  copy:
+    src: atomic-openshift-node
+    dest: /etc/sysconfig/atomic-openshift-node
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdl20ocpdin0' in inventory_hostname"
+  tags:
+  - infra-dmz
+
+- name: deploy origin node-config.yaml - infra-dmz
+  template:
+    src: node-infra-dmz-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdl20ocpdin0' in inventory_hostname"
+  tags:
+  - infra-dmz
+
+- name: deploy sysconfig atomic-openshift-node - infra-corp
+  copy:
+    src: atomic-openshift-node
+    dest: /etc/sysconfig/atomic-openshift-node
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdl20ocpcin0' in inventory_hostname"
+  tags:
+  - infra-corp
+
+- name: deploy origin node-config.yaml - infra-corp
+  template:
+    src: node-infra-corp-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdl20ocpcin0' in inventory_hostname"
+  tags:
+  - infra-corp
+
+# ====================================
+#  Configuration - Application Nodes
+# ====================================
+
+- name: deploy sysconfig atomic-openshift-node - app-pci
+  copy:
+    src: atomic-openshift-node
+    dest: /etc/sysconfig/atomic-openshift-node
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdh20ocppch0' in inventory_hostname"
+  tags:
+  - app-pci
+
+- name: deploy sysconfig atomic-openshift-node - app-pci
+  copy:
+    src: atomic-openshift-node
+    dest: /etc/sysconfig/atomic-openshift-node
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdl20ocppch0' in inventory_hostname"
+  tags:
+  - app-pci
+
+- name: deploy origin node-config.yaml - app-pci
+  template:
+    src: node-app-pci-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdh20ocppch0' in inventory_hostname"
+  tags:
+  - app-pci
+
+- name: deploy origin node-config.yaml - app-pci
+  template:
+    src: node-app-pci-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdl20ocppch0' in inventory_hostname"
+  tags:
+  - app-pci
+
+- name: deploy sysconfig atomic-openshift-node - app-dmz
+  copy:
+    src: atomic-openshift-node
+    dest: /etc/sysconfig/atomic-openshift-node
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdh20ocpdch0' in inventory_hostname"
+  tags:
+  - app-dmz
+
+- name: deploy origin node-config.yaml - app-dmz
+  template:
+    src: node-app-dmz-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdh20ocpdch0' in inventory_hostname"
+  tags:
+  - app-dmz
+
+- name: deploy sysconfig atomic-openshift-node - app-corp
+  copy:
+    src: atomic-openshift-node
+    dest: /etc/sysconfig/atomic-openshift-node
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdh20ocpcch0' in inventory_hostname"
+  tags:
+  - app-corp
+
+- name: deploy origin node-config.yaml - app-corp
+  template:
+    src: node-app-corp-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdh20ocpcch0' in inventory_hostname"
+  tags:
+  - app-corp
+
+# ====================================
+#  Configuration - Registry
+# ====================================
+
+- name: clean cert dirs - registry
+  file:
+    path: "/etc/docker/certs.d/{{ item }}"
+    state: absent
+  with_items:
+    - 'registry.prod-ocp.ca.bestbuy.com'
+    - '172.32.219.79:5000'
+    - 'docker-registry.default.svc.cluster.local:5000'
+    - 'docker-registry.default.svc'
+  tags:
+  - registry
+
+- name: create cert dirs - registry
+  file:
+    path: "/etc/docker/certs.d/{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - 'registry.prod-ocp.ca.bestbuy.com'
+    - '172.32.219.79:5000'
+    - 'docker-registry.default.svc.cluster.local:5000'
+    - 'docker-registry.default.svc'
+  tags:
+  - registry
+
+- name: copy registry PROD certificates
+  copy:
+    src: registry.crt
+    dest: "/etc/docker/certs.d/{{ item }}/ca.crt"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - 'registry.prod-ocp.ca.bestbuy.com'
+    - '172.32.219.79:5000'
+    - 'docker-registry.default.svc.cluster.local:5000'
+    - 'docker-registry.default.svc'
+  tags:
+  - registry
+
+- name: copy registry PROD certificates to OS Certs Dir
+  copy:
+    src: registry.crt
+    dest: "/etc/pki/ca-trust/source/anchors/{{ item }}.crt"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - 'registry.prod-ocp.ca.bestbuy.com'
+    - 'docker-registry.default.svc.cluster.local:5000'
+    - '172.32.219.79:5000'
+    - 'docker-registry.default.svc'
+  tags:
+  - registry
+
+- name: Update Cert on OS
+  command: update-ca-trust enable
+  tags:
+  - registry
+
+# ====================================
+#  Configuration - Docker
+# ====================================
+
+- name: set docker configuration - master
+  copy:
+    src: docker
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdl20ocpmma0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: set docker configuration - infra-master
+  copy:
+    src: docker
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdl20ocpmin0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: set docker configuration - infra-pci
+  copy:
+    src: docker
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdl20ocppin0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: set docker configuration - infra-dmz
+  copy:
+    src: docker
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdl20ocpdin0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: set docker configuration - infra-corp
+  copy:
+    src: docker
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdl20ocpcin0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: set docker configuration - app-pci
+  copy:
+    src: docker_appnode
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdh20ocppch0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: set docker configuration - app-pci
+  copy:
+    src: docker_appnode
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdl20ocppch0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: set docker configuration - app-dmz
+  copy:
+    src: docker_appnode
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdh20ocpdch0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: set docker configuration - app-corp
+  copy:
+    src: docker_appnode
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdh20ocpcch0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: sleep
+  pause:
+    seconds: 20
+  tags:
+  - dock
+
+- name: hardened openshift - disable swap
+  command: swapoff -a
+  tags:
+  - swap

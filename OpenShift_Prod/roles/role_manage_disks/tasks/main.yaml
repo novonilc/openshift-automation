@@ -1,0 +1,169 @@
+
+  - name: Increase the disk size to 100G in VMware
+    vmware_guest:
+      hostname: "{{ vcenter }}"
+      username: "{{ vmware_user_name }}"
+      password: "{{ vmware_passwd }}"
+      validate_certs: no
+      name: "{{ inventory_hostname_short }}"
+      state: poweredon
+      disk:
+       - size_gb: 70
+         type: thin
+         datastore: "{{ datastore }}"
+    notify:
+      - Reboot server
+      - Reboot server wait
+    tags:
+      - vmware
+
+  - parted:
+      device: /dev/sda
+      number: 3
+      flags: [ lvm ]
+      state: present
+    notify:
+      - Reboot server
+      - Reboot server wait
+    tags:
+      - parted_old
+
+  - name: partition existing disk
+    shell: echo -e "n\np\n3\n\n\nw" | sudo fdisk /dev/sda
+    args:
+      executable: /bin/bash
+    notify:
+      - Reboot server
+      - Reboot server wait
+    tags:
+      - parted_new
+
+  - lvg:
+     vg: VolGroup00
+     pvs: /dev/sda1,/dev/sda2,/dev/sda3
+    tags:
+      - extendvg
+      - master
+      - infra
+      - app
+
+  - name: Extending Logical Volume in masters
+    lvol:
+      vg: VolGroup00
+      lv: LogVol02
+      size: 40g
+    when:
+    - "'{{master}}' in inventory_hostname"
+    tags:
+      - master
+      - extendlv
+
+  - name: Extending Filesystem in masters
+    filesystem:
+      fstype: xfs
+      dev: /dev/VolGroup00/LogVol02
+      resizefs: yes
+    when:
+    - "'{{master}}' in inventory_hostname"
+    tags:
+      - master
+      - extendlv
+
+  - name: Extending Logical Volume in infra
+    lvol:
+      vg: VolGroup00
+      lv: LogVol02
+      size: 20g
+    when:
+    - "'{{infra}}' in inventory_hostname"
+    tags:
+      - infra
+      - extendlv
+
+  - name: Extending Logical Volume in new_nodes1
+    lvol:
+      vg: VolGroup00
+      lv: LogVol02
+      size: 20g
+    when:
+    - "'{{new_nodes1}}' in inventory_hostname"
+    tags:
+      - new_nodes
+
+  - name: Extending Logical Volume in new_nodes2
+    lvol:
+      vg: VolGroup00
+      lv: LogVol02
+      size: 20g
+    when:
+    - "'{{new_nodes2}}' in inventory_hostname"
+    tags:
+      - new_nodes
+
+  - name: Extending Filesystem in infra
+    filesystem:
+      fstype: xfs
+      dev: /dev/VolGroup00/LogVol02
+      resizefs: yes
+    when:
+    - "'{{new_nodes1}}' in inventory_hostname"
+    tags:
+      - new_nodes
+
+  - name: Extending Filesystem in infra
+    filesystem:
+      fstype: xfs
+      dev: /dev/VolGroup00/LogVol02
+      resizefs: yes
+    when:
+    - "'{{new_nodes2}}' in inventory_hostname"
+    tags:
+      - new_nodes
+
+  - name: Extending Filesystem in infra
+    filesystem:
+      fstype: xfs
+      dev: /dev/VolGroup00/LogVol02
+      resizefs: yes
+    when:
+    - "'{{infra}}' in inventory_hostname"
+    tags:
+      - lvm
+      - infra
+      - extendlv
+
+  - name: Extending Filesystem in infra
+    filesystem:
+      fstype: xfs
+      dev: /dev/VolGroup00/LogVol02
+      resizefs: yes
+    when:
+    - "'{{infra}}' in inventory_hostname"
+    tags:
+      - lvm
+      - infra
+      - extendlv
+
+  - name: Extending Logical Volume in app
+    lvol:
+      vg: VolGroup00
+      lv: LogVol02
+      size: 20g
+    when:
+    - "'{{app}}' in inventory_hostname"
+    tags:
+      - lvm
+      - app
+      - extendlv
+
+  - name: Extending Filesystem in app
+    filesystem:
+      fstype: xfs
+      dev: /dev/VolGroup00/LogVol02
+      resizefs: yes
+    when:
+    - "'{{app}}' in inventory_hostname"
+    tags:
+      - lvm
+      - app
+      - extendlv

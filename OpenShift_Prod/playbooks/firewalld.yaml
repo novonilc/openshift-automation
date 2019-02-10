@@ -1,0 +1,19 @@
+---
+- hosts: nodes
+  tasks:
+  - firewalld:
+      port: 161/udp
+      permanent: true
+      state: enabled
+
+  - firewalld:
+      port: 17775/tcp
+      permanent: true
+      state: enabled
+
+  - name: Reload firewalld
+    shell: firewall-cmd --reload
+    args:
+      executable: /bin/bash
+    tags:
+      - reload

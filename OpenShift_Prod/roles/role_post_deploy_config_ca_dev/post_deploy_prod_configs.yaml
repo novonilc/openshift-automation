@@ -1,0 +1,8 @@
+---
+- hosts: nodes
+  become: true
+  become_method: sudo
+  serial: 1
+
+  roles:
+  - { role: ../role_post_deploy_config_ca_dev }

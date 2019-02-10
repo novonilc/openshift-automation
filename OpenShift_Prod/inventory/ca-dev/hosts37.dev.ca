@@ -1,0 +1,110 @@
+[OSEv3:children]
+masters
+nodes
+etcd
+lb
+
+# Set variables common for all OSEv3 hosts
+[OSEv3:vars]
+ansible_become=yes
+deployment_type=openshift-enterprise
+openshift_install_examples=false
+os_firewall_use_firewalld=true
+osm_default_subdomain=dev-ocp.ca.bestbuy.com
+openshift_master_default_subdomain=dev-ocp.ca.bestbuy.com
+openshift_use_dnsmasq=true
+openshift_clock_enabled=true
+
+ansible_service_broker_install=true
+ansible_service_broker_remove=false
+
+debug_level=2
+openshift_rolling_restart_mode=services
+openshift_logging_image_version=v3.7
+
+openshift_metrics_install_metrics=true
+openshift_metrics_image_version=v3.7
+openshift_metrics_hawkular_hostname=metrics.dev-ocp.ca.bestbuy.com
+openshift_metrics_cassandra_storage_type=pv
+openshift_metrics_cassandra_pvc_size=198Gi
+
+openshift_pkg_version=-3.7.72
+openshift_image_tag=v3.7.72
+
+openshift_hostname_check=false
+
+# Configure loggingPublicURL in the master config for aggregate logging, defaults
+# to https://kibana.{{ openshift_master_default_subdomain }}
+openshift_logging_use_ops=true
+openshift_logging_install_logging=true
+openshift_master_logging_public_url=https://kibana.dev-ocp.ca.bestbuy.com
+
+# Configure custom ca certificate
+# NOTE: CA certificate will not be replaced with existing clusters.
+# This option may only be specified when creating a new cluster or
+# when redeploying cluster certificates with the redeploy-certificates
+# playbook.
+#openshift_master_overwrite_named_certificates=true
+#openshift_master_named_certificates=[{"certfile": "/named_certs/dev-ocp.ca.bestbuy.com.crt", "keyfile": "/named_certs/dev-ocp.ca.bestbuy.com.key"}]
+
+# Configuring Global Build Defaults
+openshift_builddefaults_resources_requests_cpu=2000m
+openshift_builddefaults_resources_requests_memory=2Gi
+openshift_builddefaults_resources_limits_cpu=4000m
+openshift_builddefaults_resources_limits_memory=4Gi
+
+
+# Active_Directory LDAP auth
+openshift_master_identity_providers=[{'name': 'Active_Directory', 'challenge': 'true', 'login': 'true', 'kind': 'LDAPPasswordIdentityProvider', 'attributes': {'id': ['sAMAccountName'], 'email': ['mail'], 'name': ['sAMAccountName'], 'preferredUsername': ['uid']}, 'bindDN': 'cn=BCA-S-OSHIFT-DEV-AD,ou=Infrastructure,ou=Service Accounts,ou=ECOMM,dc=ca,dc=bestbuy,dc=com', 'bindPassword': 'C5V5rR2cjxuMns2XMgSHXvKDLV2QmE', 'ca': '', 'insecure': 'true', 'url': 'ldap://ad-ca.ca.bestbuy.com/ou=Users,ou=Best Buy Canada,dc=ca,dc=bestbuy,dc=com?sAMAccountName?sub?(memberOf:1.2.840.113556.1.4.1941:=cn=BCA-U-OPENSHIFT-DEV-USERS,OU=OPENSHIFT,OU=Groups,OU=ECOMM,DC=ca,DC=bestbuy,DC=com)'}]
+
+openshift_hosted_router_selector='zone=infra'
+openshift_registry_selector='zone=infra'
+osm_default_node_selector='zone=appnodes'
+
+# OpenShift Docker options /etc/sysconfig/docker
+openshift_docker_options="--selinux-enabled --log-driver=json-file --log-opt max-size=50m --log-opt max-file=4 --ipv6=false"
+openshift_docker_additional_registries=registry.access.redhat.com
+openshift_docker_disable_push_dockerhub=true
+openshift_hosted_registry_replicas=1
+
+# Configure SDN cluster network and kubernetes service CIDR blocks. These
+# network blocks should be private and should not conflict with network blocks
+# in your infrastructure that pods may require access to. Can not be changed
+# after deployment.
+osm_cluster_network_cidr=10.1.0.0/16
+openshift_master_portal_net=172.32.0.0/16
+os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
+
+# Native high availability cluster method with optional load balancer.
+# If no lb group is defined, the installer assumes that a load balancer has
+# been preconfigured. For installation the value of
+# openshift_master_cluster_hostname must resolve to the load balancer
+# or to one or all of the masters defined in the inventory if no load
+# balancer is present.
+openshift_master_cluster_method=native
+openshift_master_cluster_hostname=openshift-portal.dev-ocp.ca.bestbuy.com
+openshift_master_cluster_public_hostname=openshift-public-portal.dev-ocp.ca.bestbuy.com
+
+# Enable cockpit
+#osm_use_cockpit=true
+# Set cockpit plugins
+#osm_cockpit_plugins=['cockpit-kubernetes']
+
+
+# host group for master
+[masters]
+dtl20ocpcma0[1:3].ca.bestbuy.com
+
+# host group for etcd
+[etcd]
+dtl20ocpcma0[1:3].ca.bestbuy.com
+
+# Specify load balancer host
+[lb]
+dtl20ocpcin0[1:3].ca.bestbuy.com
+
+# host group for nodes, includes region info
+[nodes]
+dtl20ocpcma0[1:3].ca.bestbuy.com openshift_node_labels="{'region': 'west', 'datacenter': 'vidc', 'zone': 'master', 'network_zone': 'ca'}" openshift_schedulable=False
+dtl20ocpcin0[1:3].ca.bestbuy.com openshift_node_labels="{'region': 'west', 'datacenter': 'vidc', 'zone': 'infra', 'router': 'true', 'network_zone': 'ca'}" openshift_schedulable=True
+dtl20ocpcch[01:40].ca.bestbuy.com openshift_node_labels="{'region': 'west', 'datacenter': 'vidc', 'zone': 'appnodes', 'network_zone': 'ca'}" openshift_schedulable=True

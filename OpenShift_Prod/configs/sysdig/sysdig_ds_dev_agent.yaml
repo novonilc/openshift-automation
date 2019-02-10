@@ -1,0 +1,114 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  creationTimestamp: null
+  generation: 1
+  labels:
+    app: sysdig-agent
+  name: sysdig-agent
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      name: sysdig-agent
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: sysdig-agent
+    spec:
+      containers:
+      - env:
+        - name: ACCESS_KEY
+          value: 119c81a1-93cf-4fee-ab58-c8bd639ebd1c
+        - name: COLLECTOR_PORT
+          value: "6443"
+        - name: TAGS
+          value: orchestrator:openshift-dev,role:node
+        - name: COLLECTOR
+          value: 172.21.76.41
+        - name: SECURE
+          value: "true"
+        - name: CHECK_CERTIFICATE
+          value: "false"
+        - name: ADDITIONAL_CONF
+          value: 'autodrop:\n  enabled: false\nnew_k8s: true\nwatchdog:\n  max_memory_usage_mb: 1536\n  warn_memory_usage_mb: 1024\n  max_memory_usage_subprocesses:\n    sdchecks: 128\n    sdjagent: 256\n    mountedfs_reader: 32\n    statsite_forwarder: 32\n    cointerface: 1024\njmx:\n  limit: 4000\njmx:\n  per_process_beans:\n    BbycService:\n      pattern: hystrix-service\n      beans:\n        - query: com.netflix.servo:name=countSuccess,*\n          attributes:\n            - name: value\n              alias: hystrix.{instance}.countSuccess\n              type: counter\n        - query: com.netflix.servo:name=countFailure,*\n          attributes:\n            - name: value\n              alias: hystrix.{instance}.countFailure\n              type: counter\n        - query: com.netflix.servo:name=errorPercentage,*\n          attributes:\n            - name: value\n              alias: hystrix.{instance}.errorPercentage\n              type: counter\n        - query: com.netflix.servo:name=latencyExecute_mean,*\n          attributes:\n            - name: value\n              alias: hystrix.{instance}.latencyExecute_mean\n              type: counter\n        - query: com.netflix.servo:name=latencyTotal_mean,*\n          attributes:\n            - name: value\n              alias: hystrix.{instance}.latencyTotal_mean\n              type: counter\n        - query: com.netflix.servo:name=rollingCountFailure,*\n          attributes:\n            - name: value\n              alias: hystrix.{instance}.rollingCountFailure\n              type: counter\n        - query: com.netflix.servo:name= rollingCountSuccess,*\n          attributes:\n            - name: value\n              alias: hystrix.{instance}.rollingCountSuccess\n              type: counter'
+        image: registry.dev-ocp.ca.bestbuy.com/sysdig-cloud/agent:latest
+        imagePullPolicy: Always
+        name: sysdig-agent
+        resources:
+# Resources needed are subjective on the actual workload
+# please refer to Sysdig Support for more info about it
+          requests:
+            cpu: 500m
+            memory: 1024Mi
+          limits:
+            memory: 1536Mi
+        securityContext:
+          privileged: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /host/var/run/docker.sock
+          name: docker-sock
+        - mountPath: /host/dev
+          name: dev-vol
+        - mountPath: /host/proc
+          name: proc-vol
+          readOnly: true
+        - mountPath: /host/boot
+          name: boot-vol
+          readOnly: true
+        - mountPath: /host/lib/modules
+          name: modules-vol
+          readOnly: true
+        - mountPath: /host/usr
+          name: usr-vol
+          readOnly: true
+        - mountPath: /dev/shm
+          name: dshm
+      dnsPolicy: ClusterFirst
+      hostNetwork: true
+      hostPID: true
+      nodeSelector:
+        sysdig: "true"
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: sysdig-agent
+      serviceAccountName: sysdig-agent
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - emptyDir:
+          medium: Memory
+        name: dshm
+      - hostPath:
+          path: /var/run/docker.sock
+        name: docker-sock
+      - hostPath:
+          path: /dev
+        name: dev-vol
+      - hostPath:
+          path: /proc
+        name: proc-vol
+      - hostPath:
+          path: /boot
+        name: boot-vol
+      - hostPath:
+          path: /lib/modules
+        name: modules-vol
+      - hostPath:
+          path: /usr
+        name: usr-vol
+  templateGeneration: 1
+  updateStrategy:
+    type: OnDelete
+status:
+  currentNumberScheduled: 16
+  desiredNumberScheduled: 16
+  numberAvailable: 15
+  numberMisscheduled: 0
+  numberReady: 15
+  numberUnavailable: 1
+  observedGeneration: 1
+  updatedNumberScheduled: 16

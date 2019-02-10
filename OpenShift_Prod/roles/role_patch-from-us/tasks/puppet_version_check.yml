@@ -1,0 +1,23 @@
+---
+#### puppet RPM checking
+
+- name: checking puppet packages
+  shell: rpm -qa | grep puppet
+  register: puppetpkg
+  ignore_errors: true
+  changed_when: puppetpkg.stdout
+
+#### Stopping puppet service
+
+- name: Stopping puppet service
+  service: name=puppet state=stopped
+  register: puppetstop
+  ignore_errors: true
+  tags: puppetstop
+
+#### Comment out exclude in yum.conf 
+
+- name: comment exclude in yum.conf
+  replace: dest=/etc/yum.conf regexp="^exclude=" replace="#exclude=" backup=yes
+#  when: '"puppet-3.7.5" in puppetpkg.stdout'
+

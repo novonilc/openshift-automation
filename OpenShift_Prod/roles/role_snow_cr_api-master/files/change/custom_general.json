@@ -1,0 +1,106 @@
+[
+{
+   "type":"Normal",
+   "affected_cis":"pdl01arcdb025,pdl01arcdb027,pdl01arcdb029,pdl01arcdb031,pdl01arcdb033,pdl01arcdb035",
+   "backout_plan":"Roll back the server from VM snap shot \n Need to co-ordinate with VMware team to roll back the server from snapshot",
+   "category":"Server",
+   "change_owner":"A1106905",
+   "change_owner_group":"L3-PLT-LINUX-IT-US",
+   "description":"FY19 R1 patching on Archimedes (ARC) servers Total  06 \n These severs are pending from last patching event.\npdl01arcdb025\npdl01arcdb027\npdl01arcdb029\npdl01arcdb031\npdl01arcdb033\npdl01arcdb035\nArchimedes (ARC)",
+   "short_description":"FY19 R1 patching on Archimedes (ARC) servers --Total 06",
+   "implementation_coordinator":"A1106905",
+   "implementation_plan":"Test",
+   "implementation_group":"L2-PLT-UNIX-IT-US",
+   "planned_start_date":"2018-04-06 00:00:01",
+   "planned_duration":"1 1:00:00",
+   "is_outage_communicated":"Yes",
+   "is_outage_required":"Yes",
+   "is_project_cer_related":"0",
+   "is_test_plan_attached":"true",
+   "is_testing_passed":"Passed",
+   "tester_name":"A1106905",
+   "test_results":"pass",
+   "is_validation_passed":"Passed",
+   "is_validation_plan_attached":"true",
+   "outage_business_impact":"What is the user/business impact?\nWe will be doing it rolling manner so no impact ",
+   "outage_duration":"1 1:00:001",
+   "outage_starts":"2018-04-06 00:10:01",
+   "outage_systems_impacted":"Archimedes (ARC)",
+   "outage_type":"Degraded",
+   "project_cer_number":"12345",
+   "release_record":"RLSE0012623",
+   "risk":"4",
+   "subcategory":"Patching",
+   "test_date":"2018-03-27 00:00:01",
+   "test_plan":"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments.\n We have completed successfully in lower environment. Example: LEMR00051011. \n Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook.\n2. Validate the result by using below command.\n$ sudo yum update",
+ "validation_plan":"RHEL 5.X/6.x/7.x servers:\nVerifying if all available security patches are upgraded:",
+   "validation_results":"RHEL 5.X/6.x/7.x servers:\nVerifying if all available security patches are upgraded:",
+   "validator_name":"A1106905",
+   "validation_date":"2018-04-06 00:30:01",
+   "insert_state":"DRAFT",
+   "insert_partial":"yes",
+   "return_conflicts":"no",
+   "ctasks":[
+      {
+         "assignment_group":"L1-MEM-IT-GLB",
+         "description":"Enable/Disable Monitoring",
+         "order":"100",
+         "short_description":"Enable/Disable Monitoring"
+      },
+          {
+         "assignment_group":"L2-ASM-OMS-IT-US",
+         "description":"Start/stop/validate application",
+         "order":"100",
+         "short_description":"Start/stop/validate application"
+      },
+          {
+         "assignment_group":"L2-DATACENTER-OPS-IT-GLB",
+         "description":"Release/hold jobs",
+         "order":"100",
+         "short_description":"Start/stop/validate application"
+      },
+          {
+         "assignment_group":"L2-CASSANDRA-IT-US",
+         "description":"Start/stop/validate application",
+         "order":"100",
+         "short_description":"Start/stop/validate application"
+      },
+          {
+         "assignment_group":"L2-DB-ORACLE-IT-US",
+         "description":"Start/stop/validate application",
+         "order":"100",
+         "short_description":"Start/stop/validate application"
+      },
+          {
+         "assignment_group":"L2-MW-APP-IT-GLB",
+         "description":"If applicable start/stop/validate application services",
+         "order":"100",
+         "short_description":"If applicable start/stop/validate application services"
+      },
+      {
+         "assignment_group":"L2-MW-MSG-IT-GLB",
+         "description":"If applicable start/stop/validate application services",
+         "order":"100",
+         "short_description":"If applicable start/stop/validate application services"
+      },
+          {
+         "assignment_group":"L2-PLT-UNIX-IT-US",
+         "description":"Assist OMP Team",
+         "order":"100",
+         "short_description":"Assist OMP Team"
+      },
+          {
+         "assignment_group":"L2-PLT-WINTEL-IT-US",
+         "description":"To take snapshot of virtual server",
+         "order":"100",
+         "short_description":"To take snapshot of virtual server"
+      },
+          {
+         "assignment_group":"L2-STORAGE-IT-US",
+         "description":"To check if backup is available",
+         "order":"100",
+         "short_description":"To check if backup is available"
+      }
+   ]
+}
+]

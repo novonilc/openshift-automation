@@ -1,0 +1,118 @@
+[OSEv3:children]
+masters
+nodes
+etcd
+lb
+
+# Set variables common for all OSEv3 hosts
+[OSEv3:vars]
+ansible_become=yes
+deployment_type=openshift-enterprise
+openshift_install_examples=false
+os_firewall_use_firewalld=true
+osm_default_subdomain=prod-ocp.na.bestbuy.com
+openshift_master_default_subdomain=prod-ocp.na.bestbuy.com
+openshift_use_dnsmasq=true
+openshift_clock_enabled=true
+
+ansible_service_broker_install=false
+ansible_service_broker_remove=true
+
+openshift_http_proxy='http://usproxy.na.bestbuy.com:8080'
+openshift_no_proxy='.bbydmz.com,.cluster.local,.na.bestbuy.com,.svc,10.2.0.0/16,168.94.217.158,168.94.217.159,168.94.217.173,172.32.0.0/16,168.94.217.158,168.94.217.159,168.94.217.173,master-hdc.prod-ocp.na.bestbuy.com,docker-registry.default.svc.cluster.local,registry.prod-ocp.na.bestbuy.com,registry.dev-ca.bestbuy.com,pdh10ocppch01.bbydmz.com,pdh10ocppch02.bbydmz.com,pdh10ocppch03.bbydmz.com,pdl10ocpcin01.na.bestbuy.com,pdl10ocpcin02.na.bestbuy.com,pdl10ocpcin03.na.bestbuy.com,pdl10ocpcma01.na.bestbuy.com,pdl10ocpcma02.na.bestbuy.com,pdl10ocppin01.bbydmz.com,pdl10ocppin02.bbydmz.com,pdl10ocppin03.bbydmz.com,pdh10ocpdch01.bbydmz.com,pdh10ocpdch02.bbydmz.com,pdh10ocpdch03.bbydmz.com,pdl10ocpdin01.bbydmz.com,pdl10ocpdin02.bbydmz.com,pdl10ocpdin03.bbydmz.com'
+
+debug_level=2
+openshift_rolling_restart_mode=services
+openshift_logging_image_version=v3.7
+
+openshift_metrics_install_metrics=true
+openshift_metrics_image_version=v3.7
+openshift_metrics_hawkular_hostname=metrics.prod-ocp.na.bestbuy.com
+openshift_metrics_cassandra_storage_type=pv
+openshift_metrics_cassandra_pvc_size=198Gi
+
+openshift_pkg_version=-3.7.46
+openshift_image_tag=v3.7.46
+
+openshift_hostname_check=false
+
+# Configure loggingPublicURL in the master config for aggregate logging, defaults
+# to https://kibana.{{ openshift_master_default_subdomain }}
+openshift_logging_use_ops=true
+openshift_logging_install_logging=true
+openshift_master_logging_public_url=https://kibana.prod-ocp.na.bestbuy.com
+
+# Configure custom ca certificate
+# NOTE: CA certificate will not be replaced with existing clusters.
+# This option may only be specified when creating a new cluster or
+# when redeploying cluster certificates with the redeploy-certificates
+# playbook.
+#openshift_master_overwrite_named_certificates=true
+#openshift_master_named_certificates={'certfile': '/named_certs/prod-ocp.na.bestbuy.com.crt', 'keyfile': '/named_certs/prod-ocp.na.bestbuy.com.key'}
+
+openshift_builddefaults_resources_requests_cpu=100m
+openshift_builddefaults_resources_requests_memory=256m
+openshift_builddefaults_resources_limits_cpu=250m
+openshift_builddefaults_resources_limits_memory=512m
+
+
+# Active_Directory LDAP auth
+openshift_master_identity_providers=[{'name': 'Active_Directory', 'challenge': 'true', 'login': 'true', 'kind': 'LDAPPasswordIdentityProvider', 'attributes': {'id': ['sAMAccountName'], 'email': ['mail'], 'name': ['sAMAccountName'], 'preferredUsername': ['uid']}, 'bindDN': 'cn=bca-s-oshift-prod-ad,ou=Service Accounts,ou=Users,ou=Best Buy Canada,dc=ca,dc=bestbuy,dc=com', 'bindPassword': 'GE95pxeHRQTJDbqWguQ6DfJC4WqhB8', 'ca': '', 'insecure': 'true', 'url': 'ldap://ad-ca.ca.bestbuy.com/ou=Users,ou=Best Buy Canada,dc=ca,dc=bestbuy,dc=com?sAMAccountName?sub?(memberOf:1.2.840.113556.1.4.1941:=cn=BCA-U-OPENSHIFT-PROD-USERS,OU=Domain Security,OU=Groups,OU=Best Buy Canada,DC=ca,DC=bestbuy,DC=com)'}]
+
+openshift_hosted_router_selector='zone=infra-master'
+openshift_registry_selector='zone=infra-master'
+#osm_default_node_selector='zone=appnodes'
+
+# OpenShift Docker options /etc/sysconfig/docker
+openshift_docker_options="--selinux-enabled --log-driver=json-file --log-opt max-size=50m --log-opt max-file=4 --ipv6=false"
+openshift_docker_additional_registries=docker-registry.default.svc.cluster.local:5000,registry.prod-ocp.na.bestbuy.com,registry.access.redhat.com
+openshift_docker_disable_push_dockerhub=true
+openshift_hosted_registry_replicas=1
+
+# Configure SDN cluster network and kubernetes service CIDR blocks. These
+# network blocks should be private and should not conflict with network blocks
+# in your infrastructure that pods may require access to. Can not be changed
+# after deployment.
+osm_cluster_network_cidr=10.2.0.0/16
+openshift_master_portal_net=172.32.0.0/16
+os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
+
+# Native high availability cluster method with optional load balancer.
+# If no lb group is defined, the installer assumes that a load balancer has
+# been preconfigured. For installation the value of
+# openshift_master_cluster_hostname must resolve to the load balancer
+# or to one or all of the masters defined in the inventory if no load
+# balancer is present.
+openshift_master_cluster_method=native
+openshift_master_cluster_hostname=master-hdc.prod-ocp.na.bestbuy.com
+openshift_master_cluster_public_hostname=master-hdc.prod-ocp.na.bestbuy.com
+
+# Enable cockpit
+#osm_use_cockpit=true
+# Set cockpit plugins
+#osm_cockpit_plugins=['cockpit-kubernetes']
+
+
+# host group for master
+[masters]
+pdl10ocpcma0[1:3].na.bestbuy.com
+
+# host group for etcd
+[etcd]
+pdl10ocpcma0[1:3].na.bestbuy.com
+
+# Specify load balancer host
+[lb]
+pdl10ocpcin0[1:3].na.bestbuy.com
+pdl10ocppin0[1:3].bbydmz.com
+pdl10ocpdin0[1:3].bbydmz.com
+
+# host group for nodes, includes region info
+[nodes]
+pdl10ocpcma0[1:3].na.bestbuy.com openshift_node_labels="{'region': 'east', 'datacenter': 'denver', 'zone': 'master', 'network_zone': 'na', 'sysdig': 'false'}" openshift_schedulable=False
+pdl10ocpcin0[1:3].na.bestbuy.com openshift_node_labels="{'region': 'east', 'datacenter': 'denver', 'zone': 'infra-master', 'router': 'master', 'network_zone': 'na', 'sysdig': 'false'}" openshift_schedulable=True
+pdl10ocpdin0[1:3].bbydmz.com openshift_node_labels="{'region': 'east', 'datacenter': 'denver', 'zone': 'infra-dmz', 'router': 'dmz', 'network_zone': 'na', 'sysdig': 'false'}" openshift_schedulable=True
+pdl10ocppin0[1:3].bbydmz.com openshift_node_labels="{'region': 'east', 'datacenter': 'denver', 'zone': 'infra-pci', 'router': 'pci', 'network_zone': 'na', 'sysdig': 'false'}" openshift_schedulable=True
+pdh10ocpdch0[1:2].bbydmz.com openshift_node_labels="{'region': 'east', 'datacenter': 'denver', 'zone': 'appnodes-dmz', 'network_zone': 'na', 'sysdig': 'true'}" openshift_schedulable=True
+pdh10ocppch0[1:3].bbydmz.com openshift_node_labels="{'region': 'east', 'datacenter': 'denver', 'zone': 'appnodes-pci', 'network_zone': 'na', 'sysdig': 'true'}" openshift_schedulable=True
+pdl10ocppch0[4:6].bbydmz.com openshift_node_labels="{'region': 'east', 'datacenter': 'denver', 'zone': 'appnodes-pci', 'network_zone': 'na', 'sysdig': 'true'}" openshift_schedulable=True

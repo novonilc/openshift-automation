@@ -1,0 +1,119 @@
+---
+- fail:
+    msg: 'Specify openshift_version=3.6 or 3.7'
+  when: openshift_version != '3.6' and openshift_version != '3.7'
+
+- name: Set enable_repos
+  set_fact:
+    enable_repos: "{{ '--enable=rhel-7-server-rpms --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-ose-3.6-rpms' if openshift_version == '3.6' else '--enable=rhel-7-server-rpms --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-ose-3.7-rpms --enable=rhel-7-fast-datapath-rpms' if openshift_version == '3.7' }}"
+
+- name: enable subscription-manager repos
+  command: "subscription-manager repos {{ enable_repos }}"
+
+- name: install prereq packages
+  yum:
+    pkg: "{{ item }}"
+    state: installed
+  with_items:
+    - wget
+    - git
+    - net-tools
+    - bind-utils
+    - iptables-services
+    - bridge-utils
+    - bash-completion
+    - atomic-openshift-utils
+    - atomic-openshift-excluder
+    - atomic-openshift-docker-excluder
+
+- name: unexclude packages for installation
+  command: atomic-openshift-excluder unexclude
+
+#- name: make sure SELinux allows the use of NFS home dirs
+#  command: setsebool -P use_nfs_home_dirs 1
+
+- name: make sure SELinux is enabled
+  selinux:
+    policy: targeted
+    state: enforcing
+
+- name: create volume group
+  lvg:
+    vg: "{{ volume_group }}"
+    pvs: "{{ disk }}"
+    state: present
+
+- name: create logical volume - /var/lib/docker
+  lvol:
+    vg: "{{ volume_group }}"
+    lv: "{{ vol }}"
+    size: "{{ size }}"
+
+- name: create /var/lib/docker
+  file:
+    owner: root
+    group: root
+    path: /var/lib/docker
+    state: directory
+    setype: docker_var_lib_t
+
+- name: format disk for var_lib_docker
+  filesystem:
+    fstype: xfs
+    dev: /dev/{{ volume_group }}/{{ vol }}
+
+- name: mount /var/lib/docker
+  mount:
+    name: /var/lib/docker
+    src: /dev/mapper/{{ volume_group }}-{{ vol }}
+    fstype: xfs
+    state: mounted
+
+- name: install docker
+  yum:
+    name: docker
+    state: latest
+    update_cache: yes
+  register: install
+
+- name: update docker-storage-setup configuration
+  blockinfile:
+    state: present
+    dest: /etc/sysconfig/docker-storage-setup
+    content: |
+        VG="{{ volume_group }}"
+    tags:
+    - storage
+
+- name: run docker-storage-setup
+  command: docker-storage-setup
+  tags:
+    - docker
+
+- name: set up docker config
+  copy:
+    src: "../files/{{ docker_config }}"
+    dest: /etc/sysconfig/docker
+    backup: yes
+    owner: root
+    group: root
+    mode: 0644
+  register: dconf
+  tags:
+    - conf
+
+- name: restart docker
+  service:
+    name: docker
+    state: restarted
+  when: dconf|changed
+  tags:
+    - conf
+
+- name: enable & start docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  tags:
+    - docker

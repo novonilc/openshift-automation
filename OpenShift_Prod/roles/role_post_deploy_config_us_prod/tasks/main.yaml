@@ -1,0 +1,392 @@
+---
+
+- include: set_facts.yaml
+  tags:
+  - master
+
+- name: deploy master-configuration API
+  template:
+    src: atomic-openshift-master-api.j2
+    dest: /etc/sysconfig/atomic-openshift-master-api
+    owner: root
+    group: root
+    backup: yes
+  register: mst
+  tags:
+  - master
+
+- name: deploy sysconfig master-configuration
+  copy:
+    src: atomic-openshift-master
+    dest: /etc/sysconfig/atomic-openshift-master
+    owner: root
+    group: root
+    backup: yes
+  register: mst1
+  tags:
+  - master
+
+- name: deploy master-configuration controllers
+  copy:
+    src: atomic-openshift-master-controllers
+    dest: /etc/sysconfig/atomic-openshift-master-controllers
+    owner: root
+    group: root
+    backup: yes
+  register: mst2
+  tags:
+  - master
+
+- name: deploy master-configuration
+  template:
+    src: master-config.yaml.j2
+    dest: /etc/origin/master/master-config.yaml
+    owner: root
+    group: root
+    backup: yes
+  register: mst3
+  tags:
+  - master
+
+- name: restart master services - API
+  service:
+    name: atomic-openshift-master-api.service
+    state: restarted
+  when: (mst|changed) or
+        (mst1|changed) or
+        (mst2|changed) or
+        (mst3|changed)
+  tags:
+  - master
+
+- name: restart master services - controller
+  service:
+    name: atomic-openshift-master-controllers.service
+    state: restarted
+  when: (mst|changed) or
+        (mst1|changed) or
+        (mst2|changed) or
+        (mst3|changed)
+  tags:
+  - master
+
+- name: hardened openshift - disable swap
+  command: swapoff -a
+  tags:
+  - swap
+
+- name: deploy sysconfig node-configuration on master infra nodes
+  copy:
+    src: atomic-openshift-node
+    dest: /etc/sysconfig/atomic-openshift-node
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdl10ocpcin0' in inventory_hostname"
+#  notify: restart atomic-node
+  tags:
+  - master-infra
+
+- name: deploy master-node-configuration
+  template:
+    src: node-master-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart atomic-node
+  tags:
+  - master-node
+
+- name: deploy sysconfig node-configuration on pci infra nodes
+  copy:
+    src: atomic-openshift-node
+    dest: /etc/sysconfig/atomic-openshift-node
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdl10ocppin0' in inventory_hostname"
+#  notify: restart atomic-node
+  tags:
+  - infra
+
+- name: deploy sysconfig node-configuration on pci app nodes
+  copy:
+    src: atomic-openshift-node
+    dest: /etc/sysconfig/atomic-openshift-node
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdh10ocppch0' in inventory_hostname"
+#  notify: restart atomic-node
+  tags:
+  - app
+
+- name: deploy sysconfig node-configuration on dmz infra nodes
+  copy:
+    src: atomic-openshift-node
+    dest: /etc/sysconfig/atomic-openshift-node
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdl10ocpdin0' in inventory_hostname"
+#  notify: restart atomic-node
+  tags:
+  - infra
+
+- name: deploy sysconfig node-configuration on dmz app nodes
+  copy:
+    src: atomic-openshift-node
+    dest: /etc/sysconfig/atomic-openshift-node
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart atomic-node
+  when:
+  - "'pdh10ocpdch0' in inventory_hostname"
+#  notify: restart atomic-node
+  tags:
+  - app
+
+
+- name: deploy node-configuration on pci app nodes
+  template:
+    src: node-app-pci-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart atomic-node
+  when:
+  - "'pdh10ocppch0' in inventory_hostname"
+  tags:
+  - app
+
+- name: deploy node-configuration on pci app nodes
+  template:
+    src: node-app-pci-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart atomic-node
+  when:
+  - "'pdl10ocppch0' in inventory_hostname"
+  tags:
+  - app
+
+- name: deploy node-configuration on dmz app nodes
+  template:
+    src: node-app-dmz-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart atomic-node
+  when:
+  - "'pdh10ocpdch0' in inventory_hostname"
+  tags:
+  - app
+
+- name: deploy master infra node configuration
+  template:
+    src: node-infra-master-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart atomic-node
+  when:
+  - "'pdl10ocpcin0' in inventory_hostname"
+  tags:
+  - infra
+
+- name: deploy pci infra-node-configuration
+  template:
+    src: node-infra-pci-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart atomic-node
+  when:
+  - "'pdl10ocppin0' in inventory_hostname"
+  tags:
+  - infra
+
+- name: deploy dmz infra node configuration
+  template:
+    src: node-infra-dmz-config.j2
+    dest: /etc/origin/node/node-config.yaml
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart atomic-node
+  when:
+  - "'pdl10ocpdin0' in inventory_hostname"
+  tags:
+  - infra
+
+
+- name: clean cert dirs - registry
+  file:
+    path: "/etc/docker/certs.d/{{ item }}"
+    state: absent
+  with_items:
+    - 'registry.prod-ocp.na.bestbuy.com'
+    - 'registry.dev-ocp.ca.bestbuy.com'
+    - '172.32.88.245:5000'
+    - 'docker-registry.default.svc.cluster.local:5000'
+  tags:
+  - registry
+
+- name: create cert dirs - registry
+  file:
+    path: "/etc/docker/certs.d/{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - 'registry.prod-ocp.na.bestbuy.com'
+    - '172.32.88.245:5000'
+    - 'docker-registry.default.svc.cluster.local:5000'
+  tags:
+  - registry
+
+- name: copy registry PROD certificates
+  copy:
+    src: registry.crt
+    dest: "/etc/docker/certs.d/{{ item }}/ca.crt"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - 'registry.prod-ocp.na.bestbuy.com'
+    - '172.32.88.245:5000'
+    - 'docker-registry.default.svc.cluster.local:5000'
+  tags:
+  - registry
+
+- name: copy registry PROD certificates to OS Certs Dir
+  copy:
+    src: registry.crt
+    dest: "/etc/pki/ca-trust/source/anchors/{{ item }}.crt"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - 'registry.prod-ocp.na.bestbuy.com'
+    - 'docker-registry.default.svc.cluster.local:5000'
+    - '172.32.88.245:5000'
+  tags:
+  - registry
+
+- name: Update Cert on OS
+  command: update-ca-trust enable
+  tags:
+  - registry
+
+- name: set docker configuration in masters
+  copy:
+    src: docker
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdl10ocpcma0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: set docker configuration in master infra
+  copy:
+    src: docker
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdl10ocpcin0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: set docker configuration in pci infra
+  copy:
+    src: docker
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdl10ocppin0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: set docker configuration in dmz infra
+  copy:
+    src: docker
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdl10ocpdin0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+
+- name: set docker configuration pci appnode
+  copy:
+    src: docker_appnode
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdh10ocppch0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: set docker configuration pci appnode
+  copy:
+    src: docker_appnode
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdl10ocppch0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: set docker configuration dmz appnode
+  copy:
+    src: docker_appnode
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  when:
+  - "'pdh10ocpdch0' in inventory_hostname"
+  notify: restart docker
+  tags:
+  - dock
+
+- name: sleep
+  pause:
+    seconds: 20
+  tags:
+  - dock

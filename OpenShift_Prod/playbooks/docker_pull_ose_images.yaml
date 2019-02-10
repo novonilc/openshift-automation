@@ -1,0 +1,36 @@
+---
+
+- hosts: nodes
+  become: true
+  tasks:
+
+  - name: install python-docker package from rhel-7-server-ose-3.7-rpms
+    yum:
+      name: python-docker
+      state: latest
+    tags:
+      - always
+
+  - name: pull ose docker images for us-prod
+    docker_image:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - registry.prod-ocp.na.bestbuy.com/openshift3/ose-haproxy-router:v3.7.42
+      - registry.prod-ocp.na.bestbuy.com/openshift3/ose-pod:latest
+      - registry.prod-ocp.na.bestbuy.com/openshift3/ose-deployer:v3.7.42
+    tags:
+      - us-prod
+
+  - name: pull ose docker images for us-dr
+    docker_image:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - registry.dr-ocp.na.bestbuy.com/openshift3/ose-deployer:v3.7.72
+      - registry.dr-ocp.na.bestbuy.com/openshift3/ose-docker-registry:v3.7.72
+      - registry.dr-ocp.na.bestbuy.com/openshift3/ose-haproxy-router:v3.7.72
+      - registry.dr-ocp.na.bestbuy.com/openshift3/ose-pod:v3.7.72
+      - registry.dr-ocp.na.bestbuy.com/openshift3/registry-console:v3.7
+    tags:
+      - us-dr

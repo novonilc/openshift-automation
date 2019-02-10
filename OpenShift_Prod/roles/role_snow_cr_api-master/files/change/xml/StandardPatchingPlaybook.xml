@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<root>
+	<item>
+		<>Sr No</>
+		<>Task details</>
+		<>Team</>
+	</item>
+	<item>
+		<>1</>
+		<>Take Operating Systsm configuration backup for servers which are scheduled under CR</>
+		<>Unix team</>
+	</item>
+	<item>
+		<>2</>
+		<>Backup team to confirm the latest availability of OS/application data backup</>
+		<>Backup Team</>
+	</item>
+	<item>
+		<>3</>
+		<>Incase of VM servers, take the snapshot of the server</>
+		<>Unix team/Wintel team</>
+	</item>
+	<item>
+		<>4</>
+		<>Start the email communication, ensure that all the respective teams are part of email communication. Initiate the bridge and take roll call of teams which are required for the change</>
+		<>Unix team</>
+	</item>
+	<item>
+		<>5</>
+		<>Disable the monitoring for the servers which are mentioned in the CR. Application team has to co-ordinate with MEM team to disable the probes.</>
+		<>MEM team</>
+	</item>
+	<item>
+		<>6</>
+		<>Once the probes are disables, application team will stop the application. Application team will provide the servers list if they want to do it in rolling manner.</>
+		<>Application team</>
+	</item>
+	<item>
+		<>6</>
+		<>Unix team will patch the servers using Ansible.</>
+		<>Unix team</>
+	</item>
+	<item>
+		<>7</>
+		<>Post patching /Reboot, Unix team will perform post patching validation and inform application team to start/validate the application</>
+		<>Unix team</>
+	</item>
+	<item>
+		<>8</>
+		<>Application/ DB team will perform the final validation and Start the application on requested servers only.</>
+		<>Application team</>
+	</item>
+	<item>
+		<>9</>
+		<>Enable the monitoring on the servers</>
+		<>MEM team</>
+	</item>
+	<item>
+		<>10</>
+		<>Send final communication to all stakeholder </>
+		<>Unix team</>
+	</item>
+</root>

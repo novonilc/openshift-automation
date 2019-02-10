@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  gather_facts: no
+  become: true
+  tasks:
+    - debug: msg="{{lookup('file', 'input.json') | replace('=>', ':')}}"
+
+    - copy:
+        content: |
+          "{{lookup('file', 'main.json') | replace('\: ', ':')}}"
+        dest: /home/u1176771/bby_ansible/bby_snow_cr_api/roles/role_snow_cr_api/files/change/main01.json

@@ -1,0 +1,54 @@
+[
+{% for custom_patch in custom_patch %}
+{
+   "type":"Normal",
+   "affected_cis":"{{custom_patch.affected_cis}}",
+   "backout_plan":"Roll back the server from VM snap shot \n Need to co-ordinate with VMware team to roll back the server from snapshot \n Roll back the server for Physical Server, Boot with old kernel or Remove installed packages",
+   "category":"Server",
+   "outage_audience":"{{custom_patch.outage_audience}}",
+   "change_owner":"A879801",
+   "change_owner_group":"L3-PLT-LINUX-IT-US",
+   "description":"FY19 Monthly Linux Patching Required by EIP Standards. \n For Application CI's refer to Affected CI Tab.",
+   "short_description":"{{custom_patch.short_description}}",
+   "implementation_coordinator":"A1106905",
+   "implementation_plan":"The standard patching playbook / Application specific playbook is attached. Please find below steps. \n 1. Gather all the application teams on the bridge. \n 2. Coordinating with application team to bring down services and take confirmation from them to proceed with the patching \n 3. Patch and reboot the servers. \n 4. Application team will bring the services and we will complete the patching",
+   "implementation_group":"L2-PLT-UNIX-IT-US",
+   "planned_start_date":"{{custom_patch.planned_start_date}}",
+   "planned_duration":"{{custom_patch.planned_duration}}",
+   "is_outage_communicated":"Yes",
+   "is_outage_required":"Yes",
+   "is_project_cer_related":"0",
+   "is_test_plan_attached":"true",
+   "is_testing_passed":"Passed",
+   "tester_name":"A1106905",
+   "test_results":"pass",
+   "is_validation_passed":"Passed",
+   "is_validation_plan_attached":"true",
+   "outage_business_impact":"What is the user/business impact? \n We will be doing Patching in rolling manner so no impact",
+   "outage_duration":"{{custom_patch.outage_duration}}",
+   "outage_starts":"{{custom_patch.outage_starts}}",
+   "outage_systems_impacted":"{{custom_patch.outage_systems_impacted}}",
+   "outage_type":"Degraded",
+   "project_cer_number":"",
+   "release_record":"RLSE0012822",
+   "risk":"4",
+   "subcategory":"Patching",
+   "test_date":"2018-03-27 00:00:01",
+   "test_plan":"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments. \n We have completed successfully in lower environment. Example: LEMR00051011. \n Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook. \n Validate the result by using below command. \n $sudo yum update",
+   "validation_plan":"RHEL 5.X/6.x/7.x servers: \n Verifying if all available security patches are upgraded",
+   "validation_results":"",
+   "validator_name":"",
+   "validation_date":"",
+   "insert_state":"SUBMITTED",
+   "insert_partial":"yes",
+   "return_conflicts":"no",
+   "ctasks": [
+    {% for c_ctasks in custom_patch.ctasks %}{
+    "assignment_group":"{{c_ctasks.assignment_group}}",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    }{% if loop.last %}{% else %},{% endif %}{% endfor %}]
+}{% if loop.last %}{% else %},{% endif %}
+{% endfor %}
+]

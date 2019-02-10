@@ -1,0 +1,7 @@
+---
+ansible_user_dir: ./
+dir_path: "{{ ansible_user_dir }}/ocp/persistent_volume"
+ca_dev: false
+ca_prod: false
+us_prod: false
+us_dr: false

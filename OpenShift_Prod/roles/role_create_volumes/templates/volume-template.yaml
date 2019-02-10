@@ -1,0 +1,16 @@
+##The following template configureation has been created by ansible with gingja templates.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: '{{ name | mandatory }}'
+  annotations:
+    volume.beta.kubernetes.io/mount-options: rw,nfsvers=3,noexec
+spec:
+  capacity:
+    storage: '{{ size | mandatory }}'
+  accessModes:
+  - '{{ mode | mandatory | default(ReadWriteOnce) }}'
+  nfs:
+    path: '{{ path | mandatory }}'
+    server: '{{ server_addr | mandatory }}'
+  persistentVolumeReclaimPolicy: Retain

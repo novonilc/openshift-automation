@@ -1,0 +1,41 @@
+---
+# Global Attachment for ALL Decom Change Request
+#cr_attachment: "SOPStandardDecomPlaybook.xlsx"
+
+custom_decom:
+- affected_cis: "pdl01arcdb025,pdl01arcdb033,pdl01arcdb035"
+  short_description: "Phase 1 Decommission and Power Down"
+  description: "Phase 1 Decommission and Power off reference CIs in affected CI Tab"
+  irm_approved_by: "Vasu"
+  approval_status: "Approved"
+  date: "2018-04-26 00:00:01"
+  irm_comments: "Aproved to Decom Servers"
+  planned_start_date: "2018-04-26 00:00:01"
+  planned_duration: "1 1:00:00"
+  ctasks:
+    - assignment_group: "L2-CYBERARK-IT-US"
+    - assignment_group: "L2-DATACENTER-FAC-US"
+    - assignment_group: "L2-ESM-IT-GLB"
+    - assignment_group: "L2-NETWORK-IT-US"
+    - assignment_group: "L2-PLT-LINUX-IT-US"
+    - assignment_group: "L2-STORAGE-IT-US"
+    - assignment_group: "L2-STORAGE-IT-US"
+    - assignment_group: "L2-TWS-IT-US"
+    - assignment_group: "L3-EIP-ANTI-VIRUS-IT-GLB"
+
+- affected_cis: "PDL01OMSAP01C,PDL01OMSAP04C,PDL01OMSAP05C,PDL01OMSMQ004,PDL01OMSWB01A,PDL01OMSAP07A,PDL01OMSAT07A,PDL01OMSWB03A,PDL01OMSAT14C,PDL01OMSAP06A,PDL01OMSAT04A,PDL01OMSAT03C,PDL01OMSMQ003,PDL01OMSMQ001,PDL01OMSAP04A,PDL01OMSAT05A,PDL01OMSAT14A,PDL01OMSAT05C,PDL01OMSAT12A,PDL01OMSAT08A,PDL01OMSAT10C,PDL01OMSWB02A,PDL01OMSAP02A,PDL01OMSAP12A,PDL01ARCAP001,PDL01OMSAT06A,PDL01OMSAT06C,PDL01OMSDB003,PDL01OMSAT02A,PDL01OMSAT12C,PDL01OMSAP03C,PDL01OMSAT08C,PDL01OMSDB003\\OP01EODB01,PDL01OMSAT01A,PDL01OMSDB003\\OP01AMDB01,PDL01OMSAP01A,PDL01OMSAP02C,PDL01OMSAT01C,PDL01OMSAP03A,PDL01ARCWB001,PDL01OMSAP001,PDL01OMSAT10A,PDL01OMSAP08C,PDL01OMSAT13C,PDL01OMSAP06C,PDL01D20UT01C,PDL01OMSAT09A,PDL01OMSAT07C,PDL01OMSAT13A,PDL01OMSAT04C,PDL01OMSAP07C,PDL01OMSAT02C,PDL01OMSAP08A,PDL01OMSAT03A,PDL01ARCAP01A,PDL01OMSAP05A,PDL01OMSAT09C,PDL01OMSAP12C"
+  short_description: "Phase 2 - Decommision And Retire old CI's"
+  description: "Description: Powered Down, Unrack and remove CIs in Affected CI Tab"
+  planned_start_date: "2018-04-26 00:00:01"
+  planned_duration: "1 1:00:00"
+  ctasks:
+    - assignment_group: "L2-CYBERARK-IT-US"
+    - assignment_group: "L2-DATACENTER-FAC-US"
+    - assignment_group: "L2-ESM-IT-GLB"
+    - assignment_group: "L2-NETWORK-IT-US"
+    - assignment_group: "L2-PLT-LINUX-IT-US"
+    - assignment_group: "L2-STORAGE-IT-US"
+    - assignment_group: "L2-STORAGE-IT-US"
+    - assignment_group: "L2-TWS-IT-US"
+    - assignment_group: "L3-EIP-ANTI-VIRUS-IT-GLB"
+

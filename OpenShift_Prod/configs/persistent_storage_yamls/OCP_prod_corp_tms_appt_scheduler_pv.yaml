@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ocp-prod-corp-tms-appt-scheduler
+spec:
+  capacity:
+    storage: 9Gi
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /prod_openshift_corp
+    server: 172.21.135.249
+  persistentVolumeReclaimPolicy: Retain

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cfme-db
+spec:
+  capacity:
+    storage: 27Gi
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /ocp_cloudform1
+    server: 172.21.135.251
+  persistentVolumeReclaimPolicy: Retain

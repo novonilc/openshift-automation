@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: zookeeper2
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /ocp_esp_caecomm_test_zookeeper2
+    server: 172.21.235.253
+  persistentVolumeReclaimPolicy: Recycle

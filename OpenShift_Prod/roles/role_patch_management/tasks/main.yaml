@@ -1,0 +1,31 @@
+
+  - name: Upgrade Kernel packages
+    yum: name='kernel-3*' state='latest' update_cache=yes
+    notify:
+      - Reboot server
+      - Reboot server wait
+    tags:
+    - kernel
+
+  - name: Upgrade all packages
+    yum: name='*' state='latest' exclude={{ item }} update_cache=yes
+    with_items:
+      - atomic-openshift-utils
+      - atomic-openshift-clients
+      - openshift-ansible-roles
+      - atomic-openshift-sdn-ovs
+      - openshift-ansible-docs
+      - openshift-ansible
+      - atomic-openshift-excluder
+      - atomic-openshift-node
+      - openshift-ansible-callback-plugins
+      - openshift-ansible-lookup-plugins
+      - atomic-openshift-docker-excluder
+      - atomic-openshift
+      - openshift-ansible-playbooks
+      - atomic-openshift-master
+      - openshift-ansible-filter-plugins
+      - tuned-profiles-atomic-openshift-node
+      - ansible-
+    tags:
+    - pkgs

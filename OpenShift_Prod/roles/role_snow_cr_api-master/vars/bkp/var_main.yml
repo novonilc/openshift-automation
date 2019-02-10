@@ -1,0 +1,5 @@
+---
+# vars file for role_snow_cr_api
+cr_query: '[{"number": "CHG0197592"},{"number": "CHG0197599"}]'
+serviceinst: bestbuyuat.service-now.com
+email: 'Sekhar Pulipati <sekhar.pulipati@bestbuy.com>'

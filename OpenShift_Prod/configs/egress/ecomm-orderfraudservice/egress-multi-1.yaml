@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: egress-multi-1
+  labels:
+    name: egress-multi-1
+  annotations:
+    pod.network.openshift.io/assign-macvlan: "true"
+spec:
+  initContainers:
+  - name: egress-router-1
+    image: registry.access.redhat.com/openshift3/ose-egress-router
+    securityContext:
+      privileged: true
+    env:
+    - name: EGRESS_SOURCE
+      value: 172.21.73.32
+    - name: EGRESS_GATEWAY
+      value: 172.21.73.1
+    - name: EGRESS_DESTINATION
+      valueFrom:
+        configMapKeyRef:
+          name: egress-routes-1
+          key: destination
+    - name: EGRESS_ROUTER_MODE
+      value: init
+  containers:
+  - name: egress-router-wait
+    image: registry.access.redhat.com/openshift3/ose-pod

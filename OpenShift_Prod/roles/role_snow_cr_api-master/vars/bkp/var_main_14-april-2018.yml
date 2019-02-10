@@ -1,0 +1,31 @@
+---
+# vars file for role_snow_cr_api
+cr_query: '[{"number": "CHG0197592"},{"number": "CHG0197599"}]'
+serviceinst: bestbuyuat.service-now.com
+email: 'Sekhar Pulipati <sekhar.pulipati@bestbuy.com>'
+file_path: 'roles/role_snow_cr_api/files/change'
+attachment: 'StandardPatchingPlaybook.xlsx'
+custompatch: false
+customdecom: false
+customgeneral: false
+customsplit: false
+customgeneral: false
+#custom:
+#- affected_cis: "pdl01arcdb025,pdl01arcdb027,pdl01arcdb029,pdl01arcdb031,pdl01arcdb033,pdl01arcdb035"
+#  description: "FY19 R1 patching on Archimedes (ARC) servers Total  06 These severs are pending from last patching event.pdl01arcdb025, pdl01arcdb027, pdl01arcdb029, pdl01arcdb031, pdl01arcdb033, pdl01arcdb035. Archimedes (ARC)"
+#  short_description: "FY19 R1 patching on Archimedes (ARC) servers Total 06"
+#  planned_start_date: "2018-04-06 00:00:01"
+#  planned_duration: "1 1:00:00"
+#  outage_duration: "1 1:00:001"
+#  outage_starts: "2018-04-06 00:10:01"
+#  outage_systems_impacted: "Archimedes (ARC)"
+#  ctasks:
+#    - assignment_group: "L1-MEM-IT-GLB"
+#      description: "Enable/Disable Monitoring"
+#      order: "100"
+#      short_description: "Enable/Disable Monitoring"
+#    - assignment_group: "L2-ASM-OMS-IT-US"
+#      description: "Start/stop/validate application"
+#      order: "100"
+#      short_description: "Start/stop/validate application"
+

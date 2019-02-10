@@ -1,0 +1,4 @@
+---
+snapshot_name: "snap0"
+snapshot_description: "snapshot"
+snapshot_state: "present"

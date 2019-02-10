@@ -1,0 +1,57 @@
+---
+# playbook: create new project
+# How to use PB
+
+- hosts: all
+  gather_facts: False
+  force_handlers: True
+
+  vars_prompt:
+
+  - name: user
+    prompt: "Enter your OCP login"
+    private: no
+
+  - name: pass
+    prompt: "Enter your OCP password"
+    private: yes
+
+  - name: project_name
+    prompt: "Enter name of project"
+    private: no
+
+  - name: username
+    prompt: "Enter the NT user to add as admin role"
+    private: no
+
+  - name: group
+    prompt: "Enter AD Group to add as admin role; Check the list of the groups $ oc get group. Note : If no Group is specfied in the Service now request please specify 'P_IT_STNA_MIDDLETIER' for Corp projcts and 'BCA-U-ECOMM-L2APP' for eComm Projects"
+    private: no
+
+  - name: nodeselector
+    prompt: "Enter node-selector to add to admin role, e.g : For Prod  : zone=appnodes-corp / zone=appnodes-dmz / zone=appnodes-pci , For Dev : org=ecomm / org=corp"
+    private: no
+
+  - name: router_label
+    prompt: "Enter router_label, e,g : router=corp / router=dmz / router=pci; Note : router_label not needed for Dev"
+    private: no
+
+  - name: mem
+    prompt: "Enter project quota for memory in Gi; e.g. 30"
+    private: no
+
+  - name: cpu
+    prompt: "Enter project quota for no. of CPU Cores , e.g. 30"
+    private: no
+
+  - name: pod_mem
+    prompt: "Enter pod quota for memory in Gi; e.g. 4"
+    private: no
+
+  - name: pod_cpu
+    prompt: "Enter pod quota for no. of CPU Cores , e.g 4"
+    private: no
+
+
+  roles:
+  - { role: ../role_create_project }

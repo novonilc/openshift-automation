@@ -1,0 +1,39 @@
+---
+# tasks file for role_snow_cr_api
+- name: GET CR Status from ServiceNow
+  uri:
+    url: https://{{ serviceinst }}/api/bebup/change/query?number={{item.number}}
+    method: GET
+    user: "{{login_user}}"
+    password: "{{login_pass}}"
+#    headers:
+#      accept: application/json
+    force_basic_auth: yes
+    status_code: 200
+  with_items: "{{cr_query}}"
+  register: restdata
+  tags: restdata
+
+- name: Create CR ServiceNow
+  uri:
+    url: https://{{ serviceinst }}/api/bebup/change/create
+    method: POST
+    user: "{{login_user}}"
+    password: "{{login_pass}}"
+    headers:
+      Content-Type: application/json
+      accept: application/json
+    body: >
+      {"type":"Normal","affected_cis":"drl02genmq001,drl02genmq002","backout_plan":"Lets do it","category":"Server","change_owner":"A1106905","change_owner_group":"L2-PLT-UNIX-IT-US","description":"FY 18-19 Patching","short_description":"FY 18-19 Patching API Test","implementation_coordinator":"A1106905","implementation_plan":"Test","implementation_group":"L2-PLT-UNIX-IT-US","planned_start_date":"2018-04-01 00:00:01","planned_duration":"1 1:00:00","is_outage_communicated":"Yes","is_outage_required":"Yes","is_project_cer_related":"0","is_test_plan_attached":"true","is_testing_passed":"Passed","tester_name":"A1106905","test_results":"pass","is_validation_passed":"Passed","is_validation_plan_attached":"true","outage_business_impact":"Test","outage_duration":"1 1:00:001","outage_starts":"2018-04-01 00:10:01","outage_systems_impacted":"System A","outage_type":"Degraded","project_cer_number":"12345","release_record":"RLSE0012623","risk":"4","subcategory":"Patching","test_date":"2018-03-27 00:00:01","test_plan":"API TEST","validation_plan":"test","validation_results":"pass","validator_name":"A1106905","validation_date":"2018-04-01 00:30:01","insert_state":"DRAFT","insert_partial":"yes","return_conflicts":"no","outage_audience":"L2 PLT","ctasks":[{"assignment_group":"L2-PLT-UNIX-IT-US","description":"API TEST","order":"100","short_description":"API TEST"}]}
+    force_basic_auth: yes
+    status_code: 200
+  register: createcr
+  tags: createcr
+
+- name: Output CR Data
+  debug: msg="{{createcr.json}}"
+  tags: createcr
+
+- name: output rest data
+  debug: msg="{{restdata.results}}"
+  tags: restdata

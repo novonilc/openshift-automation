@@ -1,0 +1,10 @@
+---
+- name: remove tmp quota file
+  file:
+    path: "{{ tmp_dir }}/ocp-project-quota.yaml"
+    state: absent
+  listen: "clean up"
+
+- name: logout of OCP
+  command: oc logout
+  listen: "clean up"

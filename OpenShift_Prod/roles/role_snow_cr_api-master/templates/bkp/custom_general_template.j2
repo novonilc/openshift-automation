@@ -1,0 +1,53 @@
+[
+{% for custom_general in custom_general %}
+{
+   "type":"Normal",
+   "affected_cis":"{{custom_general.affected_cis}}",
+   "backout_plan":"Roll back the server from VM snap shot \n Need to co-ordinate with VMware team to roll back the server from snapshot",
+   "category":"Server",
+   "change_owner":"A1106905",
+   "change_owner_group":"L3-PLT-LINUX-IT-US",
+   "description":"{{custom_general.description}}",
+   "short_description":"{{custom_general.short_description}}",
+   "implementation_coordinator":"A1106905",
+   "implementation_plan":"Test",
+   "implementation_group":"L2-PLT-UNIX-IT-US",
+   "planned_start_date":"{{custom_general.planned_start_date}}",
+   "planned_duration":"{{custom_general.planned_duration}}",
+   "is_outage_communicated":"Yes",
+   "is_outage_required":"Yes",
+   "is_project_cer_related":"0",
+   "is_test_plan_attached":"true",
+   "is_testing_passed":"Passed",
+   "tester_name":"A1106905",
+   "test_results":"pass",
+   "is_validation_passed":"Passed",
+   "is_validation_plan_attached":"true",
+   "outage_business_impact":"What is the user/business impact?\nWe will be doing it rolling manner so no impact ",
+   "outage_duration":"{{custom_general.outage_duration}}",
+   "outage_starts":"{{custom_general.outage_starts}}",
+   "outage_systems_impacted":"Archimedes (ARC)",
+   "outage_type":"Degraded",
+   "project_cer_number":"12345",
+   "release_record":"RLSE0012623",
+   "risk":"4",
+   "subcategory":"Patching",
+   "test_date":"2018-03-27 00:00:01",
+   "test_plan":"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments.\n We have completed successfully in lower environment. Example: LEMR00051011. \n Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook.\n2. Validate the result by using below command.\n$ sudo yum update",
+ "validation_plan":"RHEL 5.X/6.x/7.x servers:\nVerifying if all available security patches are upgraded:",
+   "validation_results":"RHEL 5.X/6.x/7.x servers:\nVerifying if all available security patches are upgraded:",
+   "validator_name":"A1106905",
+   "validation_date":"2018-04-06 00:30:01",
+   "insert_state":"DRAFT",
+   "insert_partial":"yes",
+   "return_conflicts":"no",
+   "ctasks": [
+    {% for c_ctasks in custom_general.ctasks %}{
+    "assignment_group":"{{c_ctasks.assignment_group}}",
+    "description":"{{c_ctasks.description}}",
+    "order":"{{c_ctasks.order}}",
+    "short_description":"{{c_ctasks.short_description}}"
+    }{% if loop.last %}{% else %},{% endif %}{% endfor %}]
+}{% if loop.last %}{% else %},{% endif %}
+{% endfor %}
+]

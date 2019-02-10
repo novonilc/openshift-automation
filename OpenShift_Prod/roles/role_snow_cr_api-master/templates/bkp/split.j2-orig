@@ -1,0 +1,7 @@
+import json
+
+docs = json.load(open('{% if custompatch == "true" %}roles/role_snow_cr_api/files/change/custom_patch.json{% elif customdecom == "true" %}roles/role_snow_cr_api/files/change/custom_decom.json{% else %}roles/role_snow_cr_api/files/change/custom_general.json{% endif %}'))
+
+for ii, change in enumerate(docs):
+    with open('roles/role_snow_cr_api/files/change/change{}.json'.format(ii), 'w') as out:
+        json.dump(change, out, indent=2)

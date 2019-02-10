@@ -1,0 +1,20 @@
+---
+- name: set fact URL - ca_dev
+  set_fact:
+    login_url: https://openshift-public-portal.dev-ocp.ca.bestbuy.com:8443
+  when: ca_dev | bool
+
+- name: set fact URL - ca_prod
+  set_fact:
+    login_url: https://master-vidc.prod-ocp.ca.bestbuy.com:8443
+  when: ca_prod | bool
+
+- name: set fact URL - us_prod
+  set_fact:
+    login_url: https://master-hdc.prod-ocp.na.bestbuy.com:8443
+  when: us_prod | bool
+
+- name: set fact URL - us_dr
+  set_fact:
+    login_url: https://master-bdc.dr-ocp.na.bestbuy.com:8443
+  when: us_dr | bool

@@ -1,0 +1,41 @@
+---
+- hosts: all
+  gather_facts: True
+  force_handlers: True
+
+  vars_prompt:
+
+  - name: user
+    prompt: "Enter your OCP login"
+    private: no
+
+  - name: pass
+    prompt: "Enter your OCP password"
+    private: yes
+
+  - name: name
+    prompt: "Enter the name for the volume to be created EX: zuul-volume-01"
+    private: no
+
+  - name: project
+    prompt: "Enter the Project Name"
+    private: no
+
+  - name: size
+    prompt: "Enter the size of the volume to be created. Accepatable units are Mi or Gi. EX: 128Mi | 5Gi"
+    private: no
+
+  - name: mode
+    prompt: "Enter the access mode to be assigned to the volume. Case Sensative. EX: ReadWriteOnce | ReadWriteMany | ReadOnly"
+    private: no
+
+  - name: server_addr
+    prompt: "Enter the server address that will support the storage for the volume (hostname or IP address). EX: nfs.bestbuy.com | 172.168.0.24"
+    private: no
+
+  - name: path
+    prompt: "Enter the fully qualified path that will be used to provide the share from the server address provided. EX: /mount/zuul-volume"
+    private: no
+
+  roles:
+  - { role: ../role_create_volumes}

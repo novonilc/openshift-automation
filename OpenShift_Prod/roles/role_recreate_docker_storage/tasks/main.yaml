@@ -1,0 +1,58 @@
+    - name: Log into OpenShift
+      shell: "oc login https://console.openshift.com:8443 -u admin -p XXX"
+
+    - name: Mark node as un-scheduleable
+      command: "oc adm manage-node {{ inventory_hostname }} --schedulable=false"
+
+    - name: Drain the node of Pods
+      command: "oc adm drain {{ inventory_hostname }} --grace-period=30 --ignore-daemonsets=true --force --delete-local-data=true"
+
+    - name: sleep for 300 seconds and continue with play
+      wait_for: timeout=300
+
+    - name: Stop OpenShift node Service
+      service:
+        name: origin-node
+        state: stopped
+
+    - name: Stop Docker
+      service:
+        name: docker
+        state: stopped
+
+    - name: unmount openshift storage
+      shell: "mount | grep openshift | awk '{print $3}' | xargs umount"
+      ignore_errors: yes
+
+    - name: Clean out local image cache
+      shell: 'rm -rf /var/lib/origin/openshift.local.volumes'
+
+    - name: Clean out Docker
+      shell: 'rm -rf /var/lib/docker/*'
+
+    - name: Reset docker storage
+      shell: 'docker-storage-setup --reset'
+
+    - name: Clean out docker storage file
+      shell: 'rm -rf /etc/sysconfig/docker-storage'
+
+    - name: Set Docker Storage file
+      template:
+        src: docker-storage-setup.j2
+        dest: /etc/sysconfig/docker-storage-setup
+
+    - name: Create Docker Storage
+      command: "docker-storage-setup"
+
+    - name: Start docker
+      service:
+        name: docker
+        state: started
+
+    - name: Start OpenShift node Service
+      service:
+        name: origin-node
+        state: started
+
+    - name: Mark node as un-scheduleable
+      command: "oc adm manage-node {{ inventory_hostname }} --schedulable=true"

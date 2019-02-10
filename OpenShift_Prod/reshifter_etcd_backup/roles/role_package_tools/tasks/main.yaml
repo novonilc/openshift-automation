@@ -1,0 +1,99 @@
+---
+
+- name: check /opt/yum.conf for rubrik
+  replace:
+    dest: /etc/yum.conf
+    regexp: 'rubrik'
+    replace: ''
+    backup: yes
+  tags:
+  - rubrik
+
+- name: enable BBY RHEL7 Repository BDC
+  command: subscription-manager repos --enable=BBY_Platform_BBY_RH7_BBY_RH7
+  when: "'pdl01' in inventory_hostname"
+  tags:
+  - rubrik
+
+- name: enable BBY RHEL7 Repository NADC
+  command: subscription-manager repos --enable=BBY_Platform_RHEL7_BBY_RHEL7_BBY
+  when: '("pdl02" in inventory_hostname) or ( "drl02" in inventory_hostname)'
+  tags:
+  - rubrik
+
+- name: remove AvamarClient
+  yum:
+    name: AvamarClient
+    state: absent
+  tags:
+  - rubrik
+
+- name: Install rubrik RPM
+  yum:
+    name: rubrik-agent
+    state: latest
+    update_cache: yes
+  tags:
+  - rubrik
+
+- name: Append rubrik/HPOV rules to /etc/sysconfig/iptables
+  blockinfile:
+    dest: /etc/sysconfig/iptables
+    insertbefore: 'COMMIT'
+    backup: yes
+    block: |  
+      -A OS_FIREWALL_ALLOW -p tcp -m state --state NEW -m tcp --dport 12800 -j ACCEPT
+      -A OS_FIREWALL_ALLOW -p tcp -m state --state NEW -m tcp --dport 12801 -j ACCEPT"
+      -A OS_FIREWALL_ALLOW -p tcp -m state --state NEW -m tcp --dport 383 -j ACCEPT"
+      -A OS_FIREWALL_ALLOW -p udp -m udp --dport 383 -j ACCEPT"
+  register: ip
+  tags:
+  - fwall
+
+- name: restart services
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+  - iptables
+  - docker
+  - atomic-openshift-node
+  when: ip|changed
+  tags:
+  - svc
+
+- name: enable & start rubrik-agent
+  service:
+    name: rubrikagents
+    state: restarted
+    enabled: yes
+  tags:
+  - rubrik
+
+- name: disable BBY RHEL7 Repository BDC
+  command: subscription-manager repos --disable=BBY_Platform_BBY_RH7_BBY_RH7
+  when: "'pdl01' in inventory_hostname"
+  tags:
+  - rubrik
+
+- name: disable BBY RHEL7 Repository NADC
+  command: subscription-manager repos --disable=BBY_Platform_RHEL7_BBY_RHEL7_BBY
+  when: '("pdl02" in inventory_hostname) or ( "drl02" in inventory_hostname)'
+  tags:
+  - rubrik
+
+- name: test rubrik port 12800
+  local_action: command nc -v {{ inventory_hostname }} 12800 -w 5
+  become: false
+  ignore_errors: true
+  tags:
+  - rubrik
+  - test
+
+- name: test rubrik port 12801
+  local_action: command nc -v {{ inventory_hostname }} 12801 -w 5
+  ignore_errors: true
+  become: false
+  tags:
+  - rubrik
+  - test

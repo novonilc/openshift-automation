@@ -1,0 +1,12 @@
+/var/log/messages {
+    daily
+    notifempty
+    compress
+    rotate 2
+    maxsize 1G
+    missingok
+    dateext
+    postrotate 
+        /bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+ }

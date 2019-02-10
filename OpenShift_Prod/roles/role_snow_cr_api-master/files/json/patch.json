@@ -1,0 +1,408 @@
+[
+{
+   "type":"Normal",
+   "affected_cis":"DRL02GGMAP01D,DRL02FBHAP003,DRL02BHTAP001,DRL02AS3AP005,DRL02AS3AP003,DRL02BHTWB002,DRL02GGMWB02D,DRL02FBHWB001,DRL02GGMWB03D,DRL02AS3AP004,DRL02GGMWB01D,DRL02GGMWB04D,DRL02KP9AP001,DRL02FBHAP001,DRL02FBHWB003,DRL02AS3AP002,DRL02GGMAP02D,DRL02BHTWB001,DRL02AS3AP001,DRL02GGMAP03D,DRL02GGMAP04D,Maestro (Batch)",
+   "backout_plan":"Roll back the server from VM snap shot \n Need to co-ordinate with VMware team to roll back the server from snapshot \n Roll back the server for Physical Server, Boot with old kernel or Remove installed packages",
+   "category":"Server",
+   "outage_audience":"Archimedes (ARC)",
+   "change_owner":"A879801",
+   "change_owner_group":"L3-PLT-LINUX-IT-US",
+   "description":"FY19 Monthly Linux Patching Required by EIP Standards. \n For Application CI's refer to Affected CI Tab.",
+   "short_description":"FY19 R4  OS Security Patching on OIG/vendor directory DR servers Total 21",
+   "implementation_coordinator":"A1106905",
+   "implementation_plan":"The standard patching playbook / Application specific playbook is attached. Please find below steps. \n 1. Gather all the application teams on the bridge. \n 2. Coordinating with application team to bring down services and take confirmation from them to proceed with the patching \n 3. Patch and reboot the servers. \n 4. Application team will bring the services and we will complete the patching",
+   "implementation_group":"L2-PLT-UNIX-IT-US",
+   "planned_start_date":"2018-06-28 00:00:01",
+   "planned_duration":"1 1:00:00",
+   "is_outage_communicated":"Yes",
+   "is_outage_required":"Yes",
+   "is_project_cer_related":"0",
+   "is_test_plan_attached":"true",
+   "is_testing_passed":"Passed",
+   "tester_name":"A1106905",
+   "test_results":"pass",
+   "is_validation_passed":"Passed",
+   "is_validation_plan_attached":"true",
+   "outage_business_impact":"What is the user/business impact? \n We will be doing Patching in rolling manner so no impact",
+   "outage_duration":"1 1:00:001",
+   "outage_starts":"2018-06-28 00:10:01",
+   "outage_systems_impacted":"Oracle Identity Governance (OIG),Vendor Directory,Vendor Oracle Identity Manager",
+   "outage_type":"Degraded",
+   "project_cer_number":"",
+   "release_record":"RLSE0012822",
+   "risk":"4",
+   "subcategory":"Patching",
+   "test_date":"2018-03-27 00:00:01",
+   "test_plan":"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments. \n We have completed successfully in lower environment. Example: LEMR00051011. \n Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook. \n Validate the result by using below command. \n $sudo yum update",
+   "validation_plan":"RHEL 5.X/6.x/7.x servers: \n Verifying if all available security patches are upgraded",
+   "validation_results":"",
+   "validator_name":"",
+   "validation_date":"",
+   "insert_state":"SUBMITTED",
+   "insert_partial":"yes",
+   "return_conflicts":"no",
+   "ctasks": [
+    {
+    "assignment_group":"L1-MEM-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-APPTALK-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-DATACENTER-OPS-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-IAM-OIM-OPS-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-MW-APP-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-MW-MSG-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-PLT-LINUX-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-PLT-WINTEL-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-STORAGE-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-VIAM-OAM-OPS-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-VIAM-PING-OPS-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L3-VIAM-OUD-DEV-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    }]
+},{
+   "type":"Normal",
+   "affected_cis":"PDL01OMSAP01C,PDL01OMSAP04C,PDL01OMSAP05C,PDL01OMSMQ004,PDL01OMSWB01A,PDL01OMSAP07A,PDL01OMSAT07A,PDL01OMSWB03A,PDL01OMSAT14C,PDL01OMSAP06A,PDL01OMSAT04A,PDL01OMSAT03C,PDL01OMSMQ003,PDL01OMSMQ001,PDL01OMSAP04A,PDL01OMSAT05A,PDL01OMSAT14A,PDL01OMSAT05C,PDL01OMSAT12A,PDL01OMSAT08A,PDL01OMSAT10C,PDL01OMSWB02A,PDL01OMSAP02A,PDL01OMSAP12A,PDL01ARCAP001,PDL01OMSAT06A,PDL01OMSAT06C,PDL01OMSDB003,PDL01OMSAT02A,PDL01OMSAT12C,PDL01OMSAP03C,PDL01OMSAT08C,PDL01OMSDB003\\OP01EODB01,PDL01OMSAT01A,PDL01OMSDB003\\OP01AMDB01,PDL01OMSAP01A,PDL01OMSAP02C,PDL01OMSAT01C,PDL01OMSAP03A,PDL01ARCWB001,PDL01OMSAP001,PDL01OMSAT10A,PDL01OMSAP08C,PDL01OMSAT13C,PDL01OMSAP06C,PDL01D20UT01C,PDL01OMSAT09A,PDL01OMSAT07C,PDL01OMSAT13A,PDL01OMSAT04C,PDL01OMSAP07C,PDL01OMSAT02C,PDL01OMSAP08A,PDL01OMSAT03A,PDL01ARCAP01A,PDL01OMSAP05A,PDL01OMSAT09C,PDL01OMSAP12C,Retek Merchandising System (RMS)",
+   "backout_plan":"Roll back the server from VM snap shot \n Need to co-ordinate with VMware team to roll back the server from snapshot \n Roll back the server for Physical Server, Boot with old kernel or Remove installed packages",
+   "category":"Server",
+   "outage_audience":"OMS",
+   "change_owner":"A879801",
+   "change_owner_group":"L3-PLT-LINUX-IT-US",
+   "description":"FY19 Monthly Linux Patching Required by EIP Standards. \n For Application CI's refer to Affected CI Tab.",
+   "short_description":"FY19 R3 patching on PD OMS Total 56 servers ",
+   "implementation_coordinator":"A1106905",
+   "implementation_plan":"The standard patching playbook / Application specific playbook is attached. Please find below steps. \n 1. Gather all the application teams on the bridge. \n 2. Coordinating with application team to bring down services and take confirmation from them to proceed with the patching \n 3. Patch and reboot the servers. \n 4. Application team will bring the services and we will complete the patching",
+   "implementation_group":"L2-PLT-UNIX-IT-US",
+   "planned_start_date":"2018-06-28 00:00:01",
+   "planned_duration":"1 1:00:00",
+   "is_outage_communicated":"Yes",
+   "is_outage_required":"Yes",
+   "is_project_cer_related":"0",
+   "is_test_plan_attached":"true",
+   "is_testing_passed":"Passed",
+   "tester_name":"A1106905",
+   "test_results":"pass",
+   "is_validation_passed":"Passed",
+   "is_validation_plan_attached":"true",
+   "outage_business_impact":"What is the user/business impact? \n We will be doing Patching in rolling manner so no impact",
+   "outage_duration":"1 1:00:001",
+   "outage_starts":"2018-06-28 00:10:01",
+   "outage_systems_impacted":"Order Management System (OMS)",
+   "outage_type":"Degraded",
+   "project_cer_number":"",
+   "release_record":"RLSE0012822",
+   "risk":"4",
+   "subcategory":"Patching",
+   "test_date":"2018-03-27 00:00:01",
+   "test_plan":"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments. \n We have completed successfully in lower environment. Example: LEMR00051011. \n Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook. \n Validate the result by using below command. \n $sudo yum update",
+   "validation_plan":"RHEL 5.X/6.x/7.x servers: \n Verifying if all available security patches are upgraded",
+   "validation_results":"",
+   "validator_name":"",
+   "validation_date":"",
+   "insert_state":"SUBMITTED",
+   "insert_partial":"yes",
+   "return_conflicts":"no",
+   "ctasks": [
+    {
+    "assignment_group":"L1-MEM-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-ASM-OMS-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-DATACENTER-OPS-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-CASSANDRA-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-DB-ORACLE-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-MW-APP-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-MW-MSG-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-PLT-UNIX-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-PLT-WINTEL-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-STORAGE-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-APPTALK-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-TWS-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    }]
+},{
+   "type":"Normal",
+   "affected_cis":"DRL02GGMAP01D,DRL02FBHAP003,DRL02BHTAP001,DRL02AS3AP005,DRL02AS3AP003,DRL02BHTWB002,DRL02GGMWB02D,DRL02FBHWB001,DRL02GGMWB03D,DRL02AS3AP004,DRL02GGMWB01D,DRL02GGMWB04D,DRL02KP9AP001,DRL02FBHAP001,DRL02FBHWB003,DRL02AS3AP002,DRL02GGMAP02D,DRL02BHTWB001,DRL02AS3AP001,DRL02GGMAP03D,DRL02GGMAP04D,Maestro (Batch)",
+   "backout_plan":"Roll back the server from VM snap shot \n Need to co-ordinate with VMware team to roll back the server from snapshot \n Roll back the server for Physical Server, Boot with old kernel or Remove installed packages",
+   "category":"Server",
+   "outage_audience":"Archimedes (ARC)",
+   "change_owner":"A879801",
+   "change_owner_group":"L3-PLT-LINUX-IT-US",
+   "description":"FY19 Monthly Linux Patching Required by EIP Standards. \n For Application CI's refer to Affected CI Tab.",
+   "short_description":"FY19 R4  OS Security Patching on OIG/vendor directory DR servers Total 21 - Test1",
+   "implementation_coordinator":"A1106905",
+   "implementation_plan":"The standard patching playbook / Application specific playbook is attached. Please find below steps. \n 1. Gather all the application teams on the bridge. \n 2. Coordinating with application team to bring down services and take confirmation from them to proceed with the patching \n 3. Patch and reboot the servers. \n 4. Application team will bring the services and we will complete the patching",
+   "implementation_group":"L2-PLT-UNIX-IT-US",
+   "planned_start_date":"2018-06-28 00:00:01",
+   "planned_duration":"1 1:00:00",
+   "is_outage_communicated":"Yes",
+   "is_outage_required":"Yes",
+   "is_project_cer_related":"0",
+   "is_test_plan_attached":"true",
+   "is_testing_passed":"Passed",
+   "tester_name":"A1106905",
+   "test_results":"pass",
+   "is_validation_passed":"Passed",
+   "is_validation_plan_attached":"true",
+   "outage_business_impact":"What is the user/business impact? \n We will be doing Patching in rolling manner so no impact",
+   "outage_duration":"1 1:00:001",
+   "outage_starts":"2018-06-28 00:10:01",
+   "outage_systems_impacted":"Oracle Identity Governance (OIG),Vendor Directory,Vendor Oracle Identity Manager",
+   "outage_type":"Degraded",
+   "project_cer_number":"",
+   "release_record":"RLSE0012822",
+   "risk":"4",
+   "subcategory":"Patching",
+   "test_date":"2018-03-27 00:00:01",
+   "test_plan":"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments. \n We have completed successfully in lower environment. Example: LEMR00051011. \n Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook. \n Validate the result by using below command. \n $sudo yum update",
+   "validation_plan":"RHEL 5.X/6.x/7.x servers: \n Verifying if all available security patches are upgraded",
+   "validation_results":"",
+   "validator_name":"",
+   "validation_date":"",
+   "insert_state":"SUBMITTED",
+   "insert_partial":"yes",
+   "return_conflicts":"no",
+   "ctasks": [
+    {
+    "assignment_group":"L1-MEM-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-APPTALK-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-DATACENTER-OPS-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-IAM-OIM-OPS-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-MW-APP-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-MW-MSG-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-PLT-LINUX-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-PLT-WINTEL-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-STORAGE-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-VIAM-OAM-OPS-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L3-VIAM-OUD-DEV-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    }]
+},{
+   "type":"Normal",
+   "affected_cis":"DRL02GGMAP01D,DRL02FBHAP003,DRL02BHTAP001,DRL02AS3AP005,DRL02AS3AP003,DRL02BHTWB002,DRL02GGMWB02D,DRL02FBHWB001,DRL02GGMWB03D,DRL02AS3AP004,DRL02GGMWB01D,DRL02GGMWB04D,DRL02KP9AP001,DRL02FBHAP001,DRL02FBHWB003,DRL02AS3AP002,DRL02GGMAP02D,DRL02BHTWB001,DRL02AS3AP001,DRL02GGMAP03D,DRL02GGMAP04D,Maestro (Batch)",
+   "backout_plan":"Roll back the server from VM snap shot \n Need to co-ordinate with VMware team to roll back the server from snapshot \n Roll back the server for Physical Server, Boot with old kernel or Remove installed packages",
+   "category":"Server",
+   "outage_audience":"Archimedes (ARC)",
+   "change_owner":"A879801",
+   "change_owner_group":"L3-PLT-LINUX-IT-US",
+   "description":"FY19 Monthly Linux Patching Required by EIP Standards. \n For Application CI's refer to Affected CI Tab.",
+   "short_description":"FY19 R4  OS Security Patching on OIG/vendor directory DR servers Total 21 - Test2",
+   "implementation_coordinator":"A1106905",
+   "implementation_plan":"The standard patching playbook / Application specific playbook is attached. Please find below steps. \n 1. Gather all the application teams on the bridge. \n 2. Coordinating with application team to bring down services and take confirmation from them to proceed with the patching \n 3. Patch and reboot the servers. \n 4. Application team will bring the services and we will complete the patching",
+   "implementation_group":"L2-PLT-UNIX-IT-US",
+   "planned_start_date":"2018-06-28 00:00:01",
+   "planned_duration":"1 1:00:00",
+   "is_outage_communicated":"Yes",
+   "is_outage_required":"Yes",
+   "is_project_cer_related":"0",
+   "is_test_plan_attached":"true",
+   "is_testing_passed":"Passed",
+   "tester_name":"A1106905",
+   "test_results":"pass",
+   "is_validation_passed":"Passed",
+   "is_validation_plan_attached":"true",
+   "outage_business_impact":"What is the user/business impact? \n We will be doing Patching in rolling manner so no impact",
+   "outage_duration":"1 1:00:001",
+   "outage_starts":"2018-06-28 00:10:01",
+   "outage_systems_impacted":"Oracle Identity Governance (OIG),Vendor Directory,Vendor Oracle Identity Manager",
+   "outage_type":"Degraded",
+   "project_cer_number":"",
+   "release_record":"RLSE0012822",
+   "risk":"4",
+   "subcategory":"Patching",
+   "test_date":"2018-03-27 00:00:01",
+   "test_plan":"RHEL 5.X/6.x/7.x servers: This is standard documented process we are following across all environments. \n We have completed successfully in lower environment. Example: LEMR00051011. \n Login to Ansible server dtl01lnxap01a and run the Patching ansible playbook. \n Validate the result by using below command. \n $sudo yum update",
+   "validation_plan":"RHEL 5.X/6.x/7.x servers: \n Verifying if all available security patches are upgraded",
+   "validation_results":"",
+   "validator_name":"",
+   "validation_date":"",
+   "insert_state":"SUBMITTED",
+   "insert_partial":"yes",
+   "return_conflicts":"no",
+   "ctasks": [
+    {
+    "assignment_group":"L1-MEM-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-APPTALK-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-DATACENTER-OPS-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-IAM-OIM-OPS-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-MW-APP-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-MW-MSG-IT-GLB",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-PLT-LINUX-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-PLT-WINTEL-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-STORAGE-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-VIAM-OAM-OPS-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    },{
+    "assignment_group":"L2-VIAM-PING-OPS-IT-US",
+    "description":"Perform SOP required duties to complete patching activities.",
+    "order":"100",
+    "short_description":"Perform SOP required duties to complete patching activities."
+    }]
+}]

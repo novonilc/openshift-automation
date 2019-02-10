@@ -1,0 +1,6 @@
+---
+- hosts: nodes
+  tasks:
+  - name: Run the Openshift install
+    shell:  ansible-playbook -i ~/OpenShift_Prod/ansible-inventory/inventory/hosts.prod.dr /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
+      executable: /bin/bash

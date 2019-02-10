@@ -1,0 +1,35 @@
+---
+- hosts: nodes
+  tasks:
+
+  - name: Extending Logical Volume '/var'
+    lvol:
+      vg: VolGroup00
+      lv: LogVol02
+      size: 70g
+    tags:
+      - lvm
+
+  - name: Extending Filesystem '/var'
+    filesystem:
+      fstype: xfs
+      dev: /dev/VolGroup00/LogVol02
+      resizefs: yes
+    tags:
+      - lvm
+
+  - name: Extending Logical Volume '/var/log'
+    lvol:
+      vg: VolGroup00
+      lv: LogVol04
+      size: 50g
+    tags:
+      - lvm
+
+  - name: Extending Filesystem '/var/log'
+    filesystem:
+      fstype: xfs
+      dev: /dev/VolGroup00/LogVol04
+      resizefs: yes
+    tags:
+      - lvm

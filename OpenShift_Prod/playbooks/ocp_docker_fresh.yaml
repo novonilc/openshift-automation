@@ -1,0 +1,67 @@
+---
+- hosts: nodes
+
+  tasks:
+  - name: Install Docker
+    yum:
+      name: docker
+      state: present
+
+  ## REMEMBER TO UPDATE THE CONTENT AS NEEDED. ##
+  - name: Update docker-storage-setup configuration
+    copy:
+      dest: /etc/sysconfig/docker-storage-setup
+      content: |
+          CONTAINER_THINPOOL=docker-pool
+          VG=VolGroup00
+    register: docker_storage_setup
+  ## REMEMBER TO UPDATE THE CONTENT AS NEEDED. ##
+
+  ### REMEMBER TO UPDATE THE CONTENT AS NEEDED. ##
+  #- name: Update docker-storage-setup configuration
+  #  copy:
+  #    dest: /etc/sysconfig/docker-storage-setup
+  #    content: |
+  #        DEVS=/dev/sdb
+  #        VG=docker-vg
+  #        DATA_SIZE=80GB
+  #  #register: docker_storage_setup
+  ### REMEMBER TO UPDATE THE CONTENT AS NEEDED. ##
+
+  - name: Stop Docker service
+    service:
+      name: docker
+      state: stopped
+    when: docker_storage_setup|changed
+
+  - name: Remove Docker /var/lib/docker
+    file:
+      path: '/var/lib/docker'
+      state: absent
+    when: docker_storage_setup|changed
+
+  - name: Docker storage reset
+    command: docker-storage-setup --reset
+    when: docker_storage_setup|changed
+
+  - name: Execute docker-storage-setup
+    command: docker-storage-setup
+    when: docker_storage_setup|changed
+
+  - name: Remove /var/lib/cni/networks/
+    file:
+      path: '/var/lib/cni/networks/'
+      state: absent
+    when: docker_storage_setup|changed
+
+  - name: Remove /etc/cni/net.d/
+    file:
+      path: '/etc/cni/net.d/'
+      state: absent
+    when: docker_storage_setup|changed
+
+  - name: Start and enable Docker service
+    service:
+      name: docker
+      state: started
+      enabled: yes

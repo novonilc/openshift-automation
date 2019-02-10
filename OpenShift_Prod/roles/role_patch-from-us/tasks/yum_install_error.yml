@@ -1,0 +1,35 @@
+---
+#- debug: msg=" Error while installing RPMS, Login server and check, ERROR msg:- {{ yum_install_all.results }}"
+
+#### For YUM module
+
+- name: Error While installing RPM's | PLEASE check manually if any dependency error
+  fail: msg="Error while installing RPMS| Login server and check"
+#  when: "'puppet-3.7.5' in puppetpkg.stdout and 'a0f' not in ansible_hostname|lower and 'Error:' in yum_install_ex_puppet.results"
+  when: "'puppet-3.7.5' in puppetpkg.stdout and 'a0f' not in ansible_hostname|lower and yum_install_ex_puppet.rc >= 1"
+
+- name: Error While installing RPM's | PLEASE check manually if any dependency error
+  fail: msg=" Error while installing RPMS, Login server and check"
+#  when: "'puppet-3.7.5' not in puppetpkg.stdout and 'a0f' in ansible_hostname|lower and 'Error:' in yum_install_ex_java.results"
+  when: "'puppet-3.7.5' not in puppetpkg.stdout and 'a0f' in ansible_hostname|lower and yum_install_ex_java.rc >= 1"
+
+- name: Error While installing RPM's | PLEASE check manually if any dependency error
+  fail: msg=" Error while installing RPMS, Login server and check"
+#  when: "'puppet-3.7.5' not in puppetpkg.stdout and 'a0f' not in ansible_hostname|lower and 'Error:' in yum_install_all.results"
+  when: "'puppet-3.7.5' not in puppetpkg.stdout and 'a0f' not in ansible_hostname|lower and yum_install_all.rc >= 1"
+
+
+#### For shell module (yum)
+
+#- name: Error While installing RPM's | PLEASE check manually if any dependency error
+#  fail: msg="Error while installing RPMS| Login server and check"
+#  when: "'puppet-3.7.5' in puppetpkg.stdout and 'a0f' not in ansible_hostname|lower and yum_install_ex_puppet.rc >= 1"
+
+#- name: Error While installing RPM's | PLEASE check manually if any dependency error
+#  fail: msg=" Error while installing RPMS, Login server and check"
+#  when: "'puppet-3.7.5' not in puppetpkg.stdout and 'a0f' in ansible_hostname|lower and yum_install_ex_java.rc >= 1"
+
+#- name: Error While installing RPM's | PLEASE check manually if any dependency error
+#  debug: msg=" Error while installing RPMS, Login server and check"
+#  when: "'puppet-3.7.5' not in puppetpkg.stdout and 'a0f' not in ansible_hostname|lower and yum_install_all.rc >= 1"
+

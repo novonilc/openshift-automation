@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: registry-storage
+spec:
+  capacity:
+    storage: 297Gi
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /ocp_internalregistry
+    server: 172.21.136.247
+  persistentVolumeReclaimPolicy: Recycle
+

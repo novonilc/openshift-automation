@@ -1,0 +1,52 @@
+---
+
+- include: set_facts.yaml
+
+- name: login to CA-Dev OCP
+  command: oc login {{ login_url }} -u {{ user }} -p {{ pass }}
+  when: ca_dev | bool
+
+- name: login to CA-Prod OCP
+  command: oc login {{ login_url }} -u {{ user }} -p {{ pass }}
+  when: ca_prod | bool
+
+- name: login to US-Prod OCP
+  command: oc login {{ login_url }} -u {{ user }} -p {{ pass }}
+  when: us_prod | bool
+
+- name: login to US-DR OCP
+  command: oc login {{ login_url }} -u {{ user }} -p {{ pass }}
+  when: us_dr | bool
+
+- name: create ocp/persistent_volume dir
+  file:
+    path: "{{ dir_path }}"
+    state: directory
+
+- name: Copy Persistent Volume
+  template:
+    src: volume-template.yaml
+    dest: "{{ dir_path }}/volume-template.yaml"
+  tags:
+  - pv
+
+- name: Create Persistent Volume
+  command: oc create -f {{ dir_path }}/volume-template.yaml -n {{ project }}
+  notify:
+  - "clean temp dir"
+  tags:
+  - pv
+
+- name: Copy Persistent Claim
+  template:
+    src: claim-template.yaml
+    dest: "{{ dir_path }}/claim-template.yaml"
+  tags:
+  - pvc
+
+- name: Create Persistent Claim
+  command: oc create -f {{ dir_path }}/claim-template.yaml -n {{ project }}
+  notify:
+  - "clean temp dir"
+  tags:
+  - pvc

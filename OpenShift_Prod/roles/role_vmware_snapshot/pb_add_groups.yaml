@@ -1,0 +1,25 @@
+---
+- hosts: all
+  gather_facts: False
+  connection: local
+  serial: 1
+
+  vars_prompt:
+   # - name: "vc_hostname"
+   #   prompt: "vCenter Server FQDN"
+   #   private: no
+
+   # - name: "vc_datacenter"
+   #   prompt: "vCenter Datacenter"
+   #   private: no
+
+    - name: "vc_username"
+      prompt: "vCenter Username"
+      private: no
+
+    - name: "vc_password"
+      prompt: "vCenter Password"
+      private: yes
+
+  roles:
+  - { role: ../role_vmware_snapshot }

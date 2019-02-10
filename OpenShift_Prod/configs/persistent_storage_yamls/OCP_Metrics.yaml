@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: metrics-cassandra 
+spec:
+  capacity:
+    storage: 198Gi 
+  accessModes:
+  - ReadWriteOnce
+  nfs: 
+    path: /ocp_metrics
+    server: 172.21.136.247
+  persistentVolumeReclaimPolicy: Recycle

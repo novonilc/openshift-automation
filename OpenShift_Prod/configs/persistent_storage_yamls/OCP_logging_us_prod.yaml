@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/bound-by-controller: "yes"
+  creationTimestamp: null
+  name: logging-vol
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 240Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: logging-es-0
+    namespace: logging
+    resourceVersion: "40211726"
+    uid: d4a0a39a-26ff-11e8-9ada-005056896431
+  iscsi:
+    fsType: ext4
+    iqn: iqn.1992-08.com.netapp:sn.e2d1c013efc011e681e800a098ad3a7a:vs.5
+    iscsiInterface: default
+    lun: 1
+    portals:
+    - 172.16.72.185:3260
+    - 172.16.72.186:3260
+    - 172.16.72.187:3260
+    - 172.16.72.188:3260
+    targetPortal: 172.16.72.185:3260
+  persistentVolumeReclaimPolicy: Retain
+status: {}
