@@ -1,4 +1,4 @@
-vcenter: pda20vapvcn02.ca.bestbuy.com
+vcenter: pda20vapvcn02.ca.xxxxxx.com
 #inventory_hostname_short:
 datastore: BBYC-CORP-SECURITY-Datastores02
 vmware_user_name: nochoudh

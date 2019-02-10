@@ -60,11 +60,11 @@ spec:
         - name: ROUTE_LABELS
           value: router=pci
         - name: ROUTER_DENIED_DOMAINS
-          value: prod-ocp.ca.bestbuy.com, prodcorp-ocp.ca.bestbuy.com, proddmz-ocp.ca.bestbuy.com
+          value: prod-ocp.ca.xxxxxx.com, prodcorp-ocp.ca.xxxxxx.com, proddmz-ocp.ca.xxxxxx.com
         - name: NAMESPACE_LABELS
           value: router=pci
         - name: ROUTER_ALLOWED_DOMAINS
-          value: prodpci-ocp.ca.bestbuy.com
+          value: prodpci-ocp.ca.xxxxxx.com
         image: registry.access.redhat.com/openshift3/ose-haproxy-router:v3.5.5.31
         imagePullPolicy: IfNotPresent
         livenessProbe:

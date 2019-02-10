@@ -54,8 +54,8 @@
   with_items: "{{decom_cr_count.stdout_lines}}"
   register: decom_create_cr
   environment:
-    http_proxy: http://usproxy.na.bestbuy.com:8080
-    https_proxy: http://usproxy.na.bestbuy.com:8080
+    http_proxy: http://usproxy.na.xxxxxx.com:8080
+    https_proxy: http://usproxy.na.xxxxxx.com:8080
   tags:
     - decomchangecr
 
@@ -71,8 +71,8 @@
   with_items: "{{ decom_create_cr.results }}"
   register: decom_query_cr
   environment:
-    http_proxy: http://usproxy.na.bestbuy.com:8080
-    https_proxy: http://usproxy.na.bestbuy.com:8080
+    http_proxy: http://usproxy.na.xxxxxx.com:8080
+    https_proxy: http://usproxy.na.xxxxxx.com:8080
   tags:
     - decomchangecr
 #    - querycr

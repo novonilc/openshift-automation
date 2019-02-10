@@ -60,9 +60,9 @@ spec:
         - name: ROUTE_LABELS
           value: router=corp
         - name: ROUTER_DENIED_DOMAINS
-          value: prod-ocp.ca.bestbuy.com, prodpci-ocp.ca.bestbuy.com, proddmz-ocp.ca.bestbuy.com
+          value: prod-ocp.ca.xxxxxx.com, prodpci-ocp.ca.xxxxxx.com, proddmz-ocp.ca.xxxxxx.com
         - name: ROUTER_ALLOWED_DOMAINS
-          value: prodcorp-ocp.ca.bestbuy.com
+          value: prodcorp-ocp.ca.xxxxxx.com
         - name: NAMESPACE_LABELS
           value: router=corp
         image: registry.access.redhat.com/openshift3/ose-haproxy-router:v3.5.5.31

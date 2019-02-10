@@ -2,21 +2,21 @@
 
 - name: set fact master-config.yaml [0]
   set_fact:
-    master0: "drl09ocpcma02.na.bestbuy.com"
-    master1: "drl09ocpcma03.na.bestbuy.com"
+    master0: "drl09ocpcma02.na.xxxxxx.com"
+    master1: "drl09ocpcma03.na.xxxxxx.com"
   when:
-    "inventory_hostname == 'drl09ocpcma01.na.bestbuy.com'"
+    "inventory_hostname == 'drl09ocpcma01.na.xxxxxx.com'"
 
 - name: set fact master-config.yaml [1]
   set_fact:
-    master0: "drl09ocpcma01.na.bestbuy.com"
-    master1: "drl09ocpcma03.na.bestbuy.com"
+    master0: "drl09ocpcma01.na.xxxxxx.com"
+    master1: "drl09ocpcma03.na.xxxxxx.com"
   when:
-    "inventory_hostname == 'drl09ocpcma02.na.bestbuy.com'"
+    "inventory_hostname == 'drl09ocpcma02.na.xxxxxx.com'"
 
 - name: set fact master-config.yaml [2]
   set_fact:
-    master0: "drl09ocpcma01.na.bestbuy.com"
-    master1: "drl09ocpcma02.na.bestbuy.com"
+    master0: "drl09ocpcma01.na.xxxxxx.com"
+    master1: "drl09ocpcma02.na.xxxxxx.com"
   when:
-    "inventory_hostname == 'drl09ocpcma03.na.bestbuy.com'"
+    "inventory_hostname == 'drl09ocpcma03.na.xxxxxx.com'"

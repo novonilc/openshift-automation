@@ -1,5 +1,5 @@
 [all:vars]
-vc_hostname=pda20vapvcn02.ca.bestbuy.com
+vc_hostname=pda20vapvcn02.ca.xxxxxx.com
 vc_datacenter=VIDC
 
 [jamil]

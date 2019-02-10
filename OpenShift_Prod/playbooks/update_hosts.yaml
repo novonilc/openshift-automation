@@ -3,15 +3,15 @@
   tasks:
   - lineinfile:
       path: /etc/hosts
-      line: '168.94.44.191   drl09ocpcma01.na.bestbuy.com    drl09ocpcma01   master-bdc.dr-ocp.na.bestbuy.com'
+      line: '168.94.44.191   drl09ocpcma01.na.xxxxxx.com    drl09ocpcma01   master-bdc.dr-ocp.na.xxxxxx.com'
 
   - lineinfile:
       path: /etc/hosts
-      line: '168.94.44.192   drl09ocpcma02.na.bestbuy.com    drl09ocpcma02   master-bdc.dr-ocp.na.bestbuy.com'
+      line: '168.94.44.192   drl09ocpcma02.na.xxxxxx.com    drl09ocpcma02   master-bdc.dr-ocp.na.xxxxxx.com'
 
   - lineinfile:
       path: /etc/hosts
-      line: '168.94.44.193   drl09ocpcma03.na.bestbuy.com    drl09ocpcma03   master-bdc.dr-ocp.na.bestbuy.com'
+      line: '168.94.44.193   drl09ocpcma03.na.xxxxxx.com    drl09ocpcma03   master-bdc.dr-ocp.na.xxxxxx.com'
 
 
 

@@ -13,25 +13,25 @@ pci-appnodes
 ansible_become=yes
 
 [masters]
-pdl20ocpmma0[1:3].ca.bestbuy.com
+pdl20ocpmma0[1:3].ca.xxxxxx.com
 
 [master-infra]
-pdl20ocpmin0[1:3].ca.bestbuy.com
+pdl20ocpmin0[1:3].ca.xxxxxx.com
 
 [corp-infra]
-pdl20ocpcin0[1:3].ca.bestbuy.com
+pdl20ocpcin0[1:3].ca.xxxxxx.com
 
 [dmz-infra]
-pdl20ocpdin0[1:3].ca.bestbuy.com
+pdl20ocpdin0[1:3].ca.xxxxxx.com
 
 [pci-infra]
-pdl20ocppin0[1:3].ca.bestbuy.com
+pdl20ocppin0[1:3].ca.xxxxxx.com
 
 [corp-appnodes]
-pdh20ocpcch0[1:3].ca.bestbuy.com
+pdh20ocpcch0[1:3].ca.xxxxxx.com
 
 [dmz-appnodes]
-pdh20ocpdch0[1:3].ca.bestbuy.com
+pdh20ocpdch0[1:3].ca.xxxxxx.com
 
 [pci-appnodes]
-pdh20ocppch0[1:3].ca.bestbuy.com
+pdh20ocppch0[1:3].ca.xxxxxx.com

@@ -43,8 +43,8 @@
   with_items: "{{general_count.stdout_lines}}"
   register: general_create_cr
   environment:
-    http_proxy: http://usproxy.na.bestbuy.com:8080
-    https_proxy: http://usproxy.na.bestbuy.com:8080
+    http_proxy: http://usproxy.na.xxxxxx.com:8080
+    https_proxy: http://usproxy.na.xxxxxx.com:8080
   tags:
     - changecr
 
@@ -60,8 +60,8 @@
   with_items: "{{ general_create_cr.results }}"
   register: general_query_cr
   environment:
-    http_proxy: http://usproxy.na.bestbuy.com:8080
-    https_proxy: http://usproxy.na.bestbuy.com:8080
+    http_proxy: http://usproxy.na.xxxxxx.com:8080
+    https_proxy: http://usproxy.na.xxxxxx.com:8080
   tags:
     - changecr
 

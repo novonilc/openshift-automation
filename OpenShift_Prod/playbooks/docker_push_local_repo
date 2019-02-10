@@ -9,4 +9,4 @@
        tag: 3.5
        push: yes
        when:
-       - "'drl09ocpcma01.na.bestbuy.com' in inventory_hostname"
+       - "'drl09ocpcma01.na.xxxxxx.com' in inventory_hostname"

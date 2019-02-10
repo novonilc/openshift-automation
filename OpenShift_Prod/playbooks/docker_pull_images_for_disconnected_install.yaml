@@ -10,9 +10,9 @@
     docker_image:
       name: "{{ item }}"
     with_items:
-      - registry.prod-ocp.na.bestbuy.com/openshift3/ose-haproxy-router:v3.7.42
-      - registry.prod-ocp.na.bestbuy.com/openshift3/ose-pod:latest
-      - registry.prod-ocp.na.bestbuy.com/openshift3/ose-deployer:v3.7.42
+      - registry.prod-ocp.na.xxxxxx.com/openshift3/ose-haproxy-router:v3.7.42
+      - registry.prod-ocp.na.xxxxxx.com/openshift3/ose-pod:latest
+      - registry.prod-ocp.na.xxxxxx.com/openshift3/ose-deployer:v3.7.42
     tags:
     - docker
 

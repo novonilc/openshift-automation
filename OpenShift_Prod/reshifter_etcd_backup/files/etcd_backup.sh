@@ -22,7 +22,7 @@
 # 2017.10.09   Saul Alanis           Created script
 # =======================================================================
 #set -x
-export MAILRC=/dev/null smtp=mail10.bestbuy.com
+export MAILRC=/dev/null smtp=mail10.xxxxxx.com
 MAIL=`which mailx`
 LOG=/var/tmp/reshifter-`date +%Y%m%d%M`.log
 DATA_DIR=/root/reshifter
@@ -42,7 +42,7 @@ touch $LOG
 
 if [[ ! $? -eq 0 ]]; then
   printf "etcd connectivy issues - backup failed, please inspect!\n" >> $LOG
-  $MAIL -n -s "reshifter backup failed ${HOST}" saul.alanis@bestbuy.com < $LOG
+  $MAIL -n -s "reshifter backup failed ${HOST}" saul.alanis@xxxxxx.com < $LOG
   rm -f $LOG
   exit 1
 fi
@@ -64,10 +64,10 @@ fi
 
 # send notification
 if [[ $? -eq 0 ]]; then
-  $MAIL -n -s "reshifter backup success ${HOST}" saul.alanis@bestbuy.com < $LOG
+  $MAIL -n -s "reshifter backup success ${HOST}" saul.alanis@xxxxxx.com < $LOG
   rm -f $LOG
   rm -rf /tmp/reshifter/*
 else
-  $MAIL -n -s "reshifter backup failed ${HOST}" saul.alanis@bestbuy.com < $LOG
+  $MAIL -n -s "reshifter backup failed ${HOST}" saul.alanis@xxxxxx.com < $LOG
   rm -f $LOG
 fi

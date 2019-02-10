@@ -10,6 +10,6 @@ CONFIG_FILE=/etc/origin/node/node-config.yaml
 # Proxy configuration
 # Origin uses standard HTTP_PROXY environment variables. Be sure to set
 # NO_PROXY for your master
-HTTP_PROXY=http://usproxy.na.bestbuy.com:8080
-HTTPS_PROXY=https://usproxy.na.bestbuy.com:8080
-NO_PROXY='.bbydmz.com,.cluster.local,.na.bestbuy.com,.svc,10.3.0.0/16,168.94.44.191,168.94.44.192,168.94.44.193,172.32.0.0/16,master-bdc.dr-ocp.na.bestbuy.com,docker-registry.default.svc.cluster.local,registry.dr-ocp.na.bestbuy.com,drh09ocppch01.bbydmz.com,drh09ocppch02.bbydmz.com,drh09ocppch03.bbydmz.com,drl09ocpcin01.na.bestbuy.com,drl09ocpcin02.na.bestbuy.com,drl09ocpcin03.na.bestbuy.com,drl09ocpcma01.na.bestbuy.com,drl09ocpcma02.na.bestbuy.com,drl09ocpcma03.na.bestbuy.com,drl09ocppin01.bbydmz.com,drl09ocppin02.bbydmz.com,drl09ocppin03.bbydmz.com,drh09ocpdch01.bbydmz.com,drh09ocpdch02.bbydmz.com,drl09ocpdin01.bbydmz.com,drl09ocpdin02.bbydmz.com,drl09ocpdin03.bbydmz.com,drl09ocpcch01.na.bestbuy.com,drl09ocpcch02.na.bestbuy.com,drl09ocpcch03.na.bestbuy.com'
+HTTP_PROXY=http://usproxy.na.xxxxxx.com:8080
+HTTPS_PROXY=https://usproxy.na.xxxxxx.com:8080
+NO_PROXY='.bbydmz.com,.cluster.local,.na.xxxxxx.com,.svc,10.3.0.0/16,168.94.44.191,168.94.44.192,168.94.44.193,172.32.0.0/16,master-bdc.dr-ocp.na.xxxxxx.com,docker-registry.default.svc.cluster.local,registry.dr-ocp.na.xxxxxx.com,drh09ocppch01.bbydmz.com,drh09ocppch02.bbydmz.com,drh09ocppch03.bbydmz.com,drl09ocpcin01.na.xxxxxx.com,drl09ocpcin02.na.xxxxxx.com,drl09ocpcin03.na.xxxxxx.com,drl09ocpcma01.na.xxxxxx.com,drl09ocpcma02.na.xxxxxx.com,drl09ocpcma03.na.xxxxxx.com,drl09ocppin01.bbydmz.com,drl09ocppin02.bbydmz.com,drl09ocppin03.bbydmz.com,drh09ocpdch01.bbydmz.com,drh09ocpdch02.bbydmz.com,drl09ocpdin01.bbydmz.com,drl09ocpdin02.bbydmz.com,drl09ocpdin03.bbydmz.com,drl09ocpcch01.na.xxxxxx.com,drl09ocpcch02.na.xxxxxx.com,drl09ocpcch03.na.xxxxxx.com'

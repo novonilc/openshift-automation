@@ -30,7 +30,7 @@
     private: no
 
   - name: server_addr
-    prompt: "Enter the server address that will support the storage for the volume (hostname or IP address). EX: nfs.bestbuy.com | 172.168.0.24"
+    prompt: "Enter the server address that will support the storage for the volume (hostname or IP address). EX: nfs.xxxxxx.com | 172.168.0.24"
     private: no
 
   - name: path

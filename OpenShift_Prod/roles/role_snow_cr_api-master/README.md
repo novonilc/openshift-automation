@@ -25,7 +25,7 @@ $ vi roles/role_snow_cr_api/vars/decom.yml
 ```
 $ vi roles/role_snow_cr_api/vars/general.yml
 ```
-4. serviceinst - Service instant name "bestbuy.service-now.com"
+4. serviceinst - Service instant name "xxxxxx.service-now.com"
 5. email - Email id to get change report.
 6. login_user - Service now API login id (not GUI Login's). 
 7. login_pass - Service now API password (not GUI Login's).
@@ -45,7 +45,7 @@ Note:
 Additional Information
 ======================
 
-1. For more information refer: https://sites.bestbuy.com/corp/ITSM/Change/_layouts/15/WopiFrame.aspx?sourcedoc=/corp/ITSM/Change/Shared%20Documents/Change%20API%20-%20Client%20Specifications.docx&action=default
+1. For more information refer: https://sites.xxxxxx.com/corp/ITSM/Change/_layouts/15/WopiFrame.aspx?sourcedoc=/corp/ITSM/Change/Shared%20Documents/Change%20API%20-%20Client%20Specifications.docx&action=default
 2. Either Firewall rules implement to connect Service now or Proxy can be used.
 
 Role Variables

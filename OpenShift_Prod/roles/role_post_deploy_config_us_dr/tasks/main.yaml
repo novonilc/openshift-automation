@@ -264,7 +264,7 @@
     path: "/etc/docker/certs.d/{{ item }}"
     state: absent
   with_items:
-    - 'registry.dr-ocp.na.bestbuy.com'
+    - 'registry.dr-ocp.na.xxxxxx.com'
     - '172.32.5.135:5000'
     - 'docker-registry.default.svc.cluster.local:5000'
     - 'docker-registry.default.svc'
@@ -277,7 +277,7 @@
     state: directory
     mode: 0755
   with_items:
-    - 'registry.dr-ocp.na.bestbuy.com'
+    - 'registry.dr-ocp.na.xxxxxx.com'
     - '172.32.5.135:5000'
     - 'docker-registry.default.svc.cluster.local:5000'
     - 'docker-registry.default.svc'
@@ -292,7 +292,7 @@
     group: root
     mode: 0644
   with_items:
-    - 'registry.dr-ocp.na.bestbuy.com'
+    - 'registry.dr-ocp.na.xxxxxx.com'
     - '172.32.5.135:5000'
     - 'docker-registry.default.svc.cluster.local:5000'
     - 'docker-registry.default.svc'
@@ -307,7 +307,7 @@
     group: root
     mode: 0644
   with_items:
-    - 'registry.dr-ocp.na.bestbuy.com'
+    - 'registry.dr-ocp.na.xxxxxx.com'
     - 'docker-registry.default.svc.cluster.local:5000'
     - '172.32.5.135:5000'
     - 'docker-registry.default.svc'

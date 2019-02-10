@@ -33,7 +33,7 @@
 
 - name: Download reshifter onto host
   get_url:
-    url: https://dtl01lnxap01c.na.bestbuy.com:8443/repository/bbybinary/reshifter
+    url: https://dtl01lnxap01c.na.xxxxxx.com:8443/repository/bbybinary/reshifter
     dest: /usr/local/bin
     validate_certs: False
     mode: 0770

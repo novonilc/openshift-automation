@@ -41,7 +41,7 @@ spec:
         sysdig: "true"
       containers:
       - name: sysdig-agent
-        image: registry.prod-ocp.ca.bestbuy.com/sysdig-cloud/agent:latest
+        image: registry.prod-ocp.ca.xxxxxx.com/sysdig-cloud/agent:latest
 #        imagePullPolicy: Always                            #OPTIONAL - Always pull the latest container image tag
         securityContext:
          privileged: true

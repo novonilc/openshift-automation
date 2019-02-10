@@ -1,13 +1,13 @@
 kind: LDAPSyncConfig
 apiVersion: v1
-bindDN: cn=BCA-S-OSHIFT-DEV-AD,ou=Infrastructure,ou=Service Accounts,ou=ECOMM,dc=ca,dc=bestbuy,dc=com
+bindDN: cn=BCA-S-OSHIFT-DEV-AD,ou=Infrastructure,ou=Service Accounts,ou=ECOMM,dc=ca,dc=xxxxxx,dc=com
 bindPassword: C5V5rR2cjxuMns2XMgSHXvKDLV2QmE
-url: ldap://ad-ca.ca.bestbuy.com
+url: ldap://ad-ca.ca.xxxxxx.com
 insecure: true
 ca: ''
 augmentedActiveDirectory:
     groupsQuery:
-        baseDN: "OU=OPENSHIFT,OU=Groups,OU=ECOMM,DC=ca,DC=bestbuy,DC=com"
+        baseDN: "OU=OPENSHIFT,OU=Groups,OU=ECOMM,DC=ca,DC=xxxxxx,DC=com"
         scope: sub
         derefAliases: always
         pageSize: 0
@@ -15,7 +15,7 @@ augmentedActiveDirectory:
     groupUIDAttribute: dn
     groupNameAttributes: [ cn ]
     usersQuery:
-        baseDN: "ou=Users,ou=Best Buy Canada,dc=ca,dc=bestbuy,dc=com"
+        baseDN: "ou=Users,ou=Best Buy Canada,dc=ca,dc=xxxxxx,dc=com"
         scope: sub
         derefAliases: never
         pageSize: 0

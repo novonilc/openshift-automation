@@ -108,7 +108,7 @@
 - name: Email {{operation|upper}} Change Notification
   mail:
     to: "{{email}}"
-    cc: "a1176771@bestbuy.com"
+    cc: "a1176771@xxxxxx.com"
     subject: "Ansible Report Overview of {{operation|upper}} Change Report"
     subtype: html
     attach: "{{report_path}}/{{operation}}changereport.html"

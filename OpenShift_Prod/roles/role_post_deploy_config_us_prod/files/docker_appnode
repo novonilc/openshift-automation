@@ -10,7 +10,7 @@ fi
 # pull use the ADD_REGISTRY option to list a set of registries, each prepended
 # with --add-registry flag. The first registry added will be the first registry
 # searched.
-ADD_REGISTRY='--add-registry docker-registry.default.svc.cluster.local:5000 --add-registry registry.prod-ocp.na.bestbuy.com'
+ADD_REGISTRY='--add-registry docker-registry.default.svc.cluster.local:5000 --add-registry registry.prod-ocp.na.xxxxxx.com'
 
 # If you want to block registries from being used, uncomment the BLOCK_REGISTRY
 # option and give it a set of registries, each prepended with --block-registry
@@ -45,5 +45,5 @@ BLOCK_REGISTRY='--block-registry docker.io'
 #DOCKERDBINARY=/usr/bin/dockerd-latest
 #DOCKER_CONTAINERD_BINARY=/usr/bin/docker-containerd-latest
 #DOCKER_CONTAINERD_SHIM_BINARY=/usr/bin/docker-containerd-shim-latest
-HTTP_PROXY='http://usproxy.na.bestbuy.com:8080'
-NO_PROXY='.bbydmz.com,.cluster.local,.na.bestbuy.com,.svc,10.2.0.0/16,168.94.217.158,168.94.217.159,168.94.217.173,172.32.0.0/16,168.94.217.158,168.94.217.159,168.94.217.173,master-hdc.prod-ocp.na.bestbuy.com,docker-registry.default.svc.cluster.local,registry.prod-ocp.na.bestbuy.com,pdl10ocpcma01.na.bestbuy.com,pdl10ocpcma02.na.bestbuy.com,pdl10ocpcma03.na.bestbuy.com,pdh10ocppch01.bbydmz.com,pdh10ocppch02.bbydmz.com,pdh10ocppch03.bbydmz.com,pdl10ocpcin01.na.bestbuy.com,pdl10ocpcin02.na.bestbuy.com,pdl10ocpcin03.na.bestbuy.com,pdl10ocpcma01.na.bestbuy.com,pdl10ocpcma02.na.bestbuy.com,pdl10ocppin01.bbydmz.com,pdl10ocppin02.bbydmz.com,pdl10ocppin03.bbydmz.com,pdh10ocpdch01.bbydmz.com,pdh10ocpdch02.bbydmz.com,pdh10ocpdch03.bbydmz.com,pdl10ocpdin01.bbydmz.com,pdl10ocpdin02.bbydmz.com,pdl10ocpdin03.bbydmz.com'
+HTTP_PROXY='http://usproxy.na.xxxxxx.com:8080'
+NO_PROXY='.bbydmz.com,.cluster.local,.na.xxxxxx.com,.svc,10.2.0.0/16,168.94.217.158,168.94.217.159,168.94.217.173,172.32.0.0/16,168.94.217.158,168.94.217.159,168.94.217.173,master-hdc.prod-ocp.na.xxxxxx.com,docker-registry.default.svc.cluster.local,registry.prod-ocp.na.xxxxxx.com,pdl10ocpcma01.na.xxxxxx.com,pdl10ocpcma02.na.xxxxxx.com,pdl10ocpcma03.na.xxxxxx.com,pdh10ocppch01.bbydmz.com,pdh10ocppch02.bbydmz.com,pdh10ocppch03.bbydmz.com,pdl10ocpcin01.na.xxxxxx.com,pdl10ocpcin02.na.xxxxxx.com,pdl10ocpcin03.na.xxxxxx.com,pdl10ocpcma01.na.xxxxxx.com,pdl10ocpcma02.na.xxxxxx.com,pdl10ocppin01.bbydmz.com,pdl10ocppin02.bbydmz.com,pdl10ocppin03.bbydmz.com,pdh10ocpdch01.bbydmz.com,pdh10ocpdch02.bbydmz.com,pdh10ocpdch03.bbydmz.com,pdl10ocpdin01.bbydmz.com,pdl10ocpdin02.bbydmz.com,pdl10ocpdin03.bbydmz.com'

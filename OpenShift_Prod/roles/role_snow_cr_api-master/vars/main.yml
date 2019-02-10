@@ -7,16 +7,16 @@ decom_attachment_path: roles/role_snow_cr_api/files/attachment/decom
 general_attachment_path: roles/role_snow_cr_api/files/attachment/general
 
 #Proxy
-proxy: 'http://usproxy.na.bestbuy.com:8080'
+proxy: 'http://usproxy.na.xxxxxx.com:8080'
 
 # Variable for ServiceNow url
 # UAT
-#serviceinst: bestbuyuat.service-now.com
+#serviceinst: xxxxxxuat.service-now.com
 # Prod
-serviceinst: bestbuy.service-now.com
+serviceinst: xxxxxx.service-now.com
 
 # Variable for Email to
-email: 'TCSIS-UNIX-Patching-team@bestbuy.com'
+email: 'TCSIS-UNIX-Patching-team@xxxxxx.com'
 
 #file_path: 'roles/role_snow_cr_api/files/change'
 
