@@ -1,0 +1,53 @@
+{
+  "builders": [
+    {
+      "type": "vsphere-iso",
+
+      "vcenter_server":      "{{ user `vc_server` }}",
+      "datacenter":          "{{ user `vc_datacenter` }}",
+      "username":            "{{ user `vc_username` }}",
+      "password":            "{{ user `vc_password` }}",
+      "insecure_connection": "true",
+
+      "vm_name": "{{ user `vm_name` }}",
+      "folder": "{{ user `vm_folder` }}",
+      "host":    "{{ user `vc_esxi_host` }}",
+      "cluster": "{{ user `vc_cluster` }}",
+      "datastore": "{{ user `vc_datastore` }}",
+      "notes": "{{ user `vm_notes` }}",
+
+      "guest_os_type": "rhel7_64Guest",
+
+      "CPUs":             "{{ user `vm_cpu` }}",
+      "RAM":              "{{ user `vm_ram` }}",
+      "RAM_reserve_all": true,
+
+      "disk_size":        "{{ user `vm_disk` }}",
+      "disk_controller_type":  "pvscsi",
+      "disk_thin_provisioned": false,
+
+      "network": "{{ user `vm_network` }}",
+      "network_card": "vmxnet3",
+
+      "iso_paths": [
+        "[3Par01_eComm_Shared_LUN001] ISO/Red Hat Enterprise Linux/rhel-server-7.6-x86_64-dvd.iso"
+      ],
+
+      "boot_wait": "10s",
+      "boot_command": [
+        "<up><up><tab><wait5><bs><bs><bs><bs><bs>",
+        "noverifyssl hostname=ocp.ca.bestbuy.com ip={{ user `vm_network_ip` }} netmask={{ user `vm_network_netmask` }} gateway={{ user `vm_network_gateway` }} nameserver={{ user `vm_nameserver1` }} nameserver={{ user `vm_nameserver2` }} ks=https://pdl24vifrep01.ca.bestbuy.com:9443/dist/ocp/rhel7.ks",
+        "<wait5><enter>"
+      ],
+
+      "ssh_username": "root",
+      "ssh_password": "DontEmailPasswords3",
+
+      "shutdown_command": "/usr/sbin/shutdown -h now",
+      "shutdown_timeout": "10s",
+      "convert_to_template": false
+
+    }
+  ]
+}
+

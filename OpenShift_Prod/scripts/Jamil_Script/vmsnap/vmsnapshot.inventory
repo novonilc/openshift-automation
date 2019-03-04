@@ -1,0 +1,19 @@
+[sandbox]
+DTL20OCPLABS01
+DTL20OCPLABS02
+DTL20OCPLABS03
+DTL20OCPLABS04
+DTL20OCPLABS05
+DTL20OCPLABS06
+
+[sandbox:vars]
+vc_folder="/VIDC/vm/CORP-DEV/Openshift Enterprise/SANDBOX/"
+
+[all:vars]
+vc_hostname=pda20vapvcn02.ca.bestbuy.com
+vc_datacenter=VIDC
+snapshot_name="snap0"
+snapshot_description="snapshot0"
+snapshot_state="present"
+#snapshot_state="absent"
+

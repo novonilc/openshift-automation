@@ -1,0 +1,19 @@
+{
+  "vc_server": "pda20vapvcn02.ca.bestbuy.com",
+  "vc_datacenter": "VIDC",
+  "vc_esxi_host":    "dth24esxin030.ca.bestbuy.com",
+  "vc_cluster": "LOWER-LINUX-HA-DRS",
+  "vc_datastore": "VIDC-DEV-LUN08",
+  "vm_name": "TESTRHEL7",
+  "vm_folder": "/VDI/Platform/Jamil/",
+  "vm_notes": "Test RHEL7 deployed with Packer.",
+  "vm_cpu": "1",
+  "vm_ram": "2048",
+  "vm_disk": "71680",
+  "vm_network": "eComm-users",
+  "vm_network_ip": "172.21.50.177",
+  "vm_network_netmask": "255.255.254.0",
+  "vm_network_gateway": "172.21.50.1",
+  "vm_nameserver1": "168.94.169.251",
+  "vm_nameserver2": "168.94.89.251"
+}

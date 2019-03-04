@@ -1,0 +1,7 @@
+=========================================================
+
+$ packer validate -var-file=private_variables.json -var-file=variables.json rhel7.json
+
+$ packer build    -var-file=private_variables.json -var-file=variables.json rhel7.json
+
+=========================================================

@@ -1,0 +1,45 @@
+
+
+# create the json file with build details
+$ vim rhel7.json
+
+# validate the json file for syntax
+$ packer validate rhel7.json
+
+# build the VM according to json file
+$ packer build rhel7.json
+
+=========================================================
+
+=========================================================
+
+$ packer validate -var-file private_variables.json -var-file variables.json rhel7.json
+$ packer validate -var-file=private_variables.json -var-file=variables.json rhel7.json
+
+$ packer build -var-file=private_variables.json -var-file=variables.json rhel7.json
+vsphere-iso output will be in this color.
+
+==> vsphere-iso: Creating VM...
+==> vsphere-iso: Customizing hardware...
+==> vsphere-iso: Mount ISO images...
+==> vsphere-iso: Set boot order temporary...
+==> vsphere-iso: Power on VM...
+==> vsphere-iso: Waiting 10s for boot...
+==> vsphere-iso: Typing boot command...
+==> vsphere-iso: Waiting for IP...
+==> vsphere-iso: IP address: 172.21.50.177
+==> vsphere-iso: Using ssh communicator to connect: 172.21.50.177
+==> vsphere-iso: Waiting for SSH to become available...
+==> vsphere-iso: Connected to SSH!
+==> vsphere-iso: Executing shutdown command...
+==> vsphere-iso: Deleting Floppy drives...
+==> vsphere-iso: Eject CD-ROM drives...
+==> vsphere-iso: Clear boot order...
+Build 'vsphere-iso' finished.
+
+==> Builds finished. The artifacts of successful builds are:
+--> vsphere-iso: TESTRHEL7
+
+
+=========================================================
+

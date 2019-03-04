@@ -1,0 +1,57 @@
+[master]
+DTL21OCPC1MA01  vm_hostname=dtl21ocpc1ma01.ca.bestbuy.com  vm_network_ip=172.19.46.130
+DTL21OCPC1MA02  vm_hostname=dtl21ocpc1ma02.ca.bestbuy.com  vm_network_ip=172.19.46.131
+DTL21OCPC1MA03  vm_hostname=dtl21ocpc1ma03.ca.bestbuy.com  vm_network_ip=172.19.46.132
+
+[master:vars]
+vm_num_cpus=4
+vm_memory_mb=16384
+vc_folder="/CHQ/vm/CORP-DEV/OpenShift Enterprise/DEV CORP/Master/"
+
+[infra]
+DTL21OCPC1IN01  vm_hostname=dtl21ocpc1in01.ca.bestbuy.com  vm_network_ip=172.19.46.135
+DTL21OCPC1IN02  vm_hostname=dtl21ocpc1in01.ca.bestbuy.com  vm_network_ip=172.19.46.136
+DTL21OCPC1IN03  vm_hostname=dtl21ocpc1in01.ca.bestbuy.com  vm_network_ip=172.19.46.137
+
+[infra:vars]
+vm_num_cpus=8
+vm_memory_mb=32768
+vc_folder="/CHQ/vm/CORP-DEV/OpenShift Enterprise/DEV CORP/Infra/"
+
+[app]
+DTL21OCPC1CH01  vm_hostname=dtl21ocpc1ch01.ca.bestbuy.com  vm_network_ip=172.19.46.141
+DTL21OCPC1CH02  vm_hostname=dtl21ocpc1ch02.ca.bestbuy.com  vm_network_ip=172.19.46.142
+DTL21OCPC1CH03  vm_hostname=dtl21ocpc1ch03.ca.bestbuy.com  vm_network_ip=172.19.46.143
+
+[app:vars]
+vm_num_cpus=8
+vm_memory_mb=49152
+vc_folder="/CHQ/vm/CORP-DEV/OpenShift Enterprise/DEV CORP/App/"
+
+[all:vars]
+vc_hostname=pda20vapvcn02.ca.bestbuy.com
+vc_datacenter=CHQ
+vc_cluster=CHQ-DEV-UNIX
+vc_datastore=CHQ-DEV
+
+vm_template=OCPRHEL7V1-CHQ
+vm_hddsize_gb=300
+
+#vm_network_vlan="VLAN 600"
+vm_network_vlan="600-DV_UNIX_CPR_Perftest"
+vm_network_netmask=255.255.255.0
+vm_network_gateway=172.19.46.1
+
+vm_dns_server1=168.94.89.185
+vm_dns_server2=168.94.169.215
+vm_dns_suffix="ca.bestbuy.com bbydmz.com na.bestbuy.com futureshop.com bestbuy.com"
+vm_dns_domain="ca.bestbuy.com"
+
+vm_state="poweredon"
+#vm_state="present"
+#vm_state="shutdownguest"
+#vm_state="absent"
+
+ansible_user=root
+
+

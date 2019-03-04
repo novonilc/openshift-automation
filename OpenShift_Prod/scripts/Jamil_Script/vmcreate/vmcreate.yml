@@ -1,0 +1,54 @@
+---
+- hosts: all
+  gather_facts: False
+  connection: local
+  serial: 3
+
+  vars_prompt:
+  - name: "vc_username"
+    prompt: "vCenter Username"
+    private: no
+
+  - name: "vc_password"
+    prompt: "vCenter Password"
+    private: yes
+
+  tasks:
+  - name: "{{ vc_hostname }} > {{ vc_datacenter }} > {{ vc_folder }} > {{ inventory_hostname }} :: {{ vm_state }}"
+    local_action:
+      module: vmware_guest                             # https://docs.ansible.com/ansible/2.5/modules/vmware_guest_module.html
+      hostname: "{{ vc_hostname }}"
+      username: "{{ vc_username }}"
+      password: "{{ vc_password }}"
+      datacenter: "{{ vc_datacenter }}"
+      validate_certs: False
+      cluster: "{{ vc_cluster }}"
+      datastore: "{{ vc_datastore }}"
+      folder: "{{ vc_folder }}"
+      guest_id: rhel7_64Guest
+      name: "{{ inventory_hostname }}"
+      template: "{{ vm_template }}"
+      state: "{{ vm_state  }}"
+      wait_for_ip_address: yes
+      disk:
+      - autoselect_datastore: yes
+        size_gb: "{{ vm_hddsize_gb }}"
+        type: "thin"
+      hardware:
+        num_cpus: "{{ vm_num_cpus }}"
+        memory_mb: "{{ vm_memory_mb }}"
+      networks:
+      - name: "{{ vm_network_vlan }}"
+        type: static
+        ip: "{{ vm_network_ip }}"
+        netmask: "{{ vm_network_netmask }}"
+        gateway: "{{ vm_network_gateway }}"
+      customization:
+        dns_servers:
+        - "{{ vm_dns_server1 }}"
+        - "{{ vm_dns_server2 }}"
+        dns_suffix: "{{ vm_dns_suffix }}"
+        domain: "{{ vm_dns_domain }}"
+        hostname: "{{ inventory_hostname|lower }}"
+        #hostname: "{{ vm_hostname|lower }}"         # Allowed characters: alphanumeric (uppercase and lowercase) and minus, rest of the characters are dropped as per RFC 952.
+

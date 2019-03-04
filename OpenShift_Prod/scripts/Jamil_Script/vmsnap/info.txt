@@ -1,0 +1,12 @@
+
+$ ansible-playbook -i vmsnapshot.inventory vmsnapshot.yml -vv
+
+$ ansible-playbook -i vmsnapshot.inventory vmsnapshot.yml -e vc_username=ca\\jamahmed_a -e vc_password=rAsk2Z0SFiR9j54W -vv
+
+
+
+$ ansible-playbook -i vmsnapshot.inventory vmsnapshot.yml -e snapshot_state="absent" -vv
+
+$ ansible-playbook -i vmsnapshot.inventory vmsnapshot.yml -e snapshot_state="absent" -e vc_username=ca\\jamahmed_a -e vc_password=rAsk2Z0SFiR9j54W -vv
+
+

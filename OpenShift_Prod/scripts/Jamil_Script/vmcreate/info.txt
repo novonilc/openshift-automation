@@ -1,0 +1,17 @@
+
+ansible-playbook -i vmcreate.inventory vmcreate.yml -vv
+ansible-playbook -i vmcreate.inventory vmcreate.yml -e vm_state=poweredon -vv
+
+ansible-playbook -i vmcreate.inventory vmcreate.yml -e vm_state=shutdownguest -vv
+ansible-playbook -i vmcreate.inventory vmcreate.yml -e vm_state=absent -vv
+
+
+$ ansible-playbook -i vmcreate.inventory vmcreate.yml -e vc_username=ca\\jamahmed_a -e vc_password=rAsk2Z0SFiR9j54W -e vm_state=absent -vv
+
+
+
+$ ansible all -i vmcreate.inventory.us-dr -a "hostnamectl set-hostname  {{ vm_hostname }}" -k
+
+
+$ ansible all -i vmcreate.inventory.us-prod -a "hostnamectl set-hostname  {{ vm_hostname }}" -k
+

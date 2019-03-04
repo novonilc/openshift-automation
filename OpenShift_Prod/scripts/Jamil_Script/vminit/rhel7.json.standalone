@@ -1,0 +1,53 @@
+{
+  "builders": [
+    {
+      "type": "vsphere-iso",
+
+      "vcenter_server":      "pda20vapvcn02.ca.bestbuy.com",
+      "datacenter":          "VIDC",
+      "username":            "ca\\jamahmed_a",
+      "password":            "M5FfSQ80r7HuVxIw",
+      "insecure_connection": "true",
+
+      "vm_name": "TESTRHEL7",
+      "folder": "/VDI/Platform/Jamil/",
+      "host":    "dth24esxin030.ca.bestbuy.com",
+      "cluster": "LOWER-LINUX-HA-DRS",
+      "datastore": "VIDC-DEV-LUN08",
+      "notes": "Test RHEL7 deployed with Packer.",
+
+      "guest_os_type": "rhel7_64Guest",
+
+      "CPUs":             1,
+      "RAM":              2048,
+      "RAM_reserve_all": true,
+
+      "disk_size":        71680,
+      "disk_controller_type":  "pvscsi",
+      "disk_thin_provisioned": false,
+
+      "network": "eComm-users",
+      "network_card": "vmxnet3",
+
+      "iso_paths": [
+        "[3Par01_eComm_Shared_LUN001] ISO/Red Hat Enterprise Linux/rhel-server-7.6-x86_64-dvd.iso"
+      ],
+
+      "boot_wait": "10s",
+      "boot_command": [
+        "<up><up><tab><wait5><bs><bs><bs><bs><bs>",
+        "noverifyssl hostname=ocp.ca.bestbuy.com ip=172.21.50.177 netmask=255.255.254.0 gateway=172.21.50.1 nameserver=168.94.169.251 nameserver=168.94.89.251 ks=https://pdl24vifrep01.ca.bestbuy.com:9443/dist/ocp/rhel7.ks",
+        "<wait5><enter>"
+      ],
+
+      "ssh_username": "root",
+      "ssh_password": "DontEmailPasswords3",
+
+      "shutdown_command": "/usr/sbin/shutdown -h now",
+      "shutdown_timeout": "10s",
+      "convert_to_template": false
+
+    }
+  ]
+}
+
